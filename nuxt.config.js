@@ -5,7 +5,7 @@ export default {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: '' },
+            { hid: 'description', name: 'description', content: 'urmom' },
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -15,6 +15,7 @@ export default {
     // Global CSS (https://go.nuxtjs.dev/config-css)
     css: [
         'vuesax/dist/vuesax.css',
+        '~/assets/css/main.css',
     ],
 
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
