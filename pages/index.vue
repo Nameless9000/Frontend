@@ -34,15 +34,15 @@
     </div> -->
 
     <div class="buttons">
-      <vs-button class="button" size="large" color="danger" @click="active=!active">
+      <vs-button class="button" size="large" color="danger" @click="activate('login')">
         Login
       </vs-button>
-      <vs-button class="button" size="large" color="danger" @click="active=!active">
+      <vs-button class="button" size="large" color="danger" @click="activate('register')">
         Register
       </vs-button>
     </div>
 
-    <vs-dialog v-model="active" blur class="auth-box">
+    <vs-dialog v-model="active.login" blur class="auth-box">
       <template #header>
         <h4 class="header-text">
           Login
@@ -62,6 +62,28 @@
         </div>
       </template>
     </vs-dialog>
+
+    <vs-dialog v-model="active.register" blur class="auth-box">
+      <template #header>
+        <h4 class="header-text">
+          Register
+        </h4>
+      </template>
+
+      <div class="con-form">
+        <vs-input v-model="username" type="text" placeholder="Username" />
+        <vs-input v-model="password" type="password" placeholder="Password" />
+        <vs-input v-model="invite" type="text" placeholder="Invite Code" />
+      </div>
+
+      <template #footer>
+        <div class="footer-dialog">
+          <vs-button block color="danger" class="dialog-button">
+            Register
+          </vs-button>
+        </div>
+      </template>
+    </vs-dialog>
   </div>
 </template>
 
@@ -69,10 +91,20 @@
 export default {
     data () {
         return {
-            images: 0,
-            users: 0,
-            active: false,
+            username: '',
+            password: '',
+            invite: '',
+            error: '',
+            active: {
+                login: false,
+                register: false,
+            },
         };
+    },
+    methods: {
+        activate (property) {
+            this.active[property] = true;
+        },
     },
 };
 </script>
