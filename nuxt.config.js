@@ -6,9 +6,19 @@ export default {
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
             {
+                hid: 'title',
+                name: 'title',
+                content: 'Astral, the superior image hosting service',
+            },
+            {
                 hid: 'description',
                 name: 'description',
-                content: 'Home page description',
+                content: 'Astral is a simple and powerful image hosting platform, with great support, competent developers, and a welcoming community.',
+            },
+            {
+                hid: 'theme-color',
+                name: 'theme-color',
+                content: '#e6394a',
             },
         ],
         link: [
