@@ -1,37 +1,43 @@
 <template>
   <div class="header">
-    <vs-navbar v-model="active" center-collapsed color="#1f1f1f">
-      <template #left>
-        <img src="~/assets/logo.png" style="width: 100px" alt="">
-      </template>
-      <vs-navbar-item id="guide" :active="active == 'guide'">
-        Guide
-      </vs-navbar-item>
-      <vs-navbar-item id="docs" :active="active == 'docs'">
-        Documents
-      </vs-navbar-item>
-      <vs-navbar-item id="components" :active="active == 'components'">
-        Components
-      </vs-navbar-item>
-      <vs-navbar-item id="license" :active="active == 'license'">
-        license
-      </vs-navbar-item>
-      <template #right>
-        <vs-button flat>
-          Login
-        </vs-button>
-        <vs-button>Get Started</vs-button>
-      </template>
-    </vs-navbar>
-
     <img
       src="~/assets/logo.png"
       alt="logo"
       class="logo"
     >
-    <p class="caption">
-      The ultimate ShareX experience.
-    </p>
+
+    <div class="cards">
+      <vs-card>
+        <template #title>
+          <h3>Images</h3>
+        </template>
+        <template #text>
+          <p>
+            Over {{ images }} images have been uploaded to Astral.
+          </p>
+        </template>
+      </vs-card>
+      <vs-card>
+        <template #title>
+          <h3>Images</h3>
+        </template>
+        <template #text>
+          <p>
+            Over {{ images }} images have been uploaded to Astral.
+          </p>
+        </template>
+      </vs-card>
+      <vs-card>
+        <template #title>
+          <h3>Images</h3>
+        </template>
+        <template #text>
+          <p>
+            Over {{ images }} images have been uploaded to Astral.
+          </p>
+        </template>
+      </vs-card>
+    </div>
 
     <div class="buttons">
       <vs-button class="button" size="large" color="danger" @click="active=!active">
@@ -81,6 +87,7 @@
 export default {
     data () {
         return {
+            images: 0,
             active: false,
         };
     },
