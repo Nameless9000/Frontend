@@ -19,11 +19,11 @@
       </vs-card>
       <vs-card>
         <template #title>
-          <h3>Images</h3>
+          <h3>Users</h3>
         </template>
         <template #text>
           <p>
-            Over {{ images }} images have been uploaded to Astral.
+            Over {{ users }} users are using Astral.
           </p>
         </template>
       </vs-card>
