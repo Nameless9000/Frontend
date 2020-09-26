@@ -6,7 +6,11 @@
       class="logo"
     >
 
-    <div class="cards">
+    <p class="caption">
+      The superior image hosting service.
+    </p>
+
+    <!-- <div class="cards">
       <vs-card>
         <template #title>
           <h3>Images</h3>
@@ -27,17 +31,7 @@
           </p>
         </template>
       </vs-card>
-      <vs-card>
-        <template #title>
-          <h3>Images</h3>
-        </template>
-        <template #text>
-          <p>
-            Over {{ images }} images have been uploaded to Astral.
-          </p>
-        </template>
-      </vs-card>
-    </div>
+    </div> -->
 
     <div class="buttons">
       <vs-button class="button" size="large" color="danger" @click="active=!active">
@@ -88,6 +82,7 @@ export default {
     data () {
         return {
             images: 0,
+            users: 0,
             active: false,
         };
     },
