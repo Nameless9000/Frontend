@@ -56,8 +56,8 @@
 
       <template #footer>
         <div class="footer-dialog">
-          <vs-button block color="danger">
-            Sign In
+          <vs-button block color="danger" class="dialog-button">
+            Login
           </vs-button>
         </div>
       </template>

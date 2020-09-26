@@ -43,6 +43,10 @@
   background-color: white;
 }
 
+.dialog-button {
+  margin-top: -5px;
+}
+
 .header-text {
   font-size: 17px;
   color: white;
