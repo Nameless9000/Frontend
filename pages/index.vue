@@ -50,7 +50,7 @@
       </template>
 
       <div class="con-form">
-        <vs-input v-model="email" placeholder="Email" />
+        <vs-input v-model="username" type="text" placeholder="Username" />
         <vs-input v-model="password" type="password" placeholder="Password" />
       </div>
 
