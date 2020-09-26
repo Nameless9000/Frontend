@@ -54,6 +54,11 @@
   margin-bottom: -13px;
 }
 
+.error-box {
+  margin-top: 7px;
+  margin-bottom: 5px;
+}
+
 .cards {
   margin-top: 10px;
   display: flex;

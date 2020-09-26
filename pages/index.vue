@@ -49,10 +49,8 @@
         </h4>
       </template>
 
-      <vs-alert v-if="error !== ''" color="danger">
-        <template #title class="alert-text">
-          {{ error }}
-        </template>
+      <vs-alert v-if="error !== ''" color="danger" class="error-box">
+        {{ error }}
       </vs-alert>
 
       <div class="con-form">
