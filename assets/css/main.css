@@ -30,6 +30,22 @@
   width: 100px;
 }
 
+.auth-box .vs-dialog {
+  border-radius: 6px;
+  background-color: #252525;
+}
+
+.auth-box .vs-dialog .vs-dialog__close .vs-icon-close {
+  color: white;
+}
+
+.header-text {
+  font-size: 17px;
+  color: white;
+  font-weight: normal;
+  margin-bottom: -13px;
+}
+
 .cards {
   margin-top: 10px;
   display: flex;
