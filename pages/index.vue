@@ -49,6 +49,12 @@
         </h4>
       </template>
 
+      <vs-alert v-if="error !== ''" color="danger">
+        <template #title class="alert-text">
+          {{ error }}
+        </template>
+      </vs-alert>
+
       <div class="con-form">
         <vs-input v-model="username" type="text" placeholder="Username" />
         <vs-input v-model="password" type="password" placeholder="Password" />
@@ -56,7 +62,7 @@
 
       <template #footer>
         <div class="footer-dialog">
-          <vs-button block color="danger" class="dialog-button">
+          <vs-button block color="danger" class="dialog-button" @click="login">
             Login
           </vs-button>
         </div>
@@ -78,7 +84,7 @@
 
       <template #footer>
         <div class="footer-dialog">
-          <vs-button block color="danger" class="dialog-button">
+          <vs-button block color="danger" class="dialog-button" @click="register">
             Register
           </vs-button>
         </div>
@@ -88,6 +94,8 @@
 </template>
 
 <script>
+import Axios from 'axios';
+
 export default {
     data () {
         return {
@@ -103,7 +111,31 @@ export default {
     },
     methods: {
         activate (property) {
+            this.error = '';
             this.active[property] = true;
+        },
+        resetForm () {
+            this.username = '';
+            this.password = '';
+        },
+        async login () {
+            if (this.username.length <= 0 || this.password.length <= 0) {
+                this.resetForm();
+                this.error = 'Please fill out all the fields.';
+            } else {
+                const res = await Axios.post('http://localhost:3000/api/auth/login', {
+                    username: this.username,
+                    password: this.password,
+                }, {
+                    withCredentials: true,
+                });
+                if (res.success) {
+                    window.location.href = 'http://localhost:3000/dashboard';
+                } else {
+                    this.resetForm();
+                    this.error = res.data.message;
+                }
+            }
         },
     },
 };
