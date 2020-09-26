@@ -35,8 +35,12 @@
   background-color: #252525;
 }
 
-.auth-box .vs-dialog .vs-dialog__close .vs-icon-close {
-  color: white;
+.auth-box .vs-dialog .vs-dialog__close .vs-icon-close::before {
+  background-color: white;
+}
+
+.auth-box .vs-dialog .vs-dialog__close .vs-icon-close::after {
+  background-color: white;
 }
 
 .header-text {
