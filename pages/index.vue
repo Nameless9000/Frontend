@@ -54,8 +54,20 @@
       </vs-alert>
 
       <div class="con-form">
-        <vs-input v-model="username" type="text" placeholder="Username" />
-        <vs-input v-model="password" type="password" placeholder="Password" />
+        <vs-input
+          v-model="username"
+          type="text"
+          placeholder="Username"
+          :value="username !== '' ? username : ''"
+          @change="setInput($event, 'username')"
+        />
+        <vs-input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          :value="invite !== '' ? invite : ''"
+          @change="setInput($event, 'invite')"
+        />
       </div>
 
       <template #footer>
@@ -79,9 +91,26 @@
       </vs-alert>
 
       <div class="con-form">
-        <vs-input v-model="username" type="text" placeholder="Username" />
-        <vs-input v-model="password" type="password" placeholder="Password" />
-        <vs-input v-model="invite" type="text" placeholder="Invite Code" />
+        <vs-input
+          v-model="username"
+          type="text"
+          placeholder="Username"
+          :value="username !== '' ? username : ''"
+          @change="setInput($event, 'username')"
+        />
+        <vs-input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          :value="password !== '' ? password : ''"
+          @change="setInput($event, 'password')"
+        />
+        <vs-input
+          type="text"
+          placeholder="Invite Code"
+          :value="invite !== '' ? invite : ''"
+          @change="setInput($event, 'invite')"
+        />
       </div>
 
       <template #footer>
@@ -114,9 +143,13 @@ export default {
             this.error = '';
             this.active[property] = true;
         },
+        setInput (val, property) {
+            this[property] = val.target.value;
+        },
         resetForm () {
             this.username = '';
             this.password = '';
+            this.invite = '';
         },
         async login () {
             if (this.username.length <= 0 || this.password.length <= 0) {
