@@ -96,8 +96,6 @@
 </template>
 
 <script>
-import Axios from 'axios';
-
 export default {
     data () {
         return {
@@ -125,14 +123,14 @@ export default {
                 this.resetForm();
                 this.error = 'Please fill out all the fields.';
             } else {
-                const res = await Axios.post('http://localhost:3001/api/auth/login', {
+                const res = await this.$axios.post('http://localhost:3000/auth/login', {
                     username: this.username,
                     password: this.password,
                 }, {
                     withCredentials: true,
                 });
                 if (res.data.success) {
-                    window.location.href = 'http://localhost:3000/dashboard';
+                    window.location.href = 'http://localhost:3001/dashboard';
                 } else {
                     this.resetForm();
                     this.error = res.data.message;
@@ -144,7 +142,7 @@ export default {
                 this.resetForm();
                 this.error = 'Please fill out all the fields.';
             } else {
-                const res = await Axios.post('http://localhost:3001/api/auth/register', {
+                const res = await this.$axios.post('http://localhost:3000/auth/register', {
                     username: this.username,
                     password: this.password,
                     invite: this.invite,
@@ -152,7 +150,7 @@ export default {
                     withCredentials: true,
                 });
                 if (res.data.success) {
-                    window.location.href = 'http://localhost:3000/dashboard';
+                    window.location.href = 'http://localhost:3001/dashboard';
                 } else {
                     this.resetForm();
                     this.error = res.data.message;
@@ -164,46 +162,46 @@ export default {
 </script>
 
 <style lang="stylus">
-    getColor(vsColor, alpha = 1)
-        unquote("rgba(var(--vs-"+vsColor+"), "+alpha+")")
-    getVar(var)
-        unquote("var(--vs-"+var+")")
-    .not-margin
-      margin 0px
-      font-weight normal
-      padding 10px
-    .con-form
-      width 100%
-      .flex
-        display flex
-        align-items center
-        justify-content space-between
-        a
-          font-size .8rem
-          opacity .7
-          &:hover
-            opacity 1
-      .vs-checkbox-label
-        font-size .8rem
-      .vs-input-content
-        margin 10px 0px
-        width calc(100%)
-        .vs-input
-          width 100%
-    .footer-dialog
+  getColor(vsColor, alpha = 1)
+      unquote("rgba(var(--vs-"+vsColor+"), "+alpha+")")
+  getVar(var)
+      unquote("var(--vs-"+var+")")
+  .not-margin
+    margin 0px
+    font-weight normal
+    padding 10px
+  .con-form
+    width 100%
+    .flex
       display flex
       align-items center
-      justify-content center
-      flex-direction column
+      justify-content space-between
+      a
+        font-size .8rem
+        opacity .7
+        &:hover
+          opacity 1
+    .vs-checkbox-label
+      font-size .8rem
+    .vs-input-content
+      margin 10px 0px
       width calc(100%)
-      .new
-        margin 0px
-        margin-top 20px
-        padding: 0px
-        font-size .7rem
-        a
-          color getColor('primary') !important
-          margin-left 6px
-          &:hover
-            text-decoration underline
-    </style>
+      .vs-input
+        width 100%
+  .footer-dialog
+    display flex
+    align-items center
+    justify-content center
+    flex-direction column
+    width calc(100%)
+    .new
+      margin 0px
+      margin-top 20px
+      padding: 0px
+      font-size .7rem
+      a
+        color getColor('primary') !important
+        margin-left 6px
+        &:hover
+          text-decoration underline
+</style>
