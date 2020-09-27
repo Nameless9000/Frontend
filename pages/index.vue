@@ -74,6 +74,10 @@
         </h4>
       </template>
 
+      <vs-alert v-if="error !== ''" color="danger" class="error-box">
+        {{ error }}
+      </vs-alert>
+
       <div class="con-form">
         <vs-input v-model="username" type="text" placeholder="Username" />
         <vs-input v-model="password" type="password" placeholder="Password" />
@@ -121,13 +125,33 @@ export default {
                 this.resetForm();
                 this.error = 'Please fill out all the fields.';
             } else {
-                const res = await Axios.post('http://localhost:3000/api/auth/login', {
+                const res = await Axios.post('http://localhost:3001/api/auth/login', {
                     username: this.username,
                     password: this.password,
                 }, {
                     withCredentials: true,
                 });
-                if (res.success) {
+                if (res.data.success) {
+                    window.location.href = 'http://localhost:3000/dashboard';
+                } else {
+                    this.resetForm();
+                    this.error = res.data.message;
+                }
+            }
+        },
+        async register () {
+            if (this.username.length <= 0 || this.password.length <= 0 || this.invite.length <= 0) {
+                this.resetForm();
+                this.error = 'Please fill out all the fields.';
+            } else {
+                const res = await Axios.post('http://localhost:3001/api/auth/register', {
+                    username: this.username,
+                    password: this.password,
+                    invite: this.invite,
+                }, {
+                    withCredentials: true,
+                });
+                if (res.data.success) {
                     window.location.href = 'http://localhost:3000/dashboard';
                 } else {
                     this.resetForm();
