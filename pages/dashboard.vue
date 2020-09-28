@@ -1,10 +1,9 @@
 <template>
-  <div class="header">
-    <div v-if="!loading">
-      <Verify v-if="user.user.discordId === null" />
-      <Dashboard v-else />
-    </div>
+  <div v-if="!loading">
+    <Verify v-if="user.user.discordId === null" />
+    <Dashboard v-else />
   </div>
+  <div v-else class="header" />
 </template>
 
 <script>

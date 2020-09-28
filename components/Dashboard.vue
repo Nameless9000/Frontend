@@ -1,7 +1,8 @@
 <template>
   <div class="header">
-    <h3>
-      Welcome to the dashboard!
-    </h3>
+    <Navbar />
+    <h1>
+      hi
+    </h1>
   </div>
 </template>
