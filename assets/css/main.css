@@ -73,6 +73,22 @@
   margin-right: 5px;
 }
 
+.verifyTitle {
+  font-weight: 500;
+}
+
+.verifyCaption {
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+.verifyButtons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+
 @media only screen and (max-device-width: 768px) {
   .cards {
     flex-direction: column;
