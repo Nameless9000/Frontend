@@ -126,6 +126,18 @@
 
 <script>
 export default {
+    asyncData (context) {
+        const code = context.query.code;
+        if (code) {
+            return {
+                active: {
+                    login: false,
+                    register: true,
+                },
+                invite: code,
+            };
+        }
+    },
     data () {
         return {
             username: '',
