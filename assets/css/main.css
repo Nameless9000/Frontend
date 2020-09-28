@@ -88,6 +88,9 @@
   margin-top: 15px;
 }
 
+.verifyButtons .button {
+  width: 150px;
+}
 
 @media only screen and (max-device-width: 768px) {
   .cards {

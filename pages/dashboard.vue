@@ -2,6 +2,7 @@
   <div class="header">
     <div v-if="!loading">
       <Verify v-if="user.user.discordId === null" />
+      <Dashboard v-else />
     </div>
   </div>
 </template>
@@ -22,7 +23,6 @@ export default {
             this.$axios.get('http://localhost:3000/users/@me', { withCredentials: true })
                 .then((res) => {
                     if (res.data) {
-                        console.log(res.data);
                         this.user = res.data;
                         setTimeout(() => {
                             spinner.close();
