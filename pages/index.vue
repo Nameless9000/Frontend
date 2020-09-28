@@ -140,7 +140,6 @@ export default {
     },
     data () {
         return {
-            loading: true,
             username: '',
             password: '',
             invite: '',
