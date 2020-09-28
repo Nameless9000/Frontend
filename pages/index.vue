@@ -140,6 +140,7 @@ export default {
     },
     data () {
         return {
+            loading: true,
             username: '',
             password: '',
             invite: '',
@@ -149,6 +150,24 @@ export default {
                 register: false,
             },
         };
+    },
+    created () {
+        this.$axios.get('http://localhost:3000/users/@me', { withCredentials: true })
+            .then((res) => {
+                const spinner = this.$vs.loading({
+                    background: '#050506',
+                });
+                if (res.data) {
+                    setTimeout(() => {
+                        spinner.close();
+                        this.$router.push('/dashboard');
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        spinner.close();
+                    }, 1000);
+                }
+            }).catch(() => {});
     },
     methods: {
         activate (property) {
