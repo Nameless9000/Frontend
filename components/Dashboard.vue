@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <Navbar />
+    <Navbar enabled="home" />
     <h1>
       hi
     </h1>

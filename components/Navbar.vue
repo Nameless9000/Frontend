@@ -10,10 +10,10 @@
     >
       <template #left>
         <img src="~/assets/logo.png" width="100px" alt="logo">
-        <vs-navbar-item to="/dashboard">
+        <vs-navbar-item to="/dashboard" :active="enabled === 'home'">
           Home
         </vs-navbar-item>
-        <vs-navbar-item to="/profile">
+        <vs-navbar-item to="/profile" :active="enabled === 'profile'">
           Profile
         </vs-navbar-item>
       </template>
@@ -28,6 +28,13 @@
 
 <script>
 export default {
+    name: 'Navbar',
+    props: {
+        enabled: {
+            type: String,
+            default: '',
+        },
+    },
     methods: {
         logout () {
             this.$axios.get('http://localhost:3000/auth/logout', { withCredentials: true })
