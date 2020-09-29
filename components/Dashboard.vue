@@ -12,7 +12,7 @@
               <i class="bx bx-image statsIcon" />Images
             </h1>
             <p>
-              You have uploaded 0 images.
+              You have uploaded {{ user.stats.uploads }} images.
             </p>
           </div>
           <div class="statsBox">
