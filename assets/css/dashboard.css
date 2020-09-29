@@ -59,3 +59,7 @@
 .statsBox .statsIcon {
   margin-right: 7px;
 }
+
+.fade-in {
+  transition-duration: 0.2s;
+}
