@@ -33,6 +33,35 @@
           </div>
         </div>
       </div>
+
+      <div class="section">
+        <h1 class="title">
+          Domain Preferences
+        </h1>
+        <!-- <vs-alert class="dashboard-error" color="success">
+          Some message here.
+        </vs-alert> -->
+        <div class="domainArea">
+          <vs-select
+            v-model="domain"
+            filter
+            placeholder="Choose a domain"
+            color="dark"
+            class="domainSelect"
+          >
+            <vs-option
+              v-for="oneDomain of domains"
+              :key="oneDomain.name"
+              :value="oneDomain.name"
+            >
+              {{ oneDomain.name }}
+            </vs-option>
+          </vs-select>
+          <h1 v-if="domain !== ''">
+            ur domain is {{ domain }}
+          </h1>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +76,16 @@ export default {
                 return {};
             },
         },
+    },
+    data () {
+        return {
+            domains: [],
+            domain: '',
+        };
+    },
+    async created () {
+        const res = await this.$axios.get('http://localhost:3000/domains');
+        this.domains = res.data;
     },
 };
 </script>
