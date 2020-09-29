@@ -4,7 +4,7 @@
     <div class="settings">
       <div class="section" style="margin-top: 40px">
         <h1 class="title">
-          Welcome aspect
+          Welcome aspect.
         </h1>
         <div class="statsContainer">
           <div class="statsBox">

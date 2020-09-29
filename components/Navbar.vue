@@ -1,7 +1,6 @@
 <template>
   <div class="navbar">
     <vs-navbar
-      v-model="active"
       center-collapsed
       dark
       text-white

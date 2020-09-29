@@ -18,15 +18,15 @@
   background: rgb(30, 30, 30);
   padding: 10px;
   border-radius: 7px;
-  width: 97%;
+  width: 95%;
   margin-top: 10px;
-  margin-left: 30px;
+  margin-left: 45px;
 }
 
 .title {
   font-size: 26px;
   margin-top: 10px;
-  margin-left: 45px;
+  margin-left: 50px;
 }
 
 .statsContainer {
@@ -62,4 +62,40 @@
 
 .fade-in {
   transition-duration: 0.2s;
+}
+
+@media only screen and (max-width: 700px) {
+  .settings .section {
+    width: 85%;
+    margin-left: 50px;
+  }
+
+  .statsBox {
+    width: 92%;
+  }
+
+  .statsContainer {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 528px) {
+  .settings .section {
+    margin-left: 40px;
+  }
+
+  .statsBox {
+    margin-left: 25px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .settings .section {
+    margin-left: 30px;
+  }
+
+  .statsBox {
+    margin-top: 2px;
+    margin-left: 17px;
+  }
 }
