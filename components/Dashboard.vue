@@ -4,7 +4,7 @@
     <div class="settings">
       <div class="section" style="margin-top: 40px">
         <h1 class="title">
-          Welcome {{ user.username }}.
+          Welcome {{ user.user.username }}.
         </h1>
         <div class="statsContainer">
           <div class="statsBox">
@@ -47,9 +47,6 @@ export default {
                 return {};
             },
         },
-    },
-    created () {
-        console.log(this.user);
     },
 };
 </script>
