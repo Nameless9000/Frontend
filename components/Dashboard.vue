@@ -20,7 +20,7 @@
               <i class="bx bx-envelope statsIcon" />Invites
             </h1>
             <p>
-              You have 0 invites.
+              You have {{ user.stats.invites }} invites.
             </p>
           </div>
           <div class="statsBox">
@@ -28,7 +28,7 @@
               <i class="bx bxs-key statsIcon" />Key
             </h1>
             <p>
-              Your key is <Spoiler text="123" />
+              Your key is <Spoiler :text="user.user.key" />
             </p>
           </div>
         </div>
