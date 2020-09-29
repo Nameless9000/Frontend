@@ -1,7 +1,61 @@
 .dashboard {
-  color: rgb(236, 236, 236);
+  min-height: 10vh;
+  color: #f5f5f5;
 }
 
 .navbar .vs-navbar {
   height: 60px;
+}
+
+.settings {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings .section {
+  background: rgb(30, 30, 30);
+  padding: 10px;
+  border-radius: 7px;
+  width: 97%;
+  margin-top: 10px;
+  margin-left: 30px;
+}
+
+.title {
+  font-size: 26px;
+  margin-top: 10px;
+  margin-left: 45px;
+}
+
+.statsContainer {
+  margin-left: -10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.statsBox {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 31%;
+  height: 120px;
+  margin-bottom: 7px;
+  margin-left: 28px;
+  margin-top: 5px;
+  border-radius: 7px;
+  background-color: rgb(22, 22, 22);
+}
+
+.statsBox .statsTitle {
+  font-size: 20px;
+}
+
+.statsBox .statsIcon {
+  margin-right: 7px;
 }

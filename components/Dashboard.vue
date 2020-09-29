@@ -1,8 +1,38 @@
 <template>
-  <div class="header">
+  <div class="dashboard">
     <Navbar enabled="home" />
-    <h1>
-      hi
-    </h1>
+    <div class="settings">
+      <div class="section">
+        <h1 class="title">
+          Welcome aspect
+        </h1>
+        <div class="statsContainer">
+          <div class="statsBox">
+            <h1 class="statsTitle">
+              <i class="bx bx-image statsIcon" />Images
+            </h1>
+            <p>
+              You have uploaded 0 images.
+            </p>
+          </div>
+          <div class="statsBox">
+            <h1 class="statsTitle">
+              <i class="bx bx-envelope statsIcon" />Invites
+            </h1>
+            <p>
+              You have 0 invites.
+            </p>
+          </div>
+          <div class="statsBox">
+            <h1 class="statsTitle">
+              <i class="bx bxs-key statsIcon" />Key
+            </h1>
+            <p>
+              Your key is <Spoiler text="123" />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

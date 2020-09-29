@@ -6,6 +6,7 @@
 
 <style>
 html {
+  background-color: #242424;
   font-family:
     'Source Sans Pro',
     -apple-system,
