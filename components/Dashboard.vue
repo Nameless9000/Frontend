@@ -38,10 +38,17 @@
         <h1 class="title">
           Domain Preferences
         </h1>
-        <!-- <vs-alert class="dashboard-error" color="success">
-          Some message here.
-        </vs-alert> -->
         <div class="domainArea">
+          <div v-if="domain !== ''">
+            <h3 class="previewText">
+              Preview
+            </h3>
+            <vs-input
+              disabled
+              :value="domain"
+              class="domainSelect"
+            />
+          </div>
           <vs-select
             v-model="domain"
             filter
@@ -57,22 +64,7 @@
             >
               {{ oneDomain.name }}
             </vs-option>
-            <vs-option
-              :label="bruh"
-              value="VALUE IS HERE"
-            >
-              lmao
-            </vs-option>
-            <vs-option
-              label="LMAO WTF"
-              value="VALUE 2"
-            >
-              awd
-            </vs-option>
           </vs-select>
-          <h1>
-            domain is {{ domain }}
-          </h1>
         </div>
       </div>
     </div>
@@ -94,12 +86,22 @@ export default {
         return {
             domains: [],
             domain: '',
-            bruh: 'LABEL IS HERE',
         };
     },
     async created () {
         const res = await this.$axios.get('http://localhost:3000/domains');
         this.domains = res.data;
+    },
+    methods: {
+        openNoti () {
+            this.$vs.notification({
+                duration: 4000,
+                color: 'success',
+                position: 'top-center',
+                title: 'Updated Domain',
+                text: `Updated domain to ${this.domain}.`,
+            });
+        },
     },
 };
 </script>
