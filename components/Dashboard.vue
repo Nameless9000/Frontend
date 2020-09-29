@@ -39,7 +39,7 @@
           Domain Preferences
         </h1>
         <div class="domainArea">
-          <div v-if="domain !== ''">
+          <div v-if="domain !== ''" class="previewArea">
             <h3 class="previewText">
               Preview
             </h3>

@@ -73,6 +73,10 @@
 }
 
 .domainArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   margin-left: 43px;
 }
 
@@ -87,7 +91,7 @@
   margin-left: 7px;
   font-weight: 500;
   margin-bottom: -3px;
-  margin-top: 10px;
+  margin-top: 7px;
 }
 
 @media only screen and (max-width: 700px) {
@@ -131,5 +135,9 @@
   .statsBox {
     margin-top: 2px;
     margin-left: 17px;
+  }
+  
+  .previewArea {
+    display: none;
   }
 }
