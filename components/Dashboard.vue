@@ -2,7 +2,7 @@
   <div class="dashboard">
     <Navbar enabled="home" />
     <div class="settings">
-      <div class="section">
+      <div class="section" style="margin-top: 40px">
         <h1 class="title">
           Welcome aspect
         </h1>
