@@ -50,15 +50,28 @@
             class="domainSelect"
           >
             <vs-option
-              v-for="oneDomain of domains"
+              v-for="oneDomain in domains"
               :key="oneDomain.name"
+              :label="oneDomain.name"
               :value="oneDomain.name"
             >
               {{ oneDomain.name }}
             </vs-option>
+            <vs-option
+              :label="bruh"
+              value="VALUE IS HERE"
+            >
+              lmao
+            </vs-option>
+            <vs-option
+              label="LMAO WTF"
+              value="VALUE 2"
+            >
+              awd
+            </vs-option>
           </vs-select>
-          <h1 v-if="domain !== ''">
-            ur domain is {{ domain }}
+          <h1>
+            domain is {{ domain }}
           </h1>
         </div>
       </div>
@@ -81,6 +94,7 @@ export default {
         return {
             domains: [],
             domain: '',
+            bruh: 'LABEL IS HERE',
         };
     },
     async created () {
