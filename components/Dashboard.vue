@@ -36,3 +36,20 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+    name: 'Dashboard',
+    props: {
+        user: {
+            type: Object,
+            default () {
+                return {};
+            },
+        },
+    },
+    created () {
+        console.log(this.user);
+    },
+};
+</script>
