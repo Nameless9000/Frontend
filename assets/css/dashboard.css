@@ -82,7 +82,6 @@
 
 .domainSelect {
   margin-top: 10px;
-  width: 500px !important;
   margin-left: 5px;
 }
 
@@ -92,6 +91,15 @@
   font-weight: 500;
   margin-bottom: -3px;
   margin-top: 7px;
+}
+
+.subdomainArea {
+  margin-left: 7px;
+  margin-top: 10px;
+}
+
+.divider {
+  padding-bottom: 17px;
 }
 
 @media only screen and (max-width: 700px) {

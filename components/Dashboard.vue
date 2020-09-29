@@ -39,18 +39,18 @@
           Domain Preferences
         </h1>
         <div class="domainArea">
-          <div v-if="domain !== ''" class="previewArea">
+          <div v-if="domain.name !== ''" class="previewArea">
             <h3 class="previewText">
               Preview
             </h3>
             <vs-input
               disabled
-              :value="domain"
+              :value="isWildcard ? `${domain.subdomain}.${domain.name}` : domain.name"
               class="domainSelect"
             />
           </div>
           <vs-select
-            v-model="domain"
+            v-model="domain.name"
             filter
             placeholder="Choose a domain"
             color="dark"
@@ -65,6 +65,15 @@
               {{ oneDomain.name }}
             </vs-option>
           </vs-select>
+          <div v-if="isWildcard" class="subdomainArea">
+            <vs-input
+              v-model="domain.subdomain"
+              class="subdomainInput"
+              placeholder="Enter a subdomain"
+              @change="setInput('domain.subdomain', $event)"
+            />
+          </div>
+          <div class="divider" />
         </div>
       </div>
     </div>
@@ -85,22 +94,34 @@ export default {
     data () {
         return {
             domains: [],
-            domain: '',
+            domain: {
+                name: '',
+                subdomain: '',
+                wildcard: null,
+            },
+            extra: '',
         };
+    },
+    computed: {
+        isWildcard () {
+            if (this.domain.name === '') {
+                return false;
+            } else {
+                const domain = this.domains.find(d => d.name === this.domain.name);
+                return !!domain.wildcard;
+            }
+        },
     },
     async created () {
         const res = await this.$axios.get('http://localhost:3000/domains');
         this.domains = res.data;
     },
     methods: {
-        openNoti () {
-            this.$vs.notification({
-                duration: 4000,
-                color: 'success',
-                position: 'top-center',
-                title: 'Updated Domain',
-                text: `Updated domain to ${this.domain}.`,
-            });
+        setInput (property, val) {
+            val = val.target.value.trim();
+            if (val.length < 40) {
+                this[property] = val;
+            }
         },
     },
 };
