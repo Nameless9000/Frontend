@@ -103,7 +103,12 @@
 }
 
 .divider {
-  padding-bottom: 17px;
+  padding-bottom: 15px;
+}
+
+.domainButton {
+  margin-top: 15px;
+  width: 170px;
 }
 
 @media only screen and (max-width: 700px) {
@@ -118,6 +123,11 @@
 
   .statsContainer {
     flex-direction: column;
+  }
+
+  
+  .vs-input {
+    width: 200px;
   }
 }
 
@@ -136,6 +146,14 @@
 
   .statsBox {
     margin-left: 25px;
+  }
+  
+  .subdomainArea {
+    margin-left: -29px;
+  }
+
+  .domainButton {
+    margin-left: -29px;
   }
 }
 

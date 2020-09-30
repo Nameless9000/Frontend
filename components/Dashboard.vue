@@ -63,7 +63,7 @@
             placeholder="Choose a domain"
             color="dark"
             class="domainSelect"
-            style="margin-top: 14px"
+            style="margin-top: 10px"
           >
             <vs-option
               v-for="oneDomain in domains"
@@ -74,6 +74,13 @@
               {{ oneDomain.name }}
             </vs-option>
           </vs-select>
+          <vs-button
+            v-if="domain.name !== ''"
+            color="danger"
+            class="domainButton"
+          >
+            Update Domain
+          </vs-button>
           <div class="divider" />
         </div>
       </div>
