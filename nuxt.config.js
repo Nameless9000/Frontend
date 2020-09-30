@@ -32,6 +32,7 @@ export default {
         'vuesax/dist/vuesax.css',
         '~/assets/css/main.css',
         '~/assets/css/dashboard.css',
+        '~/assets/css/profile.css',
     ],
 
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)

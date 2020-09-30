@@ -1,7 +1,7 @@
 <template>
   <div v-if="!loading">
     <Verify v-if="user.user.discordId === null" />
-    <Dashboard v-else :user="user" />
+    <Profile v-else :user="user" />
   </div>
   <div v-else class="header" />
 </template>

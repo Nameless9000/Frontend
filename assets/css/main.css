@@ -26,6 +26,11 @@
   margin-top: 18px;
 }
 
+.con-form .vs-input {
+  height: 35px;
+  width: 450px;
+}
+
 .buttons .button {
   width: 100px;
 }

@@ -85,7 +85,7 @@
   margin-left: 5px;
 }
 
-.vs-input {
+.dashboard .vs-input {
   height: 35px;
   width: 450px;
 }
@@ -132,7 +132,7 @@
 }
 
 .switch {
-  width: 100px;
+  width: 150px;
 }
 
 .fakeLinkInput {
@@ -141,6 +141,26 @@
 
 .fakeLinkButton {
   margin-top: 10px;
+}
+
+.vc-input__input {
+  display: none;
+}
+
+.vc-chrome-field {
+  display: none;
+}
+
+.vc-chrome-fields {
+  display: none;
+}
+
+.vc-chrome-toggle-icon {
+  display: none;
+}
+
+.embedInput {
+  margin-top: 5px;
 }
 
 @media only screen and (max-width: 700px) {
@@ -158,7 +178,7 @@
   }
 
   
-  .vs-input {
+  .dashboard .vs-input {
     width: 200px;
   }
 }

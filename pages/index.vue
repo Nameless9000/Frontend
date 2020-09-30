@@ -160,11 +160,11 @@ export default {
                     setTimeout(() => {
                         spinner.close();
                         this.$router.push('/dashboard');
-                    }, 1000);
+                    }, 800);
                 } else {
                     setTimeout(() => {
                         spinner.close();
-                    }, 1000);
+                    }, 800);
                 }
             }).catch(() => {});
     },

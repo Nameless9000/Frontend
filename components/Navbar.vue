@@ -38,9 +38,7 @@ export default {
         logout () {
             this.$axios.get('http://localhost:3000/auth/logout', { withCredentials: true })
                 .then((res) => {
-                    if (res.data.success) {
-                        this.$router.push('/');
-                    }
+                    this.$router.push('/');
                 }).catch(() => {
                     this.$router.push('/');
                 });

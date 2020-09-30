@@ -1,0 +1,79 @@
+.profile {
+  min-height: 10vh;
+}
+
+.navbar .vs-navbar {
+  height: 60px;
+}
+
+.page {
+  min-height: 70vh;
+  margin-top: 70px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  margin-top: 50px;
+}
+
+.profileSection {
+  color: #f5f5f5;
+  background: rgb(30, 30, 30);
+  padding: 10px;
+  border-radius: 7px;
+  width: 30%;
+  margin-top: 130px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileTitle {
+  margin-top: 20px;
+  font-size: 26px;
+}
+
+.profileFieldContainer {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #b8b8b8;
+}
+
+.profileField {
+  color: #fff;
+}
+
+.dangerButtons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+@media only screen and (max-width: 1600px) {
+  .dangerButtons {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .profileSection {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .profileSection {
+    width: 85%;
+    margin-left: 0;
+    margin-top: 100px;
+  }
+
+  .profileFieldContainer {
+    font-size: 19px;
+  }
+}

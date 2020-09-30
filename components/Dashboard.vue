@@ -78,6 +78,7 @@
             color="danger"
             class="domainButton"
             size="large"
+            @click="updateDomain"
           >
             Update Domain
           </vs-button>
@@ -103,7 +104,7 @@
         <div class="divider" />
       </div>
 
-      <div class="section">
+      <div class="section" style="margin-bottom: 50px">
         <h1 class="title">
           Upload Preferences
         </h1>
@@ -125,11 +126,46 @@
             <vs-input
               class="fakeLinkInput"
               placeholder="Enter a url (include https://)"
-              :value="domain.subdomain !== '' ? domain.subdomain : ''"
-              @input="setInput($event, 'subdomain')"
+              :value="fakeLink.url !== '' ? fakeLink.url : ''"
+              @input="setFakelink($event)"
             />
             <vs-button class="fakeLinkButton">
               Save url
+            </vs-button>
+          </div>
+          <vs-switch
+            v-model="embed.enabled"
+            class="switch"
+            style="margin-top: 5px"
+          >
+            Embed
+          </vs-switch>
+          <div v-if="embed.enabled">
+            <vs-input
+              v-model="embed.title"
+              class="embedInput"
+              placeholder="Embed title"
+            />
+            <vs-input
+              v-model="embed.text"
+              class="embedInput"
+              placeholder="Embed text"
+            />
+            <vs-button
+              :color="embed.color.hex"
+              style="width: 200px; margin-left: 0px; margin-top: 7px"
+              @click="embed.colorPicker = !embed.colorPicker"
+            >
+              Color
+            </vs-button>
+            <Chrome
+              v-if="embed.colorPicker"
+              v-model="embed.color"
+            />
+            <vs-button
+              style="width: 150px; margin-left: 0px; margin-top: 10px"
+            >
+              Save embed settings
             </vs-button>
           </div>
         </div>
@@ -140,8 +176,13 @@
 </template>
 
 <script>
+import { Chrome } from 'vue-color';
+
 export default {
     name: 'Dashboard',
+    components: {
+        Chrome,
+    },
     props: {
         user: {
             type: Object,
@@ -162,6 +203,13 @@ export default {
             fakeLink: {
                 enabled: false,
                 url: '',
+            },
+            embed: {
+                enabled: false,
+                title: '',
+                text: '',
+                color: '',
+                colorPicker: false,
             },
         };
     },
@@ -185,6 +233,10 @@ export default {
         setInput (val, property) {
             val = val.replace(/\s/g, '-');
             this.domain[property] = val;
+        },
+        setFakelink (val) {
+            val = val.replace(/\s/g, '-');
+            this.fakeLink.url = val;
         },
     },
 };
