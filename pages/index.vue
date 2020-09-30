@@ -247,7 +247,7 @@ export default {
     .vs-checkbox-label
       font-size .8rem
     .vs-input-content
-      margin 10px 0px
+      margin 5px 0px
       width calc(100%)
       .vs-input
         width 100%
@@ -259,7 +259,7 @@ export default {
     width calc(100%)
     .new
       margin 0px
-      margin-top 20px
+      margin-top 21px
       padding: 0px
       font-size .7rem
       a

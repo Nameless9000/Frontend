@@ -78,11 +78,27 @@
             v-if="domain.name !== ''"
             color="danger"
             class="domainButton"
+            size="large"
           >
             Update Domain
           </vs-button>
           <div class="divider" />
         </div>
+      </div>
+
+      <div class="section">
+        <h1 class="title">
+          Config Generator
+        </h1>
+        <vs-button
+          color="danger"
+          class="configButton"
+          size="large"
+          :href="'http://localhost:3000/config?key=' + user.user.key"
+        >
+          Download Config
+        </vs-button>
+        <div class="divider" />
       </div>
     </div>
   </div>
