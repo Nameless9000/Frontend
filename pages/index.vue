@@ -59,14 +59,14 @@
           type="text"
           placeholder="Username"
           :value="username !== '' ? username : ''"
-          @change="setInput($event, 'username')"
+          @input="setInput($event, 'username')"
         />
         <vs-input
           v-model="password"
           type="password"
           placeholder="Password"
           :value="invite !== '' ? invite : ''"
-          @change="setInput($event, 'invite')"
+          @input="setInput($event, 'invite')"
         />
       </div>
 
@@ -96,20 +96,20 @@
           type="text"
           placeholder="Username"
           :value="username !== '' ? username : ''"
-          @change="setInput($event, 'username')"
+          @input="setInput($event, 'username')"
         />
         <vs-input
           v-model="password"
           type="password"
           placeholder="Password"
           :value="password !== '' ? password : ''"
-          @change="setInput($event, 'password')"
+          @input="setInput($event, 'password')"
         />
         <vs-input
           type="text"
           placeholder="Invite Code"
           :value="invite !== '' ? invite : ''"
-          @change="setInput($event, 'invite')"
+          @input="setInput($event, 'invite')"
         />
       </div>
 
@@ -174,7 +174,7 @@ export default {
             this.active[property] = true;
         },
         setInput (val, property) {
-            this[property] = val.target.value;
+            this[property] = val;
         },
         resetForm () {
             this.username = '';

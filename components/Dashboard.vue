@@ -49,12 +49,21 @@
               class="domainSelect"
             />
           </div>
+          <div v-if="isWildcard" class="subdomainArea">
+            <vs-input
+              class="subdomainInput"
+              placeholder="Enter a subdomain"
+              :value="domain.subdomain !== '' ? domain.subdomain : ''"
+              @input="setInput($event, 'subdomain')"
+            />
+          </div>
           <vs-select
             v-model="domain.name"
             filter
             placeholder="Choose a domain"
             color="dark"
             class="domainSelect"
+            style="margin-top: 14px"
           >
             <vs-option
               v-for="oneDomain in domains"
@@ -65,14 +74,6 @@
               {{ oneDomain.name }}
             </vs-option>
           </vs-select>
-          <div v-if="isWildcard" class="subdomainArea">
-            <vs-input
-              v-model="domain.subdomain"
-              class="subdomainInput"
-              placeholder="Enter a subdomain"
-              @change="setInput('domain.subdomain', $event)"
-            />
-          </div>
           <div class="divider" />
         </div>
       </div>
@@ -117,11 +118,9 @@ export default {
         this.domains = res.data;
     },
     methods: {
-        setInput (property, val) {
-            val = val.target.value.trim();
-            if (val.length < 40) {
-                this[property] = val;
-            }
+        setInput (val, property) {
+            val = val.replace(/\s/g, '-');
+            this.domain[property] = val;
         },
     },
 };
