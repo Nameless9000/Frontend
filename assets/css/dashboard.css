@@ -1,184 +1,217 @@
-  .dashboard {
-    min-height: 10vh;
-  }
+.dashboard {
+  min-height: 10vh;
+}
 
-  .navbar .vs-navbar {
-    height: 60px;
-  }
+.navbar .vs-navbar {
+  height: 60px;
+}
 
-  .settings {
-    margin-top: 60px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+.settings {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
+.settings .section {
+  background: rgb(30, 30, 30);
+  padding: 10px;
+  border-radius: 7px;
+  width: 95%;
+  margin-top: 13px;
+  margin-left: 45px;
+}
+
+.title {
+  color: #f5f5f5;
+  font-size: 26px;
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.statsContainer {
+  color: #f5f5f5;
+  margin-left: -10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.statsBox {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 31%;
+  height: 120px;
+  margin-bottom: 7px;
+  margin-left: 28px;
+  margin-top: 5px;
+  border-radius: 7px;
+  background-color: rgb(22, 22, 22);
+}
+
+.statsBox .statsTitle {
+  font-size: 20px;
+}
+
+.statsBox .statsIcon {
+  margin-right: 7px;
+}
+
+.fade-in {
+  transition-duration: 0.2s;
+}
+
+.dashboard-error {
+  margin-top: 10px;
+  width: 500px;
+  margin-bottom: 5px;
+  margin-left: 43px;
+}
+
+.domainArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 43px;
+}
+
+.domainSelect {
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.vs-input {
+  height: 35px;
+  width: 450px;
+}
+
+.previewText {
+  color: #f5f5f5;
+  margin-left: 7px;
+  font-weight: 500;
+  margin-bottom: -3px;
+  margin-top: 7px;
+}
+
+.subdomainArea {
+  margin-left: 7px;
+  margin-top: 10px;
+}
+
+.divider {
+  padding-bottom: 13px;
+}
+
+.domainButton {
+  margin-top: 15px;
+  width: 170px;
+}
+
+.configButton {
+  margin-left: 47px;
+  margin-top: 15px;
+  width: 200px;
+}
+
+.configTooltip {
+  margin-left: 50px;
+  margin-top: -2px;
+  
+  font-size: 15px;
+  color: #f5f5f5;
+}
+
+.uploadSettings {
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.switch {
+  width: 100px;
+}
+
+.fakeLinkInput {
+  margin-top: 5px;
+}
+
+.fakeLinkButton {
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 700px) {
   .settings .section {
-    background: rgb(30, 30, 30);
-    padding: 10px;
-    border-radius: 7px;
-    width: 95%;
-    margin-top: 13px;
-    margin-left: 45px;
-  }
-
-  .title {
-    color: #f5f5f5;
-    font-size: 26px;
-    margin-top: 10px;
+    width: 85%;
     margin-left: 50px;
   }
 
-  .statsContainer {
-    color: #f5f5f5;
-    margin-left: -10px;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-
   .statsBox {
-    text-align: center;
-    display: flex;
+    width: 92%;
+  }
+
+  .statsContainer {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 31%;
-    height: 120px;
-    margin-bottom: 7px;
-    margin-left: 28px;
-    margin-top: 5px;
-    border-radius: 7px;
-    background-color: rgb(22, 22, 22);
   }
 
-  .statsBox .statsTitle {
-    font-size: 20px;
+  
+  .vs-input {
+    width: 200px;
+  }
+}
+
+@media only screen and (max-width: 528px) {
+  .settings .section {
+    margin-left: 40px;
   }
 
-  .statsBox .statsIcon {
-    margin-right: 7px;
-  }
-
-  .fade-in {
-    transition-duration: 0.2s;
-  }
-
-  .dashboard-error {
-    margin-top: 10px;
-    width: 500px;
-    margin-bottom: 5px;
-    margin-left: 43px;
-  }
-
-  .domainArea {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin-left: 43px;
+  .title {
+    margin-left: 15px;
   }
 
   .domainSelect {
-    margin-top: 10px;
-    margin-left: 5px;
+    margin-left: -30px;
   }
 
-  .vs-input {
-    height: 35px;
-    width: 450px;
+  .statsBox {
+    margin-left: 25px;
   }
-
-  .previewText {
-    color: #f5f5f5;
-    margin-left: 7px;
-    font-weight: 500;
-    margin-bottom: -3px;
-    margin-top: 7px;
-  }
-
+  
   .subdomainArea {
-    margin-left: 7px;
-    margin-top: 10px;
-  }
-
-  .divider {
-    padding-bottom: 13px;
+    margin-left: -29px;
   }
 
   .domainButton {
-    margin-top: 15px;
-    width: 170px;
+    margin-left: -29px;
   }
 
   .configButton {
-    margin-left: 47px;
-    margin-top: 15px;
-    width: 200px;
+    margin-left: 15px;
   }
 
-  @media only screen and (max-width: 700px) {
-    .settings .section {
-      width: 85%;
-      margin-left: 50px;
-    }
-
-    .statsBox {
-      width: 92%;
-    }
-
-    .statsContainer {
-      flex-direction: column;
-    }
-
-    
-    .vs-input {
-      width: 200px;
-    }
+  .configTooltip {
+    margin-left: 17px;
   }
 
-  @media only screen and (max-width: 528px) {
-    .settings .section {
-      margin-left: 40px;
-    }
+  .uploadSettings {
+    margin-left: 15px;
+  }
+}
 
-    .title {
-      margin-left: 15px;
-    }
-
-    .domainSelect {
-      margin-left: -30px;
-    }
-
-    .statsBox {
-      margin-left: 25px;
-    }
-    
-    .subdomainArea {
-      margin-left: -29px;
-    }
-
-    .domainButton {
-      margin-left: -29px;
-    }
-
-    .configButton {
-      margin-left: 15px;
-    }
+@media only screen and (max-width: 375px) {
+  .settings .section {
+    margin-left: 30px;
   }
 
-  @media only screen and (max-width: 375px) {
-    .settings .section {
-      margin-left: 30px;
-    }
-
-    .statsBox {
-      margin-top: 2px;
-      margin-left: 17px;
-    }
-    
-    .previewArea {
-      display: none;
-    }
+  .statsBox {
+    margin-top: 2px;
+    margin-left: 17px;
   }
+  
+  .previewArea {
+    display: none;
+  }
+}

@@ -51,7 +51,6 @@
           </div>
           <div v-if="isWildcard" class="subdomainArea">
             <vs-input
-              class="subdomainInput"
               placeholder="Enter a subdomain"
               :value="domain.subdomain !== '' ? domain.subdomain : ''"
               @input="setInput($event, 'subdomain')"
@@ -90,6 +89,9 @@
         <h1 class="title">
           Config Generator
         </h1>
+        <p class="configTooltip">
+          You only need to generate one config.
+        </p>
         <vs-button
           color="danger"
           class="configButton"
@@ -98,6 +100,39 @@
         >
           Download Config
         </vs-button>
+        <div class="divider" />
+      </div>
+
+      <div class="section">
+        <h1 class="title">
+          Upload Preferences
+        </h1>
+        <div class="uploadSettings">
+          <vs-switch
+            v-model="showLink"
+            class="switch"
+          >
+            Show Link
+          </vs-switch>
+          <vs-switch
+            v-model="fakeLink.enabled"
+            class="switch"
+            style="margin-top: 5px"
+          >
+            Fake Link
+          </vs-switch>
+          <div v-if="fakeLink.enabled" style="display: flex; flex-direction: row">
+            <vs-input
+              class="fakeLinkInput"
+              placeholder="Enter a url (include https://)"
+              :value="domain.subdomain !== '' ? domain.subdomain : ''"
+              @input="setInput($event, 'subdomain')"
+            />
+            <vs-button class="fakeLinkButton">
+              Save url
+            </vs-button>
+          </div>
+        </div>
         <div class="divider" />
       </div>
     </div>
@@ -123,7 +158,11 @@ export default {
                 subdomain: '',
                 wildcard: null,
             },
-            extra: '',
+            showLink: false,
+            fakeLink: {
+                enabled: false,
+                url: '',
+            },
         };
     },
     computed: {
@@ -139,6 +178,8 @@ export default {
     async created () {
         const res = await this.$axios.get('http://localhost:3000/domains');
         this.domains = res.data;
+        this.showLink = this.user.settings.showLink;
+        this.fakeLink = this.user.settings.fakeLink;
     },
     methods: {
         setInput (val, property) {
