@@ -10,29 +10,6 @@
       The superior image hosting service.
     </p>
 
-    <!-- <div class="cards">
-      <vs-card>
-        <template #title>
-          <h3>Images</h3>
-        </template>
-        <template #text>
-          <p>
-            Over {{ images }} images have been uploaded to Astral.
-          </p>
-        </template>
-      </vs-card>
-      <vs-card>
-        <template #title>
-          <h3>Users</h3>
-        </template>
-        <template #text>
-          <p>
-            Over {{ users }} users are using Astral.
-          </p>
-        </template>
-      </vs-card>
-    </div> -->
-
     <div class="buttons">
       <vs-button class="button" size="large" color="danger" @click="activate('login')">
         Login
