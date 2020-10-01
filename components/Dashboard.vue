@@ -121,6 +121,7 @@
             v-model="fakeLink.enabled"
             class="switch"
             style="margin-top: 5px"
+            @click="toggleFakelink"
           >
             Fake Link
           </vs-switch>
@@ -128,10 +129,13 @@
             <vs-input
               class="fakeLinkInput"
               placeholder="Enter a url (include https://)"
-              :value="fakeLink.url !== '' ? fakeLink.url : ''"
+              :value="fakeLink.link !== '' ? fakeLink.link : ''"
               @input="setFakelink($event)"
             />
-            <vs-button class="fakeLinkButton">
+            <vs-button
+              class="fakeLinkButton"
+              @click="updateFakelink"
+            >
               Save url
             </vs-button>
           </div>
@@ -139,6 +143,7 @@
             v-model="embed.enabled"
             class="switch"
             style="margin-top: 5px"
+            @click="toggleEmbeds"
           >
             Embed
           </vs-switch>
@@ -166,6 +171,7 @@
             />
             <vs-button
               style="width: 150px; margin-left: 0px; margin-top: 10px"
+              @click="updateEmbed"
             >
               Save embed settings
             </vs-button>
@@ -204,7 +210,7 @@ export default {
             showLink: false,
             fakeLink: {
                 enabled: false,
-                url: '',
+                link: '',
             },
             embed: {
                 enabled: false,
@@ -238,7 +244,7 @@ export default {
         },
         setFakelink (val) {
             val = val.replace(/\s/g, '-');
-            this.fakeLink.url = val;
+            this.fakeLink.link = val;
         },
         resetSubdomain () {
             this.domain.subdomain = '';
@@ -338,6 +344,51 @@ export default {
                     });
                 });
         },
+        updateFakelink () {
+            if (this.fakeLink.link.length <= 0) {
+                this.$vs.notification({
+                    duration: '6000',
+                    color: 'danger',
+                    position: 'top-center',
+                    title: 'Invalid link.',
+                    text: 'Please provide a link, or disable fakelink.',
+                });
+            } else {
+                const data = {
+                    request: 'toggleFakelink',
+                    toggle: true,
+                    link: this.fakeLink.link,
+                };
+                this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
+                    .then((res) => {
+                        if (res.data.success) {
+                            this.$vs.notification({
+                                duration: '6000',
+                                color: 'success',
+                                position: 'top-center',
+                                title: 'Updated fakelink.',
+                                text: `Updated fakelink url to ${this.fakeLink.link}`,
+                            });
+                        } else {
+                            this.$vs.notification({
+                                duration: '6000',
+                                color: 'danger',
+                                position: 'top-center',
+                                title: 'Error',
+                                text: res.data.message,
+                            });
+                        }
+                    }).catch(() => {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'danger',
+                            position: 'top-center',
+                            title: 'Error',
+                            text: 'Something went wrong, please try again.',
+                        });
+                    });
+            }
+        },
         toggleFakelink () {
             let toggle;
             if (this.fakeLink.enabled === true) {
@@ -346,8 +397,9 @@ export default {
                 toggle = true;
             }
             const data = {
-                request: 'toggleShowlink',
+                request: 'toggleFakelink',
                 toggle,
+                link: this.fakeLink.link !== '' && this.fakeLink.link !== null ? this.fakeLink.link : 'https://astral.cool',
             };
             this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
                 .then((res) => {
@@ -357,7 +409,87 @@ export default {
                             color: 'success',
                             position: 'top-center',
                             title: 'Toggled showlink.',
-                            text: `Successfully ${toggle === true ? 'enabled' : 'disabled'} showlink.`,
+                            text: `Successfully ${toggle === true ? 'enabled' : 'disabled'} fakelink.`,
+                        });
+                    } else {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'danger',
+                            position: 'top-center',
+                            title: 'Error',
+                            text: res.data.message,
+                        });
+                    }
+                }).catch(() => {
+                    this.$vs.notification({
+                        duration: '6000',
+                        color: 'danger',
+                        position: 'top-center',
+                        title: 'Error',
+                        text: 'Something went wrong, please try again.',
+                    });
+                });
+        },
+        toggleEmbeds () {
+            let toggle;
+            if (this.embed.enabled === true) {
+                toggle = false;
+            } else {
+                toggle = true;
+            }
+            const data = {
+                request: 'toggleEmbed',
+                toggle,
+                title: this.embed.title !== '' && this.embed.title !== null ? this.embed.title : 'Astral',
+                text: this.embed.text !== '' && this.embed.text !== null ? this.embed.text : 'The superior image host.',
+                color: this.embed.color !== '' && this.embed.color !== null ? this.embed.color.hex : '#f54242',
+            };
+            this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
+                .then((res) => {
+                    if (res.data.success) {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'success',
+                            position: 'top-center',
+                            title: 'Toggled showlink.',
+                            text: `Successfully ${toggle === true ? 'enabled' : 'disabled'} embeds.`,
+                        });
+                    } else {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'danger',
+                            position: 'top-center',
+                            title: 'Error',
+                            text: res.data.message,
+                        });
+                    }
+                }).catch(() => {
+                    this.$vs.notification({
+                        duration: '6000',
+                        color: 'danger',
+                        position: 'top-center',
+                        title: 'Error',
+                        text: 'Something went wrong, please try again.',
+                    });
+                });
+        },
+        updateEmbed () {
+            const data = {
+                request: 'toggleEmbed',
+                toggle: true,
+                title: this.embed.title !== '' && this.embed.title !== null ? this.embed.title : 'Astral',
+                text: this.embed.text !== '' && this.embed.text !== null ? this.embed.text : '',
+                color: this.embed.color !== '' && this.embed.color !== null ? this.embed.color.hex : '',
+            };
+            this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
+                .then((res) => {
+                    if (res.data.success) {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'success',
+                            position: 'top-center',
+                            title: 'Toggled showlink.',
+                            text: 'Successfully updated embeds.',
                         });
                     } else {
                         this.$vs.notification({
