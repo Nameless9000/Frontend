@@ -113,6 +113,7 @@
           <vs-switch
             v-model="showLink"
             class="switch"
+            @click="toggleShowlink"
           >
             Show Link
           </vs-switch>
@@ -296,6 +297,86 @@ export default {
                         });
                 }
             }
+        },
+        toggleShowlink () {
+            let toggle;
+            if (this.showLink === true) {
+                toggle = false;
+            } else {
+                toggle = true;
+            }
+            const data = {
+                request: 'toggleShowlink',
+                toggle,
+            };
+            this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
+                .then((res) => {
+                    if (res.data.success) {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'success',
+                            position: 'top-center',
+                            title: 'Toggled showlink.',
+                            text: `Successfully ${toggle === true ? 'enabled' : 'disabled'} showlink.`,
+                        });
+                    } else {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'danger',
+                            position: 'top-center',
+                            title: 'Error',
+                            text: res.data.message,
+                        });
+                    }
+                }).catch(() => {
+                    this.$vs.notification({
+                        duration: '6000',
+                        color: 'danger',
+                        position: 'top-center',
+                        title: 'Error',
+                        text: 'Something went wrong, please try again.',
+                    });
+                });
+        },
+        toggleFakelink () {
+            let toggle;
+            if (this.fakeLink.enabled === true) {
+                toggle = false;
+            } else {
+                toggle = true;
+            }
+            const data = {
+                request: 'toggleShowlink',
+                toggle,
+            };
+            this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
+                .then((res) => {
+                    if (res.data.success) {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'success',
+                            position: 'top-center',
+                            title: 'Toggled showlink.',
+                            text: `Successfully ${toggle === true ? 'enabled' : 'disabled'} showlink.`,
+                        });
+                    } else {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'danger',
+                            position: 'top-center',
+                            title: 'Error',
+                            text: res.data.message,
+                        });
+                    }
+                }).catch(() => {
+                    this.$vs.notification({
+                        duration: '6000',
+                        color: 'danger',
+                        position: 'top-center',
+                        title: 'Error',
+                        text: 'Something went wrong, please try again.',
+                    });
+                });
         },
     },
 };
