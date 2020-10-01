@@ -169,7 +169,29 @@ export default {
                 });
         },
         deleteAccount () {
-            this.$axios.delete('http://localhost:3000/users');
+            this.$axios.delete('http://localhost:3000/users', { withCredentials: true })
+                .then((res) => {
+                    if (res.data.success) {
+                        this.$router.push('/');
+                    } else {
+                        this.$vs.notification({
+                            duration: '6000',
+                            color: 'danger',
+                            position: 'top-center',
+                            title: 'Error',
+                            text: res.data.message,
+                        });
+                    }
+                }).catch(() => {
+                    this.wipeDialog = false;
+                    this.$vs.notification({
+                        duration: '6000',
+                        color: 'danger',
+                        position: 'top-center',
+                        title: 'Error',
+                        text: 'Something went wrong, please try again.',
+                    });
+                });
         },
     },
 };
