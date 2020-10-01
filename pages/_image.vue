@@ -21,9 +21,13 @@ export default {
     async asyncData (context) {
         const res = await Axios.get(`http://localhost:3000/files/${context.params.image}`);
         if (res.data.success) {
-            return {
-                file: res.data,
-            };
+            if (res.data.file.display.type === 'raw') {
+                context.redirect(`http://localhost:3000/i/${res.data.file.file.name}`);
+            } else {
+                return {
+                    file: res.data,
+                };
+            }
         }
     },
     data () {
@@ -34,7 +38,6 @@ export default {
     head () {
         if (this.file !== null) {
             const tags = [];
-            tags.push('hi');
             if (this.file.file.display.type === 'embed') {
                 tags.push(
                     {
