@@ -238,6 +238,61 @@ export default {
             val = val.replace(/\s/g, '-');
             this.fakeLink.url = val;
         },
+        updateDomain () {
+            const findDomain = this.domains.find(d => d.name === this.domain.name);
+            if (findDomain) {
+                if (findDomain.wildcard && this.domain.subdomain.length <= 0) {
+                    this.$vs.notification({
+                        duration: '6000',
+                        color: 'danger',
+                        position: 'top-center',
+                        title: 'Invalid subdomain',
+                        text: 'Please provide a subdomain, or choose a non-wildcard domain.',
+                    });
+                } else {
+                    let type;
+                    if (!findDomain.wildcard && this.domain.subdomain && this.domain.subdomain.length <= 0) {
+                        type = 'normal';
+                    } else if (findDomain.wildcard && this.domain.subdomain && this.domain.subdomain.lenght !== 0) {
+                        type = 'wildcard';
+                    }
+                    const data = {
+                        request: 'changeDomain',
+                        type,
+                        domain: findDomain,
+                        subdomain: this.domain.subdomain,
+                    };
+                    this.$axios.put('http://localhost:3000/users', data, { withCredentials: true })
+                        .then((res) => {
+                            if (res.data.success) {
+                                this.$vs.notification({
+                                    duration: '6000',
+                                    color: 'success',
+                                    position: 'top-center',
+                                    title: 'Changed domain.',
+                                    text: `Changed domain to ${this.domain.subdomain !== '' ? `${this.domain.subdomain}.${this.domain.subdomain}` : this.domain.name}.`,
+                                });
+                            } else {
+                                this.$vs.notification({
+                                    duration: '6000',
+                                    color: 'danger',
+                                    position: 'top-center',
+                                    title: 'Error',
+                                    text: res.data.message,
+                                });
+                            }
+                        }).catch(() => {
+                            this.$vs.notification({
+                                duration: '6000',
+                                color: 'danger',
+                                position: 'top-center',
+                                title: 'Error',
+                                text: 'Something went wrong, please try again.',
+                            });
+                        });
+                }
+            }
+        },
     },
 };
 </script>
