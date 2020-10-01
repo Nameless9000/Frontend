@@ -63,6 +63,7 @@
             color="dark"
             class="domainSelect"
             style="margin-top: 10px"
+            @change="resetSubdomain"
           >
             <vs-option
               v-for="oneDomain in domains"
@@ -238,6 +239,9 @@ export default {
             val = val.replace(/\s/g, '-');
             this.fakeLink.url = val;
         },
+        resetSubdomain () {
+            this.domain.subdomain = '';
+        },
         updateDomain () {
             const findDomain = this.domains.find(d => d.name === this.domain.name);
             if (findDomain) {
@@ -251,9 +255,9 @@ export default {
                     });
                 } else {
                     let type;
-                    if (!findDomain.wildcard && this.domain.subdomain && this.domain.subdomain.length <= 0) {
+                    if (!findDomain.wildcard && this.domain.subdomain.length <= 0) {
                         type = 'normal';
-                    } else if (findDomain.wildcard && this.domain.subdomain && this.domain.subdomain.lenght !== 0) {
+                    } else if (findDomain.wildcard && this.domain.subdomain.length !== 0) {
                         type = 'wildcard';
                     }
                     const data = {
@@ -270,7 +274,7 @@ export default {
                                     color: 'success',
                                     position: 'top-center',
                                     title: 'Changed domain.',
-                                    text: `Changed domain to ${this.domain.subdomain !== '' ? `${this.domain.subdomain}.${this.domain.subdomain}` : this.domain.name}.`,
+                                    text: `Changed domain to ${this.domain.subdomain !== '' ? `${this.domain.subdomain}.${this.domain.name}` : this.domain.name}.`,
                                 });
                             } else {
                                 this.$vs.notification({
