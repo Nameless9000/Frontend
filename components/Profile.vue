@@ -182,8 +182,7 @@ export default {
                             text: res.data.message,
                         });
                     }
-                }).catch((err) => {
-                    console.log(err);
+                }).catch(() => {
                     this.wipeDialog = false;
                     this.$vs.notification({
                         duration: '6000',
