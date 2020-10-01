@@ -169,7 +169,7 @@ export default {
                 });
         },
         deleteAccount () {
-            this.$axios.delete('http://localhost:3000/users', { withCredentials: true })
+            this.$axios.delete('http://localhost:3000/users/@me', { withCredentials: true })
                 .then((res) => {
                     if (res.data.success) {
                         this.$router.push('/');
@@ -182,7 +182,8 @@ export default {
                             text: res.data.message,
                         });
                     }
-                }).catch(() => {
+                }).catch((err) => {
+                    console.log(err);
                     this.wipeDialog = false;
                     this.$vs.notification({
                         duration: '6000',
