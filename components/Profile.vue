@@ -20,6 +20,9 @@
           <span class="profileField">Uploads:</span> {{ user.stats.uploads }}
         </p>
         <p class="profileFieldContainer">
+          <span class="profileField">Invited By:</span> {{ user.stats.invitedBy }}
+        </p>
+        <p class="profileFieldContainer">
           <span class="profileField">Invites:</span> {{ user.stats.invites }}
         </p>
         <p class="profileFieldContainer">
