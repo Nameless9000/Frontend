@@ -71,7 +71,7 @@ export default {
   display: none;
 }
 
-@media only screen and (max-width: 486px) {
+@media only screen and (max-width: 586px) {
   .button {
     display: none;
   }
