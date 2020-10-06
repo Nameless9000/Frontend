@@ -40,4 +40,10 @@
   line-height: 23px;
   text-align: center;
 }
+
+@media only screen and (max-width: 586px) {
+  .main {
+    margin-left: 10px;
+  }
+}
 </style>
