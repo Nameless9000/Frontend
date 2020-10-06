@@ -1,89 +1,157 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
+  <div class="container">
+    <div>
+      <header class="content-logos">
         <logo />
-        <vuetify-logo />
+        <span class="plus">+</span>
+        <VuesaxLogo />
+      </header>
+      <h1 class="title">
+        Nuxt.js + Vuesax
+      </h1>
+      <h2 class="subtitle">
+        <a href="https://vuesax.com/">Vuesax</a> is a framework of ui components for <a href="https://vuejs.org/">Vuejs</a>, It was created to make new interfaces that have a new trend and are visually beautiful
+      </h2>
+      <div class="links">
+        <h3 class="h3">
+          Vuesax
+        </h3>
+        <a
+          href="https://vuesax.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--green"
+        >
+          Documentation
+        </a>
+        <a
+          href="https://discordapp.com/invite/9dsKtvB"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--grey"
+        >
+          Discord
+        </a>
+        <a
+          href="https://github.com/lusaxweb/vuesax"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--grey"
+        >
+          GitHub
+        </a>
       </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+      <div class="links">
+        <h3 class="h3">
+          Nuxt.js
+        </h3>
+        <a
+          href="https://nuxtjs.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--green"
+        >
+          Documentation
+        </a>
+        <a
+          href="https://github.com/nuxt/nuxt.js"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--grey"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import VuesaxLogo from '~/components/VuesaxLogo.vue'
 
 export default {
   components: {
     Logo,
-    VuetifyLogo
+    VuesaxLogo
   }
 }
 </script>
+
+<style>
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-family:
+    'Quicksand',
+    'Source Sans Pro',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  display: block;
+  font-weight: 300;
+  font-size: 55px;
+  color: #35495e;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  margin: 25px 0;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 1.1rem;
+  color: #526488;
+  word-spacing: 2px;
+  padding-bottom: 15px;
+  max-width: 600px;
+}
+
+.subtitle a {
+  font-weight: 500;
+  color: inherit;
+}
+
+.links {
+  padding-top: 15px;
+  margin-bottom: 20px;
+}
+
+.content-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 500px;
+}
+
+.plus {
+  font-size: 2.5rem;
+  margin: 15px;
+  color: #35495e;
+}
+
+.h3 {
+  font-family:
+    'Quicksand',
+    'Source Sans Pro',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  font-weight: 400;
+  margin: 10px;
+}
+</style>
