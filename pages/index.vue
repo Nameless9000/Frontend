@@ -28,10 +28,10 @@
       </template>
 
       <template #right>
-        <vs-button class="button">
+        <vs-button class="button" @click="activate('login')">
           <i class="bx bx-log-in" style="margin-right: 5px" /> Login
         </vs-button>
-        <vs-button class="button">
+        <vs-button class="button" @click="activate('register')">
           <i class="bx bxs-group" style="margin-right: 5px" /> Register
         </vs-button>
         <vs-button
@@ -80,6 +80,12 @@ export default {
                 login: false,
                 register: false
             }
+        }
+    },
+    methods: {
+        activate (property) {
+            this.error = ''
+            this.active[property] = true
         }
     }
 }
