@@ -47,14 +47,14 @@
 
 <script>
 export default {
-  name: 'Navbar',
-  props: {
-    enabled: {
-      type: String,
-      default: ''
+    name: 'Navbar',
+    props: {
+        enabled: {
+            type: String,
+            default: ''
+        }
     }
-  }
-}
+};
 </script>
 
 <style>
