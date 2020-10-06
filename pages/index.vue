@@ -11,7 +11,7 @@
         <img src="~/assets/logo.png" width="100px" alt="logo">
         <vs-navbar-item
           to="/"
-          active="true"
+          active
         >
           Home
         </vs-navbar-item>
@@ -59,7 +59,7 @@
 <script>
 export default {
     asyncData (context) {
-        const code = context.query.code;
+        const code = context.query.code
         if (code) {
             return {
                 active: {
@@ -67,7 +67,7 @@ export default {
                     register: true
                 },
                 invite: code
-            };
+            }
         }
     },
     data () {
@@ -80,9 +80,9 @@ export default {
                 login: false,
                 register: false
             }
-        };
+        }
     }
-};
+}
 </script>
 
 <style>
