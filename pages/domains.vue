@@ -44,9 +44,12 @@
     </vs-navbar>
 
     <div class="mainArea center">
-      <h2 style="margin-bottom: 30px; margin-top: 10px">
+      <h2 style="margin-top: 10px">
         Domains
       </h2>
+      <p style="margin-bottom: 15px; margin-top: 2px">
+        There are <strong>{{ domains.length }}</strong> domains.
+      </p>
       <vs-table class="domainTable">
         <template #thead>
           <vs-tr>
@@ -305,7 +308,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
+  margin-top: 85px;
   margin-bottom: 50px;
 }
 
