@@ -199,7 +199,7 @@ export default {
                 this.resetForm()
                 this.error = 'Please fill out all the fields.'
             } else {
-                const res = await this.$axios.post('http://localhost:3000/auth/login', {
+                const res = await this.$axios.post('http://localhost:3000/api/auth/login', {
                     username: this.username,
                     password: this.password,
                     rememberMe: this.rememberMe
@@ -219,7 +219,7 @@ export default {
                 this.resetForm()
                 this.error = 'Please fill out all the fields.'
             } else {
-                const res = await this.$axios.post('http://localhost:3000/auth/register', {
+                const res = await this.$axios.post('http://localhost:3000/api/auth/register', {
                     username: this.username,
                     password: this.password,
                     invite: this.invite
