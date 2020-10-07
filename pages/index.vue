@@ -78,6 +78,14 @@
           :value="password !== '' ? password : ''"
           @input="setInput($event, 'password')"
         />
+        <vs-checkbox
+          v-model="rememberMe"
+          val="automatically"
+          color="danger"
+          class="remember-me"
+        >
+          Remember Me
+        </vs-checkbox>
       </div>
 
       <template #footer>
@@ -161,6 +169,7 @@ export default {
             username: '',
             password: '',
             invite: '',
+            rememberMe: false,
             error: '',
             active: {
                 login: false,
@@ -192,7 +201,8 @@ export default {
             } else {
                 const res = await this.$axios.post('http://localhost:3000/auth/login', {
                     username: this.username,
-                    password: this.password
+                    password: this.password,
+                    rememberMe: this.rememberMe
                 }, {
                     withCredentials: true
                 })
@@ -268,6 +278,10 @@ export default {
   display: none;
 }
 
+.vs-dialog {
+  border-radius: 7px;
+}
+
 .header-text {
   font-size: 17px;
   color: white;
@@ -278,6 +292,11 @@ export default {
 .error-box {
   margin-top: 0px;
   margin-bottom: 5px;
+}
+
+.remember-me {
+  margin-left: 5px;
+  margin-top: 3px;
 }
 
 @media only screen and (max-width: 586px) {
