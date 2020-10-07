@@ -43,15 +43,38 @@
       </template>
     </vs-navbar>
 
-    <div class="main">
-      <img
-        src="~/assets/logo.png"
-        width="400px"
-        alt="logo"
-      >
-      <p v-for="domain in domains" :key="domain.name" class="caption">
-        {{ domain.name }}
-      </p>
+    <div class="mainArea center">
+      <h2 style="margin-bottom: 30px; margin-top: 10px">
+        Domains
+      </h2>
+      <vs-table class="domainTable">
+        <template #thead>
+          <vs-tr>
+            <vs-th>
+              Name
+            </vs-th>
+            <vs-th>
+              Wildcard
+            </vs-th>
+          </vs-tr>
+        </template>
+        <template #tbody>
+          <vs-tr
+            v-for="domain in $vs.getPage(domains, page, 15)"
+            :key="domain.name"
+          >
+            <vs-td>
+              {{ domain.name }}
+            </vs-td>
+            <vs-td>
+              {{ domain.wildcard ? 'Yes' : 'No' }}
+            </vs-td>
+          </vs-tr>
+        </template>
+        <template #footer>
+          <vs-pagination v-model="page" :length="$vs.getLength(domains, 10)" />
+        </template>
+      </vs-table>
     </div>
 
     <vs-dialog v-model="active.login" blur>
@@ -167,6 +190,7 @@ export default {
     },
     data () {
         return {
+            page: 1,
             loading: true,
             domains: [],
             user: {},
@@ -274,15 +298,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-.main {
+.mainArea {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: -30px;
+  margin-top: 70px;
+  margin-bottom: 50px;
 }
 
 .caption {
@@ -329,8 +353,8 @@ export default {
 }
 
 @media only screen and (max-width: 586px) {
-  .main {
-    margin-left: 10px;
+  .domainTable {
+    width: 300px;
   }
 
   .button {
