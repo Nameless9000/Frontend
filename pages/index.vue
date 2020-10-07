@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="!loading" class="container">
     <vs-navbar
       center-collapsed
       square
@@ -148,6 +148,7 @@
       </template>
     </vs-dialog>
   </div>
+  <div v-else class="container" />
 </template>
 
 <script>
@@ -166,6 +167,8 @@ export default {
     },
     data () {
         return {
+            loading: true,
+            user: {},
             username: '',
             password: '',
             invite: '',
@@ -177,8 +180,29 @@ export default {
             }
         }
     },
-    mounted () {
-        this.$vs.setTheme('dark')
+    created () {
+        if (process.client) {
+            this.$vs.setTheme('dark')
+            const spinner = this.$vs.loading({
+                color: 'danger',
+                background: '#050506'
+            })
+            this.$axios.get('http://localhost:3000/api/users/@me', { withCredentials: true })
+                .then((res) => {
+                    if (res.data) {
+                        this.user = res.data
+                        setTimeout(() => {
+                            spinner.close()
+                            this.loading = false
+                        }, 800)
+                    }
+                }).catch(() => {
+                    setTimeout(() => {
+                        spinner.close()
+                        this.loading = false
+                    }, 800)
+                })
+        }
     },
     methods: {
         activate (property) {
