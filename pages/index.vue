@@ -279,6 +279,10 @@ export default {
   margin-top: -30px;
 }
 
+.vs-checkbox-mask ::before {
+  border: 2px solid rgb(20, 20, 23);
+}
+
 .caption {
   margin-top: -5px;
   font-style: normal;
