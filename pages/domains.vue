@@ -360,10 +360,6 @@ export default {
   width: 700px;
 }
 
-.vs-checkbox-mask ::before {
-  border: 2px solid rgb(20, 20, 23);
-}
-
 @media only screen and (max-width: 715px) {
   .domainTable {
     width: 300px;
