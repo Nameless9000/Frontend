@@ -355,11 +355,17 @@ export default {
   margin-top: 3px;
 }
 
-@media only screen and (max-width: 586px) {
+.domainTable {
+  width: 700px;
+}
+
+@media only screen and (max-width: 715px) {
   .domainTable {
     width: 300px;
   }
+}
 
+@media only screen and (max-width: 586px) {
   .button {
     display: none;
   }
