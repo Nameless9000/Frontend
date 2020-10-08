@@ -37,6 +37,7 @@
         <vs-button
           icon
           class="phoneLogin"
+          @click="active('login')"
         >
           <i class="bx bx-log-in" />
         </vs-button>
