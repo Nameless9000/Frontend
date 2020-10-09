@@ -16,11 +16,6 @@
           Home
         </vs-navbar-item>
         <vs-navbar-item
-          to="/domains"
-        >
-          Domains
-        </vs-navbar-item>
-        <vs-navbar-item
           to="/dashboard"
         >
           Dashboard
@@ -321,6 +316,11 @@ export default {
 .remember-me {
   margin-left: 5px;
   margin-top: 3px;
+}
+
+.con-form .vs-checkbox-con .vs-checkbox-mask::before {
+  background: #141417;
+  border: 0px;
 }
 
 @media only screen and (max-width: 586px) {
