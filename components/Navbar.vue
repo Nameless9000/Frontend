@@ -15,12 +15,6 @@
         Home
       </vs-navbar-item>
       <vs-navbar-item
-        to="/domains"
-        :active="enabled === 'domains'"
-      >
-        Domains
-      </vs-navbar-item>
-      <vs-navbar-item
         to="/dashboard"
         :active="enabled === 'dashboard'"
       >
@@ -54,7 +48,7 @@ export default {
             default: ''
         }
     }
-};
+}
 </script>
 
 <style>
