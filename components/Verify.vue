@@ -8,7 +8,7 @@
     </p>
     <div class="verifyButtons">
       <vs-button
-        href="http://localhost:3000/auth/discord/link"
+        href="http://localhost:3000/api/auth/discord/link"
         class="button"
         color="danger"
       >
