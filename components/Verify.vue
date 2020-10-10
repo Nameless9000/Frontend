@@ -10,19 +10,16 @@
       <vs-button
         href="http://localhost:3000/auth/discord/link"
         class="button"
-        size="large"
+        color="danger"
       >
         <i class="bx bxl-discord" style="margin-right: 3px; font-size" />Link account
       </vs-button>
       <vs-button
         class="button"
-        size="large"
+        color="danger"
         @click="logout"
       >
         <i class="bx bx-log-out" style="margin-right: 7px; font-size: 17px" />Logout
-      </vs-button>
-      <vs-button class="button" @click="activate('login')">
-        <i class="bx bx-log-in" style="margin-right: 5px" /> Login
       </vs-button>
     </div>
   </div>
