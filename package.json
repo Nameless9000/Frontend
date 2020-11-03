@@ -1,29 +1,15 @@
 {
   "name": "app",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt -p 3001",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint": "npm run lint:js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.12.2",
-    "core-js": "^3.6.5",
-    "nuxt": "^2.14.5",
-    "stylus": "^0.54.8",
-    "stylus-loader": "^3.0.2",
-    "vue-color": "^2.7.1",
-    "vuesax": "^4.0.1-alpha.24"
-  },
-  "devDependencies": {
-    "@nuxtjs/eslint-config": "^3.1.0",
-    "@nuxtjs/eslint-module": "^2.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.8.1",
-    "eslint-plugin-nuxt": "^1.0.0"
+    "next": "10.0.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   }
 }
