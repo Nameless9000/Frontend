@@ -1,12 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { Form, Input, Button, Modal, Tabs } from 'antd';
+import Link from 'next/link';
+import { Form, Input, Button, Modal, Tabs, Alert } from 'antd';
 import styles from '../styles/main.module.css';
 import Head from 'next/head';
 import { UserOutlined, LockOutlined, MailOutlined, CheckOutlined } from '@ant-design/icons';
 import Axios from 'axios';
 const { TabPane } = Tabs;
 import { SiDiscord } from 'react-icons/si';
+import { useRouter } from 'next/router';
 
 const initialState = {
   showModal: false,
@@ -14,10 +16,12 @@ const initialState = {
   password: '',
   email: '',
   invite: '',
+  error: '',
 };
 
 export default function Home() {
-  const [{ showModal, username, password, email, invite }, setState] = useState(initialState);
+  const router = useRouter();
+  const [{ showModal, username, password, email, invite, error }, setState] = useState(initialState);
 
   const toggleModal = () => {
     setState((state) => ({ ...state, showModal: true }));
@@ -32,15 +36,22 @@ export default function Home() {
   };
 
   const login = async () => {
+    if (!username || !password || password.length <= 3 || username.length <= 0)
+      return setState((state) => ({ ...state, error: 'Fill out all of the fields.' }));
     try {
-      const res = await Axios.post('https://api.astral.cool/auth/login', {
+      const { data } = await Axios.post('http://localhost:3001/auth/login', {
         username,
         password,
+      }, {
+        withCredentials: true,
       });
 
-      console.log(res);
+      if (!data.success)
+        return setState((state) => ({ ...state, error: data.message }));
+
+      router.push('/dashboard');
     } catch (err) {
-      console.log(err);
+      setState((state) => ({ ...state, error: err.response.data.error }));
     }
   };
 
@@ -56,6 +67,7 @@ export default function Home() {
         <p style={{ fontSize: '20px', marginTop: '-20px' }}>private invite-only image host.</p>
         <div style={{ marginTop: '-10px' }}>
           <Button style={{ marginRight: '5px' }} onClick={toggleModal}>Login/Register</Button>
+          <Button style={{ marginRight: '5px' }} href="https://discord.gg/NkE9uVJ6Ww" target="blank">Discord Server</Button>
         </div>
 
         <Modal
@@ -66,25 +78,26 @@ export default function Home() {
                 initialValues={{ remember: true }}
                 style={{ marginTop: '10px' }}
               >
+                {error !== '' && <Alert style={{ marginBottom: '20px' }} type="error" message={error} />}
                 <Form.Item
                   name="username"
                   rules={[{ required: true, message: 'Provide a valid username' }]}
                 >
-                  <Input size="large" placeholder="Username" prefix={<UserOutlined />} />
+                  <Input onChange={(val) => setInput('username', val.target.value)} size="large" placeholder="Username" prefix={<UserOutlined />} />
                 </Form.Item>
 
                 <Form.Item
                   name="password"
                   rules={[{ required: true, message: 'Provide a valid password', min: 5 }]}
                 >
-                  <Input.Password size="large" placeholder="Password" prefix={<LockOutlined />} />
+                  <Input.Password onChange={(val) => setInput('password', val.target.value)} size="large" placeholder="Password" prefix={<LockOutlined />} />
                 </Form.Item>
 
                 <Form.Item>
-                  <Button block size="large">
+                  <Button onClick={login} block size="large">
                     Login
                   </Button>
-                  <Button icon={<SiDiscord style={{ marginRight: '8px' }} />} type="primary" block size="large" style={{ marginTop: '10px', marginBottom: '-35px', backgroundColor: '#7289DA', border: 'none' }}>
+                  <Button href="https://api.astral.cool/auth/login/discord" icon={<SiDiscord style={{ marginRight: '8px' }} />} type="primary" block size="large" style={{ marginTop: '10px', marginBottom: '-35px', backgroundColor: '#7289DA', border: 'none' }}>
                     Login with Discord
                   </Button>
                 </Form.Item>
