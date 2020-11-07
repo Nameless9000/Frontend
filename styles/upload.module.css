@@ -33,8 +33,18 @@
 }
 
 .domainInput {
-  margin-top: 20px;
+  margin-top: 15px;
   width: 20%;
+}
+
+.switchContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+}
+
+.switchInput {
+  display: flex;
 }
 
 @media only screen and (max-width: 1639px) {

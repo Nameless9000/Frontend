@@ -1,7 +1,7 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Input, message, Select, Upload } from 'antd';
+import { Input, message, Select, Switch, Upload } from 'antd';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/upload.module.css';
 import Navbar from './navbar';
 const { Dragger } = Upload;
@@ -66,7 +66,20 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
       <div className={styles.uploadPage}>
         <div className={styles.section}>
           <h1 className={styles.title}>Upload a file</h1>
-          <Dragger>
+          <Dragger
+            action="https://api.astral.cool/files"
+            headers={{
+              key: user.key,
+            }}
+            onChange={(data) => {
+              const { response } = data.file;
+
+              if (response && response.success) {
+                message.success('Copied url to clipboard.');
+                navigator.clipboard.writeText(response.imageUrl);
+              }
+            }}
+          >
             <UploadOutlined
               style={{
                 fontSize: '30px',
@@ -105,6 +118,25 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
             placeholder={selectedDomain.wildcard ? 'subdomain' : 'not available'}
             addonAfter={domainSelect}
           />
+
+          <div className={styles.switchContainer}>
+            <div className={styles.switchInput}>
+              <p>Show Link</p>
+              <Switch style={{
+                marginLeft: '10px',
+                width: '50px',
+              }} />
+            </div>
+            <div className={styles.switchInput} style={{
+              marginBottom: '10px',
+            }}>
+              <p>Short Link</p>
+              <Switch style={{
+                marginLeft: '10px',
+                width: '50px',
+              }} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
