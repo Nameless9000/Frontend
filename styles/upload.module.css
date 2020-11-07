@@ -24,6 +24,7 @@
   margin-top: 5px;
   padding-right: 40px;
   padding-left: 40px;
+  margin-bottom: 20px;
 }
 
 .title {
@@ -72,6 +73,10 @@
 }
 
 @media only screen and (max-width: 375px) {
+  .uploadPage {
+    margin-top: 10px;
+  }
+
   .domainInput {
     width: 100%;
   }

@@ -1,5 +1,6 @@
-import { UploadOutlined } from '@ant-design/icons';
+import { LinkOutlined, UploadOutlined } from '@ant-design/icons';
 import { Input, message, Select, Switch, Upload } from 'antd';
+import Axios from 'axios';
 import Head from 'next/head';
 import React, { useState } from 'react';
 import styles from '../styles/upload.module.css';
@@ -13,6 +14,8 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
     domains: Array<any>;
     selectedDomain: any;
     domainInput: string;
+    showLink: boolean;
+    shortLink: boolean;
   }
 
   const initialState = {
@@ -23,9 +26,11 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
       wildcard: false,
     },
     domainInput: '',
+    showLink: false,
+    shortLink: false,
   };
 
-  const [{ user, domains, selectedDomain, domainInput }, setState] = useState<InitialState>(initialState);
+  const [{ user, domains, selectedDomain, domainInput, showLink, shortLink }, setState] = useState<InitialState>(initialState);
 
   const domainSelect = (
     <Select
@@ -67,16 +72,51 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
         <div className={styles.section}>
           <h1 className={styles.title}>Upload a file</h1>
           <Dragger
-            action="https://api.astral.cool/files"
+            action="http://localhost:3001/files"
             headers={{
               key: user.key,
+              domain: selectedDomain.wildcard && domainInput !== '' ? `${domainInput}.${selectedDomain.name}` : selectedDomain.name,
+              showLink: showLink ? 'true' : 'false',
+              shortLink: shortLink ? 'true' : 'false',
             }}
-            onChange={(data) => {
-              const { response } = data.file;
+            onDownload={(file) => {
+              if (file.status === 'done') {
+                const { response } = file;
 
-              if (response && response.success) {
-                message.success('Copied url to clipboard.');
+                message.success('Copied url to clipboard');
                 navigator.clipboard.writeText(response.imageUrl);
+              }
+            }}
+            onPreview={(file) => {
+              window.open(file.response.imageUrl, '_blank');
+            }}
+            listType="picture"
+            showUploadList={{
+              showDownloadIcon: true,
+              downloadIcon: () => {
+                return (
+                  <LinkOutlined />
+                );
+              },
+            }}
+            onRemove={({ response }) => {
+              Axios.get(response.deletionUrl)
+                .then(() => {
+                  message.success('Deleted file successfully');
+                })
+                .catch((err) => {
+                  if (err.response) return message.error(err.response.data.error);
+                  message.error('Something went wrong');
+                });
+            }}
+            onChange={({ file }) => {
+              if (file.status === 'done') {
+                const { response } = file;
+
+                message.success('Copied url to clipboard');
+                navigator.clipboard.writeText(response.imageUrl);
+              } else if (file.status === 'error') {
+                message.error('Upload failed');
               }
             }}
           >
@@ -122,19 +162,27 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
           <div className={styles.switchContainer}>
             <div className={styles.switchInput}>
               <p>Show Link</p>
-              <Switch style={{
-                marginLeft: '10px',
-                width: '50px',
-              }} />
+              <Switch
+                onClick={(val) => {
+                  setState((state) => ({ ...state, showLink: val }));
+                }}
+                style={{
+                  marginLeft: '10px',
+                  width: '50px',
+                }} />
             </div>
             <div className={styles.switchInput} style={{
               marginBottom: '10px',
             }}>
               <p>Short Link</p>
-              <Switch style={{
-                marginLeft: '10px',
-                width: '50px',
-              }} />
+              <Switch
+                onClick={(val) => {
+                  setState((state) => ({ ...state, shortLink: val }));
+                }}
+                style={{
+                  marginLeft: '10px',
+                  width: '50px',
+                }} />
             </div>
           </div>
         </div>
