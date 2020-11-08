@@ -1,5 +1,5 @@
-import { DownloadOutlined } from '@ant-design/icons';
-import { Button, Input, message, Select } from 'antd';
+import { DownloadOutlined, QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Input, message, Select, Switch, Tooltip } from 'antd';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/settings.module.css';
@@ -39,7 +39,7 @@ export default function Settings({ userProp, domainsProp, router }) {
     name = domain.name;
     wildcard = domain.wildcard;
 
-    setState((state) => ({ ...state, selectedDomain: { name, wildcard } }));
+    setState((state) => ({ ...state, selectedDomain: { name, wildcard }, domainInput: user.settings.domain.subdomain !== '' && user.settins.domain.subdomain !== null ? user.settings.domain.subdomain : '' }));
   }, []);
 
   const domainSelect = (
@@ -96,10 +96,7 @@ export default function Settings({ userProp, domainsProp, router }) {
           <h1 className={styles.title}>Domain Preferences</h1>
           <p className={styles.titleCaption}>
             Your current domain is<span style={{ fontWeight: 500 }}>{' '}
-              {user.settings.domain.subdomain !== '' &&
-              user.settings.domain.subdomain !== null ?
-                user.settings.domain.subdomain + '.' + user.settings.domain.name :
-                user.settings.domain.name}
+              {domainInput !== '' && selectedDomain.wildcard ? domainInput + '.' + selectedDomain.name : selectedDomain.name}
             </span>.
           </p>
 
@@ -111,8 +108,63 @@ export default function Settings({ userProp, domainsProp, router }) {
             placeholder={selectedDomain.wildcard ? 'subdomain' : 'not available'}
             addonAfter={domainSelect}
           />
+
+          <Button
+            href={`http://localhost:3001/files/config?key=${user.key}`}
+            className={styles.configButton}
+            icon={<SaveOutlined />}
+          >
+            Save Domain
+          </Button>
         </div>
 
+        <div className={styles.section}>
+          <h1 className={styles.title}>Upload Preferences</h1>
+
+          <div className={styles.switchContainer}>
+            <div className={styles.switchInput}>
+              <p>Show Link</p>
+              <Switch
+                onClick={(val) => {
+                  setState((state) => ({ ...state, randomDomain: val }));
+                }}
+                style={{
+                  marginLeft: '10px',
+                  width: '55px',
+                }} />
+            </div>
+
+            <div className={styles.switchInput}>
+              <p>Invisible Link</p>
+              <Switch
+                onClick={(val) => {
+                  setState((state) => ({ ...state, randomDomain: val }));
+                }}
+                style={{
+                  marginLeft: '10px',
+                  width: '55px',
+                }} />
+            </div>
+
+            <div className={styles.switchInput}>
+              <Tooltip placement="right" overlayStyle={{
+                marginTop: '-10px',
+              }} title="Random domain will choose a random domain which you can provide.">
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip>
+
+              <p>Random Domain</p>
+              <Switch
+                onClick={(val) => {
+                  setState((state) => ({ ...state, randomDomain: val }));
+                }}
+                style={{
+                  marginLeft: '10px',
+                  width: '55px',
+                }} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
