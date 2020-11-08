@@ -1,5 +1,5 @@
-import { DeleteOutlined, DownloadOutlined, PlusOutlined, QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Collapse, Input, List, message, Select, Switch, Tooltip } from 'antd';
+import { DeleteOutlined, DownloadOutlined, PlusOutlined, SaveOutlined, ToolOutlined } from '@ant-design/icons';
+import { Button, Collapse, Input, message, Modal, Select, Switch, Tooltip } from 'antd';
 import Axios from 'axios';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import styles from '../styles/settings.module.css';
 import Navbar from './navbar';
 const { Option } = Select;
 const { Panel } = Collapse;
+import { ChromePicker } from 'react-color';
 
 export default function Settings({ userProp, domainsProp, router }) {
   interface InitialState {
@@ -16,6 +17,17 @@ export default function Settings({ userProp, domainsProp, router }) {
     domainInput: string;
     randomDomainInput: string;
     selectedRandomDomain: any;
+    showLink: boolean;
+    invisibleLink: boolean;
+    randomDomain: boolean;
+    embed: {
+      enabled: boolean;
+      title: string;
+      description: string;
+      color: string;
+    };
+    embedEditor: boolean;
+    showColorPicker: boolean;
   }
 
   const initialState = {
@@ -31,9 +43,28 @@ export default function Settings({ userProp, domainsProp, router }) {
       name: 'astral.cool',
       wildcard: false,
     },
+    showLink: userProp.settings.showLink,
+    invisibleLink: userProp.settings.invisibleUrl,
+    randomDomain: userProp.settings.randomDomain.enabled,
+    embed: userProp.settings.embed,
+    embedEditor: false,
+    showColorPicker: false,
   };
 
-  const [{ user, domains, selectedDomain, domainInput, randomDomainInput, selectedRandomDomain }, setState] = useState<InitialState>(initialState);
+  const [{
+    user,
+    domains,
+    selectedDomain,
+    domainInput,
+    randomDomainInput,
+    selectedRandomDomain,
+    showLink,
+    invisibleLink,
+    randomDomain,
+    embed,
+    embedEditor,
+    showColorPicker,
+  }, setState] = useState<InitialState>(initialState);
 
   useEffect(() => {
     let name: string;
@@ -214,6 +245,53 @@ export default function Settings({ userProp, domainsProp, router }) {
     }
   };
 
+  const enable = async (property: string, val: boolean) => {
+    const options = ['showLink', 'invisibleUrl', 'randomDomain', 'embed'];
+
+    try {
+      const reqData: any= {};
+
+      for (const prop of options) {
+        if (prop === property) reqData[property] = val;
+      }
+
+      const { data } = await Axios.put('http://localhost:3001/users/@me/settings', reqData, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        if (property === 'embed') {
+          setState((state) => ({ ...state, embed: { ...embed, enabled: val } }));
+        } else {
+          setState((state) => ({ ...state, reqData }));
+        }
+        message.success(val ? `Enabled ${property} successfully` : `Disabled ${property} successfully`);
+      }
+    } catch (err) {
+      message.error(err.response.data.error);
+    }
+  };
+
+  const updateEmbed = async () => {
+    try {
+      const reqData = {
+        title: embed.title || 'default',
+        description: embed.description || 'default',
+        color: embed.color || '#4287f5',
+      };
+
+      const { data } = await Axios.put('http://localhost:3001/users/@me/embed', reqData, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        message.success('Updated embed successfully');
+      }
+    } catch (err) {
+      message.error(err.response.data.error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -327,11 +405,23 @@ export default function Settings({ userProp, domainsProp, router }) {
 
           <div className={styles.switchContainer}>
             <div className={styles.switchInput}>
-              <p>Show Link</p>
+              {embed.enabled && <Button
+                type="primary"
+                onClick={() => setState((state) => ({ ...state, embedEditor: true }))}
+                style={{
+                  backgroundColor: '#444444',
+                  border: 'none',
+                  marginRight: '10px',
+                  marginTop: '-1px',
+                }} shape="circle" icon={<ToolOutlined />} size="small" />}
+
+              <Tooltip placement="topRight" title="Embeds will allow you to have a custom title, description, and color on your images.">
+                <p style={{ cursor: 'pointer' }}>Embeds</p>
+              </Tooltip>
+
               <Switch
-                onClick={(val) => {
-                  setState((state) => ({ ...state, randomDomain: val }));
-                }}
+                defaultChecked={embed.enabled}
+                onClick={(val) => enable('embed', val)}
                 style={{
                   marginLeft: '10px',
                   width: '55px',
@@ -339,11 +429,27 @@ export default function Settings({ userProp, domainsProp, router }) {
             </div>
 
             <div className={styles.switchInput}>
-              <p>Invisible Link</p>
+              <Tooltip placement="topRight" title="Show link will make your url show up in discord.">
+                <p style={{ cursor: 'pointer' }}>Show Link</p>
+              </Tooltip>
+
               <Switch
-                onClick={(val) => {
-                  setState((state) => ({ ...state, randomDomain: val }));
-                }}
+                defaultChecked={showLink}
+                onClick={(val) => enable('showLink', val)}
+                style={{
+                  marginLeft: '10px',
+                  width: '55px',
+                }} />
+            </div>
+
+            <div className={styles.switchInput}>
+              <Tooltip placement="topRight" title="Invisible link will get rid of the filename at the end of the link of the image.">
+                <p style={{ cursor: 'pointer' }}>Invisible Link</p>
+              </Tooltip>
+
+              <Switch
+                defaultChecked={invisibleLink}
+                onClick={(val) => enable('invisibleUrl', val)}
                 style={{
                   marginLeft: '10px',
                   width: '55px',
@@ -353,17 +459,13 @@ export default function Settings({ userProp, domainsProp, router }) {
             <div className={styles.switchInput} style={{
               marginBottom: '5px',
             }}>
-              <Tooltip placement="right" overlayStyle={{
-                marginTop: '-10px',
-              }} title="Random domain will choose a random domain which you can provide.">
-                <QuestionCircleOutlined className={styles.questionIcon} />
+              <Tooltip placement="topRight" title="Random domain will choose a random domain which you can provide.">
+                <p style={{ cursor: 'pointer' }}>Random Domain</p>
               </Tooltip>
 
-              <p>Random Domain</p>
               <Switch
-                onClick={(val) => {
-                  setState((state) => ({ ...state, randomDomain: val }));
-                }}
+                defaultChecked={randomDomain}
+                onClick={(val) => enable('randomDomain', val)}
                 style={{
                   marginLeft: '10px',
                   width: '55px',
@@ -372,6 +474,58 @@ export default function Settings({ userProp, domainsProp, router }) {
           </div>
         </div>
       </div>
+
+      <Modal
+        title="Embed Editor"
+        visible={embedEditor}
+        onCancel={() => setState((state) => ({ ...state, embedEditor: false, showColorPicker: false }))}
+        footer={null}
+      >
+        <Input
+          onChange={(val) => setState((state) => ({ ...state, embed: { ...embed, title: val.target.value } }))}
+          value={embed.title !== '' && embed.title !== null && embed.title !== 'default' ? embed.title : ''}
+          className={styles.embedInput}
+          placeholder="Embed Title"
+        />
+
+        <Input
+          onChange={(val) => setState((state) => ({ ...state, embed: { ...embed, description: val.target.value } }))}
+          value={embed.description !== '' && embed.description !== null && embed.description !== 'default' ? embed.description : ''}
+          className={styles.embedInput}
+          placeholder="Embed Description"
+        />
+
+        <Button
+          block
+          onClick={() => setState((state) => ({ ...state, showColorPicker: !showColorPicker }))}
+          style={{
+            marginBottom: '8px',
+            backgroundColor: embed.color,
+            border: 'none',
+          }}
+        >
+            Embed Color
+        </Button>
+
+        {showColorPicker && <ChromePicker
+          disableAlpha
+          color={embed.color}
+          className={styles.colorPicker}
+          onChange={(color) => setState((state) => ({ ...state, embed: { ...embed, color: color.hex } }))}
+        />}
+
+        <Button
+          className={styles.configButton}
+          style={{
+            marginBottom: '-5px',
+            marginTop: '7px',
+          }}
+          icon={<SaveOutlined />}
+          onClick={updateEmbed}
+        >
+            Save Settings
+        </Button>
+      </Modal>
     </div>
   );
 }

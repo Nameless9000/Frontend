@@ -174,7 +174,9 @@ export default function Dashboard({ userProp, imagesProp, router }) {
       <div className={styles.dashboard}>
         <div className={styles.section}>
           <h1 className={styles.title}>Welcome, {user.username}.</h1>
-          <div className={styles.statsContainer}>
+          <div className={styles.statsContainer} style={{
+            marginTop: '-5px',
+          }}>
             <div className={styles.statsBox}>
               <h1 className={styles.statsTitle}>
                 <CameraOutlined className={styles.statsIcon} /> Images

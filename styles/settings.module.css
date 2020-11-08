@@ -57,7 +57,7 @@
 .switchContainer {
   display: flex;
   flex-direction: column;
-  margin-top: -5px;
+  margin-top: -9px;
 }
 
 .switchInput {
@@ -72,6 +72,14 @@
 .randomDomainContainer {
   display: flex;
   margin-top: 4px;
+}
+
+.embedInput {
+  margin-bottom: 10px;
+}
+
+.colorPicker {
+  margin-bottom: 15px;
 }
 
 @media only screen and (max-width: 1639px) {

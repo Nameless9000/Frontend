@@ -10,6 +10,7 @@
   "dependencies": {
     "@ant-design/dark-theme": "^2.0.2",
     "@ant-design/icons": "^4.2.2",
+    "@types/react-color": "^3.0.4",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
@@ -19,6 +20,7 @@
     "less": "^3.12.2",
     "next": "10.0.0",
     "react": "17.0.1",
+    "react-color": "^2.19.3",
     "react-dom": "17.0.1",
     "react-icons": "^3.11.0"
   },

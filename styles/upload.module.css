@@ -77,6 +77,12 @@
     margin-top: 10px;
   }
 
+  .uploadPage .section {
+    text-align: center;
+    align-items: center;
+    width: 330px;
+  }
+
   .domainInput {
     width: 100%;
   }
