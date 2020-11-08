@@ -15,7 +15,8 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
     selectedDomain: any;
     domainInput: string;
     showLink: boolean;
-    shortLink: boolean;
+    invisibleLink: boolean;
+    randomDomain: boolean;
   }
 
   const initialState = {
@@ -27,10 +28,11 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
     },
     domainInput: '',
     showLink: false,
-    shortLink: false,
+    invisibleLink: false,
+    randomDomain: false,
   };
 
-  const [{ user, domains, selectedDomain, domainInput, showLink, shortLink }, setState] = useState<InitialState>(initialState);
+  const [{ user, domains, selectedDomain, domainInput, showLink, invisibleLink, randomDomain }, setState] = useState<InitialState>(initialState);
 
   const domainSelect = (
     <Select
@@ -77,7 +79,8 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
               key: user.key,
               domain: selectedDomain.wildcard && domainInput !== '' ? `${domainInput}.${selectedDomain.name}` : selectedDomain.name,
               showLink: showLink ? 'true' : 'false',
-              shortLink: shortLink ? 'true' : 'false',
+              invisibleLink: invisibleLink ? 'true' : 'false',
+              randomDomain: randomDomain ? 'true' : 'false',
             }}
             onDownload={(file) => {
               if (file.status === 'done') {
@@ -160,6 +163,10 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
           />
 
           <div className={styles.switchContainer}>
+            <h1 style={{
+              fontSize: '26px',
+              marginTop: '5px',
+            }}>URL Settings</h1>
             <div className={styles.switchInput}>
               <p>Show Link</p>
               <Switch
@@ -168,20 +175,31 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
                 }}
                 style={{
                   marginLeft: '10px',
-                  width: '50px',
+                  width: '55px',
+                }} />
+            </div>
+            <div className={styles.switchInput}>
+              <p>Invisible Link</p>
+              <Switch
+                onClick={(val) => {
+                  setState((state) => ({ ...state, invisibleLink: val }));
+                }}
+                style={{
+                  marginLeft: '10px',
+                  width: '55px',
                 }} />
             </div>
             <div className={styles.switchInput} style={{
               marginBottom: '10px',
             }}>
-              <p>Short Link</p>
+              <p>Random Domain</p>
               <Switch
                 onClick={(val) => {
-                  setState((state) => ({ ...state, shortLink: val }));
+                  setState((state) => ({ ...state, randomDomain: val }));
                 }}
                 style={{
                   marginLeft: '10px',
-                  width: '50px',
+                  width: '55px',
                 }} />
             </div>
           </div>
