@@ -9,8 +9,8 @@ import {
   HomeOutlined,
   LogoutOutlined,
   SettingOutlined,
-  UploadOutlined,
-  UserOutlined
+  ToolOutlined,
+  UploadOutlined
 } from '@ant-design/icons';
 
 export default function Navbar({ user, enabled }) {
@@ -41,10 +41,10 @@ export default function Navbar({ user, enabled }) {
     <Menu>
       <Menu.Item>
         <Button
-          icon={<SettingOutlined style={{ fontSize: '14px' }} />}
+          icon={<ToolOutlined style={{ fontSize: '14px' }} />}
           style={{ border: 'none' }}
         >
-          Settings
+          Account
         </Button>
       </Menu.Item>
       <Menu.Item>
@@ -76,6 +76,16 @@ export default function Navbar({ user, enabled }) {
               Home
             </Button>
           </Link>
+          <Link href="/settings">
+            <Button
+              className={`${styles.navButton} ${
+                enabled === 'settings' && styles.navButtonActive
+              }`}
+              icon={<SettingOutlined style={{ fontSize: '14px' }} />}
+            >
+              Settings
+            </Button>
+          </Link>
           <Link href="/upload">
             <Button
               className={`${styles.navButton} ${
@@ -84,16 +94,6 @@ export default function Navbar({ user, enabled }) {
               icon={<UploadOutlined style={{ fontSize: '14px' }} />}
             >
               Upload
-            </Button>
-          </Link>
-          <Link href="/profile">
-            <Button
-              className={`${styles.navButton} ${
-                enabled === 'profile' && styles.navButtonActive
-              }`}
-              icon={<UserOutlined style={{ fontSize: '14px' }} />}
-            >
-              Profile
             </Button>
           </Link>
         </div>
@@ -149,16 +149,16 @@ export default function Navbar({ user, enabled }) {
             </Menu.Item>
             <Menu.Item
               style={
-                enabled === 'profile' && {
+                enabled === 'settings' && {
                   backgroundColor: '#444444',
                   borderRadius: '10px',
                 }
               }
             >
-              <Link href="/profile">
+              <Link href="/settings">
                 <span>
-                  <UserOutlined style={{ fontSize: '14px' }} />
-                  Profile
+                  <SettingOutlined style={{ fontSize: '14px' }} />
+                  Settings
                 </span>
               </Link>
             </Menu.Item>
@@ -172,7 +172,7 @@ export default function Navbar({ user, enabled }) {
             >
               <Link href="/upload">
                 <span>
-                  <HomeOutlined style={{ fontSize: '14px' }} />
+                  <UploadOutlined style={{ fontSize: '14px' }} />
                   Upload
                 </span>
               </Link>

@@ -215,6 +215,7 @@ export default function Home() {
                     ]}
                   >
                     <Input
+                      onPressEnter={login}
                       onChange={(val) => setInput('username', val.target.value)}
                       size="large"
                       placeholder="Username"
@@ -233,6 +234,7 @@ export default function Home() {
                     ]}
                   >
                     <Input.Password
+                      onPressEnter={login}
                       onChange={(val) => setInput('password', val.target.value)}
                       size="large"
                       placeholder="Password"
@@ -290,6 +292,7 @@ export default function Home() {
                     ]}
                   >
                     <Input
+                      onPressEnter={register}
                       onChange={(val) => setInput('username', val.target.value)}
                       size="large"
                       placeholder="Username"
@@ -309,6 +312,7 @@ export default function Home() {
                     ]}
                   >
                     <Input.Password
+                      onPressEnter={register}
                       onChange={(val) => setInput('password', val.target.value)}
                       size="large"
                       placeholder="Password"
@@ -327,6 +331,7 @@ export default function Home() {
                     ]}
                   >
                     <Input
+                      onPressEnter={register}
                       size="large"
                       onChange={(val) => setInput('email', val.target.value)}
                       placeholder="Email"
@@ -341,6 +346,7 @@ export default function Home() {
                     ]}
                   >
                     <Input
+                      onPressEnter={register}
                       size="large"
                       onChange={(val) => setInput('invite', val.target.value)}
                       placeholder="Invite"
