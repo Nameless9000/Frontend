@@ -1,10 +1,12 @@
-import { DownloadOutlined, QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Input, message, Select, Switch, Tooltip } from 'antd';
+import { DeleteOutlined, DownloadOutlined, PlusOutlined, QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Collapse, Input, List, message, Select, Switch, Tooltip } from 'antd';
+import Axios from 'axios';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/settings.module.css';
 import Navbar from './navbar';
 const { Option } = Select;
+const { Panel } = Collapse;
 
 export default function Settings({ userProp, domainsProp, router }) {
   interface InitialState {
@@ -12,6 +14,8 @@ export default function Settings({ userProp, domainsProp, router }) {
     domains: Array<any>;
     selectedDomain: any;
     domainInput: string;
+    randomDomainInput: string;
+    selectedRandomDomain: any;
   }
 
   const initialState = {
@@ -22,9 +26,14 @@ export default function Settings({ userProp, domainsProp, router }) {
     },
     domainInput: '',
     domains: domainsProp,
+    randomDomainInput: '',
+    selectedRandomDomain: {
+      name: 'astral.cool',
+      wildcard: false,
+    },
   };
 
-  const [{ user, domains, selectedDomain, domainInput }, setState] = useState<InitialState>(initialState);
+  const [{ user, domains, selectedDomain, domainInput, randomDomainInput, selectedRandomDomain }, setState] = useState<InitialState>(initialState);
 
   useEffect(() => {
     let name: string;
@@ -39,7 +48,15 @@ export default function Settings({ userProp, domainsProp, router }) {
     name = domain.name;
     wildcard = domain.wildcard;
 
-    setState((state) => ({ ...state, selectedDomain: { name, wildcard }, domainInput: user.settings.domain.subdomain !== '' && user.settins.domain.subdomain !== null ? user.settings.domain.subdomain : '' }));
+    setState((state) => ({
+      ...state,
+      selectedDomain: { name, wildcard },
+      domainInput:
+        user.settings.domain.subdomain !== '' &&
+        user.settings.domain.subdomain !== null ?
+          user.settings.domain.subdomain :
+          '',
+    }));
   }, []);
 
   const domainSelect = (
@@ -49,7 +66,27 @@ export default function Settings({ userProp, domainsProp, router }) {
 
         if (!domain) return message.error('Invalid domain selection');
 
-        setState((state) => ({ ...state, selectedDomain: domain }));
+        setState((state) => ({ ...state, selectedDomain: domain, domainInput: domain.wildcard ? '' : domainInput }));
+      }}
+      defaultValue="astral.cool"
+      className="select-after"
+    >
+      {domains.map((d) => (
+        <Option key={d.name} value={d.name}>
+          {d.name}
+        </Option>
+      ))}
+    </Select>
+  );
+
+  const randomDomainSelect = (
+    <Select
+      onSelect={(x) => {
+        const domain = domains.find((d) => d.name === x);
+
+        if (!domain) return message.error('Invalid domain selection');
+
+        setState((state) => ({ ...state, selectedRandomDomain: domain, randomDomainInput: domain.wildcard ? '' : randomDomainInput }));
       }}
       defaultValue="astral.cool"
       className="select-after"
@@ -70,6 +107,113 @@ export default function Settings({ userProp, domainsProp, router }) {
     setState((state) => ({ ...state, domainInput: val }));
   };
 
+  const setRandomDomain = (val: string) => {
+    val = val.replace(/\s/g, '-');
+
+    if (val.trim().length > 60) return;
+
+    setState((state) => ({ ...state, randomDomainInput: val }));
+  };
+
+  const updateDomain = async () => {
+    try {
+      const domain = domains.find((d) => d.name === selectedDomain.name);
+
+      if (!domain) return message.error('Invalid domain');
+
+      const type: string = domain.wildcard && domainInput !== '' && domainInput !== null ? 'wildcard': 'normal';
+
+      const reqData = {
+        type,
+        domain,
+        subdomain: domainInput,
+      };
+
+      const { data } = await Axios.put('http://localhost:3001/users/@me/domain', reqData, {
+        withCredentials: true,
+      });
+
+      if (data.success) message.success('Updated domain successfully');
+    } catch (err) {
+      message.error(err.response.data.error);
+    }
+  };
+
+  const addRandomDomain = async () => {
+    try {
+      const domain = domains.find((d) => d.name === selectedDomain.name);
+
+      if (!domain) return message.error('Invalid domain');
+
+      const reqData = {
+        domain: selectedRandomDomain.wildcard && randomDomainInput !== '' && randomDomainInput !== null ? `${randomDomainInput}.${selectedRandomDomain.name}` : selectedRandomDomain.name,
+      };
+
+      if (user.settings.randomDomain.domains.find((d) => d === reqData.domain)) return message.error('This domain is already being used');
+
+      const { data } = await Axios.put('http://localhost:3001/users/@me/randomDomain', reqData, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        const newArray = [reqData.domain];
+
+        setState((state) => ({
+          ...state,
+          user: {
+            ...user,
+            settings: {
+              ...user.settings,
+              randomDomain: {
+                ...user.settings.randomDomain,
+                domains: user.settings.randomDomain.domains.concat(newArray),
+              },
+            },
+          },
+        }));
+
+        message.success('Added domain successfully');
+      }
+    } catch (err) {
+      message.error(err.response.data.error);
+    }
+  };
+
+  const deleteRandomDomain = async (domain: string) => {
+    try {
+      const findDomain = user.settings.randomDomain.domains.find((d) => d === domain);
+
+      if (!findDomain) return message.error('Invalid domain');
+
+      const { data } = await Axios.delete('http://localhost:3001/users/@me/randomDomain', {
+        withCredentials: true,
+        data: {
+          domain,
+        },
+      });
+
+      if (data.success) {
+        setState((state) => ({
+          ...state,
+          user: {
+            ...user,
+            settings: {
+              ...user.settings,
+              randomDomain: {
+                ...user.settings.randomDomain,
+                domains: user.settings.randomDomain.domains.filter((d) => d !== domain),
+              },
+            },
+          },
+        }));
+
+        message.success('Deleted domain successfully');
+      }
+    } catch (err) {
+      message.error(err.response.data.error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -86,9 +230,11 @@ export default function Settings({ userProp, domainsProp, router }) {
           <Button
             href={`http://localhost:3001/files/config?key=${user.key}`}
             className={styles.configButton}
-            icon={<DownloadOutlined />}
+            icon={<DownloadOutlined style={{ paddingTop: '3px' }} />}
           >
-            Download Config
+            <span style={{ paddingTop: '2px' }}>
+              Download Config
+            </span>
           </Button>
         </div>
 
@@ -101,7 +247,7 @@ export default function Settings({ userProp, domainsProp, router }) {
           </p>
 
           <Input
-            value={domainInput !== '' ? domainInput : ''}
+            value={domainInput !== '' && selectedDomain.wildcard ? domainInput : ''}
             onChange={(val) => setDomain(val.target.value)}
             disabled={selectedDomain.wildcard === false}
             className={styles.domainInput}
@@ -110,15 +256,73 @@ export default function Settings({ userProp, domainsProp, router }) {
           />
 
           <Button
-            href={`http://localhost:3001/files/config?key=${user.key}`}
             className={styles.configButton}
             icon={<SaveOutlined />}
+            onClick={updateDomain}
           >
             Save Domain
           </Button>
+
+          <div>
+            <Collapse style={{
+              maxWidth: '600px',
+              marginTop: '0px',
+              marginBottom: '25px',
+            }}>
+              <Panel header="Random Domain" key="1">
+                <h1 className={styles.title} style={{
+                  marginTop: '-5px',
+                }}>Random Domain</h1>
+                <p className={styles.titleCaption} style={{
+                  marginTop: '-25px',
+                }}>
+                  Your random domains selections are: <span style={{ fontWeight: 500 }}>
+                    {user.settings.randomDomain.domains.length <= 0 ? 'none.' : (
+                      user.settings.randomDomain.domains.map((m) => <div className={styles.randomDomainContainer} key={m}>
+                        <p style={{
+                          marginBottom: '-2px',
+                          marginTop: '2px',
+                        }}>{m}</p>
+                        <Button type="primary" onClick={() => deleteRandomDomain(m)} style={{
+                          backgroundColor: '#e03024',
+                          border: 'none',
+                          marginLeft: '8px',
+                          marginTop: '1px',
+                        }} shape="circle" icon={<DeleteOutlined />} size="small" />
+                      </div>)
+                    )}
+                  </span>
+                </p>
+
+                <Input
+                  value={randomDomainInput !== '' ? randomDomainInput : ''}
+                  onChange={(val) => setRandomDomain(val.target.value)}
+                  disabled={selectedRandomDomain.wildcard === false}
+                  style={{
+                    marginBottom: '20px',
+                  }}
+                  placeholder={selectedRandomDomain.wildcard ? 'subdomain' : 'not available'}
+                  addonAfter={randomDomainSelect}
+                />
+
+                <Button
+                  className={styles.configButton}
+                  style={{
+                    marginBottom: '4px',
+                  }}
+                  icon={<PlusOutlined />}
+                  onClick={addRandomDomain}
+                >
+                  Add Domain
+                </Button>
+              </Panel>
+            </Collapse>
+          </div>
         </div>
 
-        <div className={styles.section}>
+        <div className={styles.section} style={{
+          marginBottom: '40px',
+        }}>
           <h1 className={styles.title}>Upload Preferences</h1>
 
           <div className={styles.switchContainer}>
@@ -146,7 +350,9 @@ export default function Settings({ userProp, domainsProp, router }) {
                 }} />
             </div>
 
-            <div className={styles.switchInput}>
+            <div className={styles.switchInput} style={{
+              marginBottom: '5px',
+            }}>
               <Tooltip placement="right" overlayStyle={{
                 marginTop: '-10px',
               }} title="Random domain will choose a random domain which you can provide.">

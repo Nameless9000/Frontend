@@ -39,6 +39,9 @@
 }
 
 .configButton {
+  align-items: center;
+  justify-content: center;
+  display: flex;
   width: 200px;
   height: 40px;
   border-radius: 5px;
@@ -64,6 +67,11 @@
 .questionIcon {
   margin-right: 10px;
   padding-top: 4px;
+}
+
+.randomDomainContainer {
+  display: flex;
+  margin-top: 4px;
 }
 
 @media only screen and (max-width: 1639px) {
@@ -95,5 +103,9 @@
     text-align: center;
     align-items: center;
     width: 330px;
+  }
+
+  .randomDomainContainer {
+    justify-content: center;
   }
 }
