@@ -22,7 +22,7 @@ export default function Account() {
   const router = useRouter();
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/users/@me', {
+    Axios.get(`${process.env.BACKEND_URL}/users/@me`, {
       withCredentials: true,
     })
       .then(({ data }) => {

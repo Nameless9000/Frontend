@@ -7,8 +7,7 @@ import {
   LockOutlined,
   MailOutlined,
   CheckOutlined,
-  LoadingOutlined,
-  SettingFilled
+  LoadingOutlined
 } from '@ant-design/icons';
 import Axios from 'axios';
 const { TabPane } = Tabs;
@@ -36,7 +35,7 @@ export default function Home() {
   const [form] = useForm();
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/users/@me', {
+    Axios.get(`${process.env.BACKEND_URL}/users/@me`, {
       withCredentials: true,
     })
       .then(() => {
@@ -87,7 +86,7 @@ export default function Home() {
       }));
     try {
       const { data } = await Axios.post(
-        'http://localhost:3001/auth/login',
+        `${process.env.BACKEND_URL}/auth/login`,
         {
           username,
           password,
@@ -123,7 +122,7 @@ export default function Home() {
       }));
     try {
       const { data } = await Axios.post(
-        'http://localhost:3001/auth/register',
+        `${process.env.BACKEND_URL}/auth/register`,
         {
           username,
           password,
@@ -248,7 +247,7 @@ export default function Home() {
                       Login
                     </Button>
                     <Button
-                      href="https://api.astral.cool/auth/login/discord"
+                      href={`${process.env.BACKEND_URL}/auth/login/discord`}
                       icon={<SiDiscord style={{ marginRight: '8px' }} />}
                       type="primary"
                       block

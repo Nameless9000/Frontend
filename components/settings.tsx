@@ -139,7 +139,7 @@ export default function Settings({ userProp, domainsProp, router }) {
         subdomain: domainInput,
       };
 
-      const { data } = await Axios.put('http://localhost:3001/users/@me/domain', reqData, {
+      const { data } = await Axios.put(`${process.env.BACKEND_URL}/users/@me/domain`, reqData, {
         withCredentials: true,
       });
 
@@ -161,7 +161,7 @@ export default function Settings({ userProp, domainsProp, router }) {
 
       if (user.settings.randomDomain.domains.find((d) => d === reqData.domain)) return message.error('This domain is already being used');
 
-      const { data } = await Axios.put('http://localhost:3001/users/@me/randomDomain', reqData, {
+      const { data } = await Axios.put(`${process.env.BACKEND_URL}/users/@me/randomDomain`, reqData, {
         withCredentials: true,
       });
 
@@ -195,7 +195,7 @@ export default function Settings({ userProp, domainsProp, router }) {
 
       if (!findDomain) return message.error('Invalid domain');
 
-      const { data } = await Axios.delete('http://localhost:3001/users/@me/randomDomain', {
+      const { data } = await Axios.delete(`${process.env.BACKEND_URL}/users/@me/randomDomain`, {
         withCredentials: true,
         data: {
           domain,
@@ -234,7 +234,7 @@ export default function Settings({ userProp, domainsProp, router }) {
         if (prop === property) reqData[property] = val;
       }
 
-      const { data } = await Axios.put('http://localhost:3001/users/@me/settings', reqData, {
+      const { data } = await Axios.put(`${process.env.BACKEND_URL}/users/@me/settings`, reqData, {
         withCredentials: true,
       });
 
@@ -259,7 +259,7 @@ export default function Settings({ userProp, domainsProp, router }) {
         color: embed.color || '#4287f5',
       };
 
-      const { data } = await Axios.put('http://localhost:3001/users/@me/embed', reqData, {
+      const { data } = await Axios.put(`${process.env.BACKEND_URL}/users/@me/embed`, reqData, {
         withCredentials: true,
       });
 
@@ -285,7 +285,7 @@ export default function Settings({ userProp, domainsProp, router }) {
           <p className={styles.titleCaption}>You only need to generate one config.</p>
 
           <Button
-            href={`http://localhost:3001/files/config?key=${user.key}`}
+            href={`${process.env.BACKEND_URL}/files/config?key=${user.key}`}
             className={styles.configButton}
             icon={<DownloadOutlined style={{ paddingTop: '3px' }} />}
           >

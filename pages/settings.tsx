@@ -24,11 +24,11 @@ export default function Settings() {
   const router = useRouter();
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/users/@me', {
+    Axios.get(`${process.env.BACKEND_URL}/users/@me`, {
       withCredentials: true,
     })
       .then(({ data }) => {
-        Axios.get('http://localhost:3001/domains')
+        Axios.get(`${process.env.BACKEND_URL}/domains`)
           .then((domains) => {
             setTimeout(() => {
               setState((state) => ({ ...state, loading: false, user: data, domains: domains.data.domains }));

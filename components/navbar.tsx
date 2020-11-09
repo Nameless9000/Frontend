@@ -27,7 +27,7 @@ export default function Navbar({ user, enabled }) {
   };
 
   const logout = () => {
-    Axios.get('http://localhost:3001/auth/logout', {
+    Axios.get(`${process.env.BACKEND_URL}/auth/logout`, {
       withCredentials: true,
     })
       .then(() => {

@@ -24,11 +24,11 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/users/@me', {
+    Axios.get(`${process.env.BACKEND_URL}/users/@me`, {
       withCredentials: true,
     })
       .then(({ data }) => {
-        Axios.get(`http://localhost:3001/users/${data._id}/images`, {
+        Axios.get(`${process.env.BACKEND_URL}/users/${data._id}/images`, {
           withCredentials: true,
         })
           .then((res) => {

@@ -41,7 +41,7 @@ export default function Dashboard({ userProp, imagesProp, router }) {
 
     try {
       const { data } = await Axios.post(
-        'http://localhost:3001/invites',
+        `${process.env.BACKEND_URL}/invites`,
         {},
         {
           withCredentials: true,
@@ -75,7 +75,7 @@ export default function Dashboard({ userProp, imagesProp, router }) {
     try {
       if (!user.createdInvites) return;
 
-      await Axios.delete(`http://localhost:3001/invites/${record.code}`);
+      await Axios.delete(`${process.env.BACKEND_URL}/invites/${record.code}`);
 
       setState((state) => ({
         ...state,
@@ -147,7 +147,7 @@ export default function Dashboard({ userProp, imagesProp, router }) {
     if (!findImage) return message.error('Invalid image');
 
     try {
-      await Axios.delete(`http://localhost:3001/files/${findImage.filename}`, {
+      await Axios.delete(`${process.env.BACKEND_URL}/files/${findImage.filename}`, {
         withCredentials: true,
       });
 

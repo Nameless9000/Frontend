@@ -4,14 +4,14 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import styles from '../styles/account.module.css';
 import Navbar from './navbar';
-const { confirm, warning } = Modal;
+const { confirm } = Modal;
 
 export default function Account({ userProp, router }) {
   const initialState = {
     user: userProp,
   };
 
-  const [{ user }, setState] = useState(initialState);
+  const [{ user }] = useState(initialState);
 
   const relinkDiscord = () => {
     confirm({
@@ -24,7 +24,7 @@ export default function Account({ userProp, router }) {
         },
       },
       onOk: () => {
-        window.location.href = 'http://localhost:3001/auth/discord/link';
+        window.location.href = `${process.env.BACKEND_URL}/auth/discord/link`;
       },
     });
   };
@@ -41,7 +41,7 @@ export default function Account({ userProp, router }) {
       },
       onOk: async () => {
         try {
-          const { data } = await Axios.post('http://localhost:3001/files/wipe', {}, {
+          const { data } = await Axios.post(`${process.env.BACKEND_URL}/files/wipe`, {}, {
             withCredentials: true,
           });
 
@@ -65,7 +65,7 @@ export default function Account({ userProp, router }) {
       },
       onOk: async () => {
         try {
-          const { data } = await Axios.post('http://localhost:3001/users/@me/disable', {}, {
+          const { data } = await Axios.post(`${process.env.BACKEND_URL}/users/@me/disable`, {}, {
             withCredentials: true,
           });
 

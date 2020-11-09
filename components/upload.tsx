@@ -74,7 +74,7 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
         <div className={styles.section}>
           <h1 className={styles.title}>Upload a file</h1>
           <Dragger
-            action="http://localhost:3001/files"
+            action={`${process.env.BACKEND_URL}/files`}
             headers={{
               key: user.key,
               domain: selectedDomain.wildcard && domainInput !== '' ? `${domainInput}.${selectedDomain.name}` : selectedDomain.name,

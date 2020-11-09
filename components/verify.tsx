@@ -10,7 +10,7 @@ export default function Verify() {
   const router = useRouter();
 
   const logout = () => {
-    Axios.get('http://localhost:3001/auth/logout', {
+    Axios.get(`${process.env.BACKEND_URL}/auth/logout`, {
       withCredentials: true,
     })
       .then(() => {
@@ -34,7 +34,7 @@ export default function Verify() {
           icon={
             <SiDiscord style={{ marginRight: '8px', marginBottom: '-2.5px' }} />
           }
-          href="http://localhost:3001/auth/discord/link"
+          href={`${process.env.BACKEND_URL}/auth/discord/link`}
           style={{
             marginRight: '5px',
             marginTop: '-10px',
