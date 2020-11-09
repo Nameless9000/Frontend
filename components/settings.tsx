@@ -79,7 +79,7 @@ export default function Settings({ userProp, domainsProp, router }) {
         setState((state) => ({ ...state, selectedDomain: domain, domainInput: domain.wildcard ? '' : domainInput }));
       }}
       defaultValue={selectedDomain.name}
-      className="select-after"
+      className={styles.domainDropdown}
     >
       {domains.map((d) => (
         <Option key={d.name} value={d.name}>
@@ -99,7 +99,7 @@ export default function Settings({ userProp, domainsProp, router }) {
         setState((state) => ({ ...state, selectedRandomDomain: domain, randomDomainInput: domain.wildcard ? '' : randomDomainInput }));
       }}
       defaultValue="astral.cool"
-      className="select-after"
+      className={styles.domainDropdown}
     >
       {domains.map((d) => (
         <Option key={d.name} value={d.name}>

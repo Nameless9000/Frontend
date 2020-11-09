@@ -82,6 +82,10 @@
   margin-bottom: 15px;
 }
 
+.domainDropdown {
+  width: 170px;
+}
+
 @media only screen and (max-width: 1639px) {
   .domainInput {
     width: 40%;
@@ -97,6 +101,12 @@
 @media only screen and (max-width: 616px) {
   .domainInput {
     width: 80%;
+  }
+}
+
+@media only screen and (max-width: 448px) {
+  .domainDropdown {
+    width: 110px;
   }
 }
 
