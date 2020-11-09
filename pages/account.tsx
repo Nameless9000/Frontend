@@ -5,22 +5,20 @@ import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import styles from '../styles/main.module.css';
 import VerifyComponent from '../components/verify';
-import SettingsComponent from '../components/settings';
+import AccountComponent from '../components/account';
 
 interface InitialState {
   user: any;
-  domains: any;
   loading: boolean;
 }
 
 const initialState = {
   user: {},
-  domains: [],
   loading: true,
 };
 
-export default function Settings() {
-  const [{ user, domains, loading }, setState] = useState<InitialState>(initialState);
+export default function Account() {
+  const [{ user, loading }, setState] = useState<InitialState>(initialState);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,14 +26,10 @@ export default function Settings() {
       withCredentials: true,
     })
       .then(({ data }) => {
-        Axios.get('http://localhost:3001/domains')
-          .then((domains) => {
-            setTimeout(() => {
-              setState((state) => ({ ...state, loading: false, user: data, domains: domains.data.domains }));
-            }, (1000));
-          });
-      })
-      .catch(() => {
+        setTimeout(() => {
+          setState((state) => ({ ...state, loading: false, user: data }));
+        }, 1000);
+      }).catch(() => {
         router.push('/');
       });
   }, []);
@@ -54,6 +48,6 @@ export default function Settings() {
   return user.discord.id === null ? (
     <VerifyComponent />
   ) : (
-    <SettingsComponent userProp={user} domainsProp={domains} router={router} />
+    <AccountComponent userProp={user} router={router} />
   );
 }

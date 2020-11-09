@@ -10,7 +10,8 @@ import {
   LogoutOutlined,
   SettingOutlined,
   ToolOutlined,
-  UploadOutlined
+  UploadOutlined,
+  UserOutlined
 } from '@ant-design/icons';
 
 export default function Navbar({ user, enabled }) {
@@ -40,12 +41,14 @@ export default function Navbar({ user, enabled }) {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Button
-          icon={<ToolOutlined style={{ fontSize: '14px' }} />}
-          style={{ border: 'none' }}
-        >
+        <Link href="/account">
+          <Button
+            icon={<ToolOutlined style={{ fontSize: '14px' }} />}
+            style={{ border: 'none' }}
+          >
           Account
-        </Button>
+          </Button>
+        </Link>
       </Menu.Item>
       <Menu.Item>
         <Button
@@ -174,6 +177,21 @@ export default function Navbar({ user, enabled }) {
                 <span>
                   <UploadOutlined style={{ fontSize: '14px' }} />
                   Upload
+                </span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item
+              style={
+                enabled === 'account' && {
+                  backgroundColor: '#444444',
+                  borderRadius: '10px',
+                }
+              }
+            >
+              <Link href="/account">
+                <span>
+                  <UserOutlined style={{ fontSize: '14px' }} />
+                  Account
                 </span>
               </Link>
             </Menu.Item>

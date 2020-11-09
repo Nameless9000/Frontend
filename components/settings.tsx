@@ -2,7 +2,7 @@ import { DeleteOutlined, DownloadOutlined, PlusOutlined, SaveOutlined, ToolOutli
 import { Button, Collapse, Input, message, Modal, Select, Switch, Tooltip } from 'antd';
 import Axios from 'axios';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/settings.module.css';
 import Navbar from './navbar';
 const { Option } = Select;
@@ -33,10 +33,13 @@ export default function Settings({ userProp, domainsProp, router }) {
   const initialState = {
     user: userProp,
     selectedDomain: {
-      name: '',
-      wildcard: false,
+      name: userProp.settings.domain.name,
+      wildcard: domainsProp.find((d) => d.name === userProp.settings.domain.name) ? domainsProp.find((d) => d.name === userProp.settings.domain.name).wildcard : false,
     },
-    domainInput: '',
+    domainInput: userProp.settings.domain.subdomain !== '' &&
+    userProp.settings.domain.subdomain !== null ?
+      userProp.settings.domain.subdomain :
+      '',
     domains: domainsProp,
     randomDomainInput: '',
     selectedRandomDomain: {
@@ -66,30 +69,6 @@ export default function Settings({ userProp, domainsProp, router }) {
     showColorPicker,
   }, setState] = useState<InitialState>(initialState);
 
-  useEffect(() => {
-    let name: string;
-    let wildcard: boolean;
-    const domain = domains.find((d) => d.name === user.settings.domain.name);
-
-    if (!domain) {
-      name = 'astral.cool';
-      wildcard = false;
-    }
-
-    name = domain.name;
-    wildcard = domain.wildcard;
-
-    setState((state) => ({
-      ...state,
-      selectedDomain: { name, wildcard },
-      domainInput:
-        user.settings.domain.subdomain !== '' &&
-        user.settings.domain.subdomain !== null ?
-          user.settings.domain.subdomain :
-          '',
-    }));
-  }, []);
-
   const domainSelect = (
     <Select
       onSelect={(x) => {
@@ -99,7 +78,7 @@ export default function Settings({ userProp, domainsProp, router }) {
 
         setState((state) => ({ ...state, selectedDomain: domain, domainInput: domain.wildcard ? '' : domainInput }));
       }}
-      defaultValue="astral.cool"
+      defaultValue={selectedDomain.name}
       className="select-after"
     >
       {domains.map((d) => (

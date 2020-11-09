@@ -208,15 +208,14 @@ export default function Dashboard({ userProp, imagesProp, router }) {
         <div className={styles.section} style={{ marginTop: '20px', marginBottom: '20px', paddingBottom: '20px' }}>
           <h1 className={styles.title}>Gallery</h1>
           <p className={styles.galleryCaption}>Here you can view all of your images.</p>
-          <div className={styles.galleryContainer}>
+          <div className={styles.galleryContainer} style={images.length <= 0 ? { justifyContent: 'normal', marginLeft: '40px' } : null}>
             {
               images.length <= 0 ? (
                 <p
                   style={{
                     fontSize: '15px',
-                    marginLeft: '38px',
-                    marginTop: '-8px',
-                    paddingBottom: '5px',
+                    marginTop: '-6px',
+                    paddingBottom: '0px',
                   }}
                 >
                   You do not have any images.
@@ -299,43 +298,3 @@ export default function Dashboard({ userProp, imagesProp, router }) {
     </div>
   );
 }
-
-
-// images.map((m: any) => {
-//   return (
-//     <Card
-//       key={m.link}
-//       style={{
-//         width: '236px',
-//         height: '170px',
-//         marginBottom: '10px',
-//         marginLeft: '10px',
-//       }}
-//       cover={
-//         <a href={m.link} target="blank">
-//           <img
-//             style={{
-//               height: '100px',
-//               width: '236px',
-//               objectFit: 'cover',
-//             }}
-//             src={m.link}
-//           />
-//         </a>
-//       }
-//     >
-//       <div style={{
-//         flexDirection: 'row',
-//         display: 'flex',
-//       }}>
-//         <p>Uploaded on {m.dateUploaded}</p>
-//         <Button type="primary" onClick={() => deleteImage(m)} style={{
-//           backgroundColor: '#e03024',
-//           border: 'none',
-//           marginLeft: '13px',
-//           marginTop: '-1.5px',
-//         }} shape="circle" icon={<DeleteOutlined />} size="small" />
-//       </div>
-//     </Card>
-//   );
-// });
