@@ -258,7 +258,9 @@ export default function Dashboard({ userProp, imagesProp, router }) {
                           flexDirection: 'row',
                           display: 'flex',
                         }}>
-                          <p>Uploaded on {m.dateUploaded}</p>
+                          <p style={{
+                            fontSize: '13.6px',
+                          }}>Uploaded on {m.dateUploaded}</p>
                           <Button type="primary" onClick={() => deleteImage(m)} style={{
                             backgroundColor: '#e03024',
                             border: 'none',
