@@ -43,7 +43,7 @@ export default function Settings({ userProp, domainsProp, router }) {
     domains: domainsProp,
     randomDomainInput: '',
     selectedRandomDomain: {
-      name: 'astral.cool',
+      name: 'i.astral.cool',
       wildcard: false,
     },
     showLink: userProp.settings.showLink,
@@ -98,7 +98,7 @@ export default function Settings({ userProp, domainsProp, router }) {
 
         setState((state) => ({ ...state, selectedRandomDomain: domain, randomDomainInput: domain.wildcard ? '' : randomDomainInput }));
       }}
-      defaultValue="astral.cool"
+      defaultValue="i.astral.cool"
       className={styles.domainDropdown}
     >
       {domains.map((d) => (

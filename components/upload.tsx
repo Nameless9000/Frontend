@@ -23,7 +23,7 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
     user: userProp,
     domains: domainsProp,
     selectedDomain: {
-      name: 'astral.cool',
+      name: 'i.astral.cool',
       wildcard: false,
     },
     domainInput: '',
@@ -43,7 +43,7 @@ export default function UploadComponent({ userProp, domainsProp, router }) {
 
         setState((state) => ({ ...state, selectedDomain: domain }));
       }}
-      defaultValue="astral.cool"
+      defaultValue="i.astral.cool"
       className="select-after"
     >
       {domains.map((d) => (
