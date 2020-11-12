@@ -22,3 +22,15 @@
   transition-duration: 0.2s;
   cursor: pointer;
 }
+
+.forgotPassword {
+  transition-duration: 0.2s;
+  cursor: pointer;
+  font-weight: normal;
+  margin-top: -3px;
+  margin-bottom: 10px;
+}
+
+.forgotPassword:hover {
+  color: rgb(172, 172, 172);
+}

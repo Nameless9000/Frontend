@@ -243,6 +243,7 @@ export default function Home() {
                   </Form.Item>
 
                   <Form.Item>
+                    <p className={styles.forgotPassword}>Forgot your password? Reset</p>
                     <Button onClick={login} block size="large">
                       Login
                     </Button>
