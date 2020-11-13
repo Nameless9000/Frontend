@@ -23,16 +23,18 @@ const initialState = {
   invite: '',
   error: '',
   message: '',
+  resetModal: false,
   loading: true,
 };
 
 export default function Home() {
   const [
-    { showModal, username, password, email, invite, error, message, loading },
+    { showModal, username, password, email, invite, error, message, resetModal, loading },
     setState,
   ] = useState(initialState);
   const router = useRouter();
   const [form] = useForm();
+  const [resetPasswordForm] = useForm();
 
   useEffect(() => {
     Axios.get(`${process.env.BACKEND_URL}/users/@me`, {
@@ -54,10 +56,12 @@ export default function Home() {
 
   const closeModal = () => {
     form.resetFields();
+    resetPasswordForm.resetFields();
     setState(() => ({
       ...initialState,
       loading: false,
       showModal: false,
+      resetModal: false,
       error: '',
       message: '',
     }));
@@ -143,6 +147,26 @@ export default function Home() {
     }
   };
 
+  const resetPassword = async () => {
+    if (!email || email.length <= 0)
+      return setState((state) => ({ ...state, error: 'Provide an email' }));
+
+    setState((state) => ({ ...state, error: '' }));
+
+    try {
+      const { data }= await Axios.post(`${process.env.BACKEND_URL}/auth/sendpasswordreset`, {
+        email,
+      });
+
+      if (!data.success)
+        return setState((state) => ({ ...state, error: data.message }));
+
+      setState((state) => ({ ...state, message: data.message }));
+    } catch (err) {
+      setState((state) => ({ ...state, error: err.response.data.error }));
+    }
+  };
+
   const spinner = (
     <LoadingOutlined style={{ fontSize: 40, color: 'white' }} spin />
   );
@@ -159,9 +183,9 @@ export default function Home() {
       <Head>
         <title>Astral</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="og:title" content="Astral, private image hosting." />
+        <meta property="og:title" content="Astral, private image hosting." />
         <meta
-          name="og:description"
+          property="og:description"
           content="Astral is a simple and powerful image hosting platform, with great support, competent developers, and a welcoming community."
         />
         <meta name="theme-color" content="#e6394a" />
@@ -243,7 +267,15 @@ export default function Home() {
                   </Form.Item>
 
                   <Form.Item>
-                    <p className={styles.forgotPassword}>Forgot your password? Reset</p>
+                    <Button
+                      onClick={() =>
+                        setState((state) => ({ ...state, showModal: false, resetModal: true }))
+                      }
+                      type="link"
+                      className={styles.forgotPassword}
+                    >
+                      Forgot your password? Reset
+                    </Button>
                     <Button onClick={login} block size="large">
                       Login
                     </Button>
@@ -373,7 +405,62 @@ export default function Home() {
           centered
           onCancel={closeModal}
           footer={null}
-        ></Modal>
+        />
+
+        <Modal
+          visible={resetModal}
+          centered
+          title="Reset your password"
+          onCancel={closeModal}
+          footer={null}
+        >
+          <Form
+            form={resetPasswordForm}
+          >
+            {error !== '' && (
+              <Alert
+                style={{ marginBottom: '20px' }}
+                type="error"
+                message={error}
+              />
+            )}
+
+            {message !== '' && (
+              <Alert
+                style={{ marginBottom: '20px' }}
+                type="success"
+                message={message}
+              />
+            )}
+
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: 'Provide a valid email', type: 'email' },
+              ]}
+            >
+              <Input
+                onPressEnter={resetPassword}
+                onChange={(val) => setInput('email', val.target.value)}
+                prefix={<MailOutlined />}
+                size="large"
+                type="email"
+                placeholder="Email"
+              />
+            </Form.Item>
+
+            <Form.Item
+              style={{ marginBottom: '5px' }}>
+              <Button
+                onClick={resetPassword}
+                block
+                size="large"
+              >
+                Send Email
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </main>
     </div>
   );
