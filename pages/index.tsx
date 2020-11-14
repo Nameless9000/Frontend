@@ -105,7 +105,7 @@ export default function Home() {
 
       router.push('/dashboard');
     } catch (err) {
-      setState((state) => ({ ...state, error: err.response.data.error }));
+      setState((state) => ({ ...state, error: err.response.data.error || 'Something went wrong' }));
     }
   };
 
@@ -143,7 +143,7 @@ export default function Home() {
 
       setState((state) => ({ ...state, message: data.message }));
     } catch (err) {
-      setState((state) => ({ ...state, error: err.response.data.error }));
+      setState((state) => ({ ...state, error: err.response.data.error || 'Something went wrong' }));
     }
   };
 
@@ -163,7 +163,7 @@ export default function Home() {
 
       setState((state) => ({ ...state, message: data.message }));
     } catch (err) {
-      setState((state) => ({ ...state, error: err.response.data.error }));
+      setState((state) => ({ ...state, error: err.response.data.error || 'Something went wrong', message: '' }));
     }
   };
 

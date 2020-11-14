@@ -38,7 +38,7 @@ export default function ResetPassword({ query, valid }) {
       if (data.success)
         router.push('/');
     } catch (err) {
-      setState((state) => ({ ...state, error: err.response.data.error }));
+      setState((state) => ({ ...state, error: err.response.data.error || 'Something went wrong' }));
     }
   };
 
