@@ -1,5 +1,5 @@
 import { DeleteOutlined, DownloadOutlined, PlusOutlined, SaveOutlined, ToolOutlined } from '@ant-design/icons';
-import { Button, Collapse, Input, message, Modal, Select, Switch, Tooltip } from 'antd';
+import { AutoComplete, Button, Checkbox, Collapse, Input, message, Modal, Select, Switch, Tooltip } from 'antd';
 import Axios from 'axios';
 import Head from 'next/head';
 import React, { useState } from 'react';
@@ -25,6 +25,8 @@ export default function Settings({ userProp, domainsProp, router }) {
       title: string;
       description: string;
       color: string;
+      author: boolean;
+      randomColor: boolean;
     };
     embedEditor: boolean;
     showColorPicker: boolean;
@@ -254,9 +256,11 @@ export default function Settings({ userProp, domainsProp, router }) {
   const updateEmbed = async () => {
     try {
       const reqData = {
-        title: embed.title || 'default',
-        description: embed.description || 'default',
+        title: embed.title,
+        description: embed.description,
         color: embed.color || '#4287f5',
+        author: embed.author,
+        randomColor: embed.randomColor,
       };
 
       const { data } = await Axios.put(`${process.env.BACKEND_URL}/users/@me/embed`, reqData, {
@@ -460,30 +464,103 @@ export default function Settings({ userProp, domainsProp, router }) {
         onCancel={() => setState((state) => ({ ...state, embedEditor: false, showColorPicker: false }))}
         footer={null}
       >
-        <Input
-          onChange={(val) => setState((state) => ({ ...state, embed: { ...embed, title: val.target.value } }))}
-          value={embed.title !== '' && embed.title !== null && embed.title !== 'default' ? embed.title : ''}
-          className={styles.embedInput}
+        <Checkbox
+          defaultChecked={embed.randomColor}
+          onChange={(val) => setState((state) => ({ ...state, embed: { ...embed, randomColor: val.target.checked } }))}
+          style={{
+            marginBottom: '10px',
+          }}>
+          Random Embed Color
+        </Checkbox>
+
+        <br/>
+
+        <Checkbox
+          defaultChecked={embed.author}
+          onChange={(val) => setState((state) => ({ ...state, embed: { ...embed, author: val.target.checked } }))}
+          style={{
+            marginBottom: '13px',
+          }}>
+          Show Embed Author
+        </Checkbox>
+
+        <AutoComplete
+          style={{ width: '100%', marginBottom: '10px' }}
+          options={[{ value: '{username}' }, { value: '{file}' }, { value: '{date}' }]}
+          onChange={(val) =>
+            setState((state) => ({ ...state, embed: { ...embed, title: val } }))
+          }
+          value={
+            embed.title !== '' && embed.title !== null && embed.title !== 'default' ?
+              embed.title :
+              ''
+          }
+          filterOption={(input, option) => {
+            return (
+              input.split(' ').splice(-1)[0].startsWith('{') &&
+              option.value.startsWith(input.split(' ').splice(-1)) &&
+              !input.endsWith('}')
+            );
+          }}
+          onSelect={(_input, option) => {
+            setState((state) => ({
+              ...state,
+              embed: {
+                ...embed,
+                title: `${embed.title}${embed.title.length > 0 ?
+                  option.value.split(embed.title.split(' ').splice(-1))[1] :
+                  option.value
+                }`,
+              },
+            }));
+          }}
           placeholder="Embed Title"
         />
 
-        <Input
-          onChange={(val) => setState((state) => ({ ...state, embed: { ...embed, description: val.target.value } }))}
-          value={embed.description !== '' && embed.description !== null && embed.description !== 'default' ? embed.description : ''}
-          className={styles.embedInput}
+        <AutoComplete
+          style={{ width: '100%', marginBottom: '10px' }}
+          options={[{ value: '{username}' }, { value: '{file}' }, { value: '{date}' }]}
+          onChange={(val) =>
+            setState((state) => ({ ...state, embed: { ...embed, description: val } }))
+          }
+          value={
+            embed.description !== '' && embed.description !== null && embed.description !== 'default' ?
+              embed.description :
+              ''
+          }
+          filterOption={(input, option) => {
+            return (
+              input.split(' ').splice(-1)[0].startsWith('{') &&
+              option.value.startsWith(input.split(' ').splice(-1)) &&
+              !input.endsWith('}')
+            );
+          }}
+          onSelect={(_input, option) => {
+            setState((state) => ({
+              ...state,
+              embed: {
+                ...embed,
+                description: `${embed.description}${embed.description.length > 0 ?
+                  option.value.split(embed.description.split(' ').splice(-1))[1] :
+                  option.value
+                }`,
+              },
+            }));
+          }}
           placeholder="Embed Description"
         />
 
         <Button
           block
+          disabled={embed.randomColor}
           onClick={() => setState((state) => ({ ...state, showColorPicker: !showColorPicker }))}
           style={{
-            marginBottom: '8px',
+            marginBottom: '10px',
             backgroundColor: embed.color,
             border: 'none',
           }}
         >
-            Embed Color
+          Embed Color
         </Button>
 
         {showColorPicker && <ChromePicker
@@ -492,6 +569,47 @@ export default function Settings({ userProp, domainsProp, router }) {
           className={styles.colorPicker}
           onChange={(color) => setState((state) => ({ ...state, embed: { ...embed, color: color.hex } }))}
         />}
+
+        <div
+          className={styles.embedPreview}
+          style={embed.description === '' || embed.title === '' ? {
+            borderLeft: `5px solid ${embed.color}`,
+            minHeight: (embed.description === '' && embed.title === '' && !embed.author) ? '220px' : '260px',
+          }: { borderLeft: `5px solid ${embed.color}` }}
+        >
+          {embed.author && <span className={styles.embedAuthor}>{user.username}</span>}
+          {embed.title !== '' && (
+            <span
+              style={
+                !embed.author ?
+                  {
+                    marginTop: '20px',
+                  } :
+                  null
+              }
+              className={styles.embedTitle}
+            >
+              {embed.title !== 'default' ? embed.title
+                .replace('{date}', new Date().toLocaleString())
+                .replace('{username}', user.username)
+                .replace('{file}', '6840763424.png') :
+                '6840763424.png'
+              }
+            </span>
+          )}
+          {embed.description !== '' && (
+            <span className={styles.embedDescription}>
+              {embed.description !== 'default' ? embed.description
+                .replace('{date}', new Date().toLocaleString())
+                .replace('{username}', user.username)
+                .replace('{file}', '6840763424.png') :
+                `Uploaded on ${new Date().toLocaleString()} by ${user.username}.`
+              }
+            </span>
+          )}
+          <img src="https://cdn.astral.cool/dcd57176-c091-48a0-ad13-c50d7d8eae44/5edf5ffd89.png" className={styles.embedImage} />
+        </div>
+
 
         <Button
           className={styles.configButton}
@@ -502,7 +620,7 @@ export default function Settings({ userProp, domainsProp, router }) {
           icon={<SaveOutlined />}
           onClick={updateEmbed}
         >
-            Save Settings
+          Save Embed
         </Button>
       </Modal>
     </div>
