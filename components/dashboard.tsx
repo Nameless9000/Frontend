@@ -154,6 +154,10 @@ export default function Dashboard({ userProp, imagesProp, router }) {
       setState((state) => ({
         ...state,
         images: images.filter((x: any) => x.filename !== findImage.filename),
+        user: {
+          ...user,
+          uploads: user.uploads -1,
+        },
       }));
 
       message.success('Deleted file successfully');
@@ -208,74 +212,59 @@ export default function Dashboard({ userProp, imagesProp, router }) {
         <div className={styles.section} style={{ marginTop: '20px', marginBottom: '20px', paddingBottom: '20px' }}>
           <h1 className={styles.title}>Gallery</h1>
           <p className={styles.galleryCaption}>Here you can view all of your images.</p>
-          <div className={styles.galleryContainer} style={images.length <= 0 ? { justifyContent: 'normal', marginLeft: '40px' } : null}>
-            {
-              images.length <= 0 ? (
-                <p
-                  style={{
-                    fontSize: '15px',
-                    marginTop: '-6px',
-                    paddingBottom: '0px',
-                  }}
-                >
-                  You do not have any images.
-                </p>
-              ) : (
-                <List
-                  dataSource={images.filter((i) => i.filename.split('.')[1] !== 'mp4')}
-                  pagination={images.length <= 14 ? false : {
-                    pageSize: 14,
-                    showSizeChanger: false,
-                    responsive: true,
-                    style: {
-                      marginLeft: '-20px',
-                    },
-                  }}
-                  renderItem={(m: any) => {
-                    return (
-                      <Card
-                        key={m.link}
-                        style={{
-                          width: '239px',
-                          height: '170px',
-                          marginBottom: '10px',
-                          marginLeft: '10px',
-                        }}
-                        cover={
-                          <a href={m.link} target="blank">
-                            <img
-                              style={{
-                                height: '100px',
-                                width: '239px',
-                                objectFit: 'cover',
-                              }}
-                              src={m.link}
-                            />
-                          </a>
-                        }
-                      >
-                        <div style={{
-                          flexDirection: 'row',
-                          display: 'flex',
-                        }}>
-                          <p style={{
-                            fontSize: '13.6px',
-                          }}>Uploaded on {m.dateUploaded}</p>
-                          <Button type="primary" onClick={() => deleteImage(m)} style={{
-                            backgroundColor: '#e03024',
-                            border: 'none',
-                            marginLeft: '13px',
-                            marginTop: '-1.5px',
-                          }} shape="circle" icon={<DeleteOutlined />} size="small" />
-                        </div>
-                      </Card>
-                    );
-                  }}
-                >
-
-                </List>
-              )
-            }
+          <div className={styles.galleryContainer} style={images.length <= 0 ? { marginTop: '-10px', marginLeft: '0' } : null}>
+            <List
+              locale={{ emptyText: 'You haven\'t uploaded any images.' }}
+              dataSource={images.filter((i) => i.filename.split('.')[1] !== 'mp4')}
+              pagination={images.length <= 14 ? false : {
+                pageSize: 14,
+                showSizeChanger: false,
+                responsive: true,
+                style: {
+                  marginLeft: '-20px',
+                },
+              }}
+              renderItem={(m: any) => {
+                return (
+                  <Card
+                    key={m.link}
+                    style={{
+                      width: '239px',
+                      height: '170px',
+                      marginBottom: '10px',
+                      marginLeft: '10px',
+                    }}
+                    cover={
+                      <a href={m.link} target="blank">
+                        <img
+                          style={{
+                            height: '100px',
+                            width: '239px',
+                            objectFit: 'cover',
+                          }}
+                          src={m.link}
+                        />
+                      </a>
+                    }
+                  >
+                    <div style={{
+                      flexDirection: 'row',
+                      display: 'flex',
+                    }}>
+                      <p style={{
+                        fontSize: '13.6px',
+                      }}>Uploaded on {m.dateUploaded}</p>
+                      <Button type="primary" onClick={() => deleteImage(m)} style={{
+                        backgroundColor: '#e03024',
+                        border: 'none',
+                        marginLeft: '13px',
+                        marginTop: '-1.5px',
+                      }} shape="circle" icon={<DeleteOutlined />} size="small" />
+                    </div>
+                  </Card>
+                );
+              }}
+            />
           </div>
         </div>
       </div>

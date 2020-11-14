@@ -111,7 +111,7 @@ export async function getServerSideProps(context: { query: { key: string; }; }) 
   return {
     props: {
       valid,
-      query: context.query.key,
+      query: context.query.key ? context.query.key : null,
     },
   };
 };
