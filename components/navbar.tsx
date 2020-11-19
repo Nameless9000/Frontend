@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Axios from 'axios';
 import {
+  DesktopOutlined,
   HomeOutlined,
   LogoutOutlined,
   SettingOutlined,
@@ -99,6 +100,16 @@ export default function Navbar({ user, enabled }) {
               Upload
             </Button>
           </Link>
+          {user.roles.includes('admin') && <Link href="/panel">
+            <Button
+              className={`${styles.navButton} ${
+                enabled === 'panel' && styles.navButtonActive
+              }`}
+              icon={<DesktopOutlined style={{ fontSize: '14px' }} />}
+            >
+              Admin Panel
+            </Button>
+          </Link>}
         </div>
         <div className={styles.rightMenu}>
           <Dropdown overlay={menu} placement="bottomCenter">
@@ -180,6 +191,21 @@ export default function Navbar({ user, enabled }) {
                 </span>
               </Link>
             </Menu.Item>
+            {user.roles.includes('admin') && <Menu.Item
+              style={
+                enabled === 'panel' && {
+                  backgroundColor: '#444444',
+                  borderRadius: '10px',
+                }
+              }
+            >
+              <Link href="/panel">
+                <span>
+                  <DesktopOutlined style={{ fontSize: '14px' }} />
+                  Admin Panel
+                </span>
+              </Link>
+            </Menu.Item>}
             <Menu.Item
               style={
                 enabled === 'account' && {
