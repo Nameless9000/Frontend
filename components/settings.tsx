@@ -7,7 +7,6 @@ import styles from '../styles/settings.module.css';
 import Navbar from './navbar';
 const { Option } = Select;
 const { Panel } = Collapse;
-import { ChromePicker } from 'react-color';
 
 export default function Settings({ userProp, domainsProp, router }) {
   interface InitialState {
@@ -68,7 +67,6 @@ export default function Settings({ userProp, domainsProp, router }) {
     randomDomain,
     embed,
     embedEditor,
-    showColorPicker,
   }, setState] = useState<InitialState>(initialState);
 
   const domainSelect = (
@@ -461,7 +459,7 @@ export default function Settings({ userProp, domainsProp, router }) {
       <Modal
         title="Embed Editor"
         visible={embedEditor}
-        onCancel={() => setState((state) => ({ ...state, embedEditor: false, showColorPicker: false }))}
+        onCancel={() => setState((state) => ({ ...state, embedEditor: false }))}
         footer={null}
       >
         <Checkbox
@@ -507,7 +505,7 @@ export default function Settings({ userProp, domainsProp, router }) {
               ...state,
               embed: {
                 ...embed,
-                title: `${embed.title}${embed.title.length > 0 ?
+                title: `${embed.title === 'default' ? '' : embed.title}${embed.title.length > 0 && embed.title !== 'default' ?
                   option.value.split(embed.title.split(' ').splice(-1))[1] :
                   option.value
                 }`,
@@ -540,7 +538,7 @@ export default function Settings({ userProp, domainsProp, router }) {
               ...state,
               embed: {
                 ...embed,
-                description: `${embed.description}${embed.description.length > 0 ?
+                description: `${embed.description === 'default' ? '' : embed.description}${embed.description.length > 0 && embed.description !== 'default' ?
                   option.value.split(embed.description.split(' ').splice(-1))[1] :
                   option.value
                 }`,
@@ -550,25 +548,19 @@ export default function Settings({ userProp, domainsProp, router }) {
           placeholder="Embed Description"
         />
 
-        <Button
-          block
-          disabled={embed.randomColor}
-          onClick={() => setState((state) => ({ ...state, showColorPicker: !showColorPicker }))}
-          style={{
-            marginBottom: '10px',
-            backgroundColor: embed.color,
-            border: 'none',
-          }}
-        >
-          Embed Color
-        </Button>
-
-        {showColorPicker && <ChromePicker
-          disableAlpha
-          color={embed.color}
-          className={styles.colorPicker}
-          onChange={(color) => setState((state) => ({ ...state, embed: { ...embed, color: color.hex } }))}
-        />}
+        {!embed.randomColor && (
+          <input
+            type="color"
+            value={embed.color}
+            onChange={(val) =>
+              setState((state) => ({
+                ...state,
+                embed: { ...embed, color: val.target.value },
+              }))
+            }
+            className={styles.colorPicker}
+          />
+        )}
 
         <div
           className={styles.embedPreview}
@@ -598,7 +590,7 @@ export default function Settings({ userProp, domainsProp, router }) {
             </span>
           )}
           {embed.description !== '' && (
-            <span className={styles.embedDescription}>
+            <span className={styles.embedDescription} style={!embed.author && !embed.title ? { marginTop: '20px' } : null}>
               {embed.description !== 'default' ? embed.description
                 .replace('{date}', new Date().toLocaleString())
                 .replace('{username}', user.username)
