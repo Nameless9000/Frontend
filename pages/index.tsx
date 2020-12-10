@@ -1,9 +1,31 @@
 import React from 'react';
 import styles from '../styles/Home.module.css';
 import Head from 'next/head';
-import { Button } from 'antd';
+import Link from 'next/link';
+import { Button, Dropdown, Menu } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 export default function Index() {
+    const menu = (
+        <Menu>
+            <Menu.Item>
+                <a target="blank" href="https://discord.gg/astral">
+                    Discord Server
+                </a>
+            </Menu.Item>
+            <Menu.Item>
+                <a target="blank" href="https://github.com/astral-cool">
+                    Github Repo
+                </a>
+            </Menu.Item>
+            <Menu.Item>
+                <Link href="/domains">
+                    Domains
+                </Link>
+            </Menu.Item>
+        </Menu>
+    );
+
     return (
         <div className={styles.container}>
             <Head>
@@ -25,13 +47,11 @@ export default function Index() {
                         Login/Register
                     </Button>
 
-                    <Button
-                        style={{ marginRight: '5px' }}
-                        href="https://discord.gg/NkE9uVJ6Ww"
-                        target="blank"
-                    >
-                        Discord Server
-                    </Button>
+                    <Dropdown overlay={menu}>
+                        <Button style={{ marginRight: '5px' }}>
+                            More Stuff <DownOutlined />
+                        </Button>
+                    </Dropdown>
                 </div>
             </main>
         </div>
