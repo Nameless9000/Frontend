@@ -17,3 +17,14 @@
   justify-content: center;
   align-items: center;
 }
+
+.forgotPassword {
+  color: rgb(221, 221, 221);
+  border: none;
+  transition-duration: 0.2s;
+  cursor: pointer;
+  font-weight: normal;
+  margin-top: -3px;
+  margin-bottom: 5px;
+  margin-left: -14px;
+}
