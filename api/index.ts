@@ -90,4 +90,18 @@ export default new class API {
             },
         });
     }
+
+    /**
+     * Send a password reset email to a user.
+     * @param {string} email The email to send a reset to.
+     */
+    async resetPassword(email: string) {
+        return await this.request({
+            endpoint: '/auth/password_resets/send',
+            method: 'POST',
+            body: {
+                email,
+            },
+        });
+    }
 };

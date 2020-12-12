@@ -14,6 +14,7 @@ const { TabPane } = Tabs;
 export default function Index({ data, code }) {
     const initialState = {
         showModal: false,
+        resetPasswordModal: false,
         username: '',
         password: '',
         email: '',
@@ -22,6 +23,7 @@ export default function Index({ data, code }) {
 
     const [{
         showModal,
+        resetPasswordModal,
         username,
         password,
         email,
@@ -29,6 +31,7 @@ export default function Index({ data, code }) {
     }, setState] = useState(initialState);
     const router = useRouter();
     const [form] = useForm();
+    const [passwordResetForm] = useForm();
 
     useEffect(() => {
         if (code) {
@@ -53,10 +56,12 @@ export default function Index({ data, code }) {
 
     const closeModal = () => {
         form.resetFields();
+        passwordResetForm.resetFields();
 
         setState(() => ({
             ...initialState,
             showModal: false,
+            resetPasswordModal: false,
         }));
     };
 
@@ -111,6 +116,28 @@ export default function Index({ data, code }) {
             if (data.success) notification.success({
                 message: 'Success',
                 description: 'Registered successfully, check your email to verify.',
+            });
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+
+            notification.error({
+                message: 'Provide the required fields',
+                description: filter(err.errorFields.map((e: any) => e.errors.join())).join(', ') + '.',
+            });
+        }
+    };
+
+    const resetPassword = async () => {
+        try {
+            await passwordResetForm.validateFields();
+            const data = await API.resetPassword(email);
+
+            if (data.success) notification.success({
+                message: 'Success',
+                description: 'If a user exist with that email we\'ll send over the password reset instructions.',
             });
         } catch (err) {
             if (err instanceof APIError) return notification.error({
@@ -217,6 +244,7 @@ export default function Index({ data, code }) {
                                         <Button
                                             type="link"
                                             className={styles.forgotPassword}
+                                            onClick={() => setState((state) => ({ ...state, showModal: false, resetPasswordModal: true }))}
                                         >
                                             Forgot your password? Reset
                                         </Button>
@@ -342,6 +370,48 @@ export default function Index({ data, code }) {
                         </Tabs>
                     }
                 />
+
+                <Modal
+                    centered
+                    title="Reset your password"
+                    visible={resetPasswordModal}
+                    onCancel={closeModal}
+                    footer={null}
+                >
+                    <Form
+                        form={passwordResetForm}
+                    >
+                        <Form.Item
+                            name="email"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Provide a valid email',
+                                    type: 'email',
+                                },
+                            ]}
+                        >
+                            <Input
+                                size="large"
+                                placeholder="Email"
+                                onPressEnter={resetPassword}
+                                prefix={<MailOutlined />}
+                                onChange={(val) => setInput('email', val.target.value)}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            style={{ marginBottom: '5px' }}>
+                            <Button
+                                block
+                                size="large"
+                                onClick={resetPassword}
+                            >
+                                Reset Password
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Modal>
             </main>
         </div>
     );
