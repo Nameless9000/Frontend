@@ -1,36 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'antd';
 import { useUser } from '../components/user';
 import { useRouter } from 'next/router';
+import Loading from '../components/loading';
+import Verify from '../components/verify';
 
 export default function Dashboard() {
     const router = useRouter();
-    const { user, dispatch } = useUser();
+    const { user } = useUser();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!user) {
+            setLoading(false);
+
             router.push('/');
         } else {
             setLoading(false);
         }
     }, []);
 
-    const nullifyUser = async () => {
-        dispatch({
-            type: 'NULLIFY',
-        });
+    if (loading) return <Loading />;
 
-        router.push('/');
-    };
-
-    return loading || !user ? 'loading...' : (
-        <div>
-            <p>welcome {user.username}</p>
-
-            <Button onClick={nullifyUser}>
-              logout
-            </Button>
-        </div>
-    );
+    return user && user.discord.id ? <h1>hi {user.username}</h1> : <Verify />;
 }

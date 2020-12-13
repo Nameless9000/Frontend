@@ -33,7 +33,7 @@ export default function Index({ data, code }) {
     const router = useRouter();
     const [form] = useForm();
     const [passwordResetForm] = useForm();
-    const { dispatch } = useUser();
+    const { setUser } = useUser();
 
     useEffect(() => {
         if (code) {
@@ -99,10 +99,7 @@ export default function Index({ data, code }) {
             if (data.success) {
                 delete data.success;
 
-                dispatch({
-                    type: 'SET',
-                    payload: data.user,
-                });
+                setUser(data.user);
 
                 router.push('/dashboard');
             }

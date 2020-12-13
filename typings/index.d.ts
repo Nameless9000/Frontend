@@ -138,10 +138,10 @@ interface IUserContext {
     user: User;
 
     /**
-     * Dispatch a change in the state.
-     * @param {object} param0 The dispatch data.
+     * Set the user.
+     * @param {object} User the user.
      */
-    dispatch({ type, payload }: { type: 'SET' | 'NULLIFY', payload?: User }): void;
+    setUser(user: User): void;
 }
 
 export {
