@@ -46,6 +46,16 @@ export default new class API {
     }
 
     /**
+     * Get a user's refresh token.
+     */
+    async refreshToken() {
+        return await this.request({
+            endpoint: '/auth/token',
+            method: 'POST',
+        });
+    }
+
+    /**
      * Get a testimonial from a user.
      */
     async getTestimonial() {
@@ -92,10 +102,20 @@ export default new class API {
     }
 
     /**
+     * Logout of the site.
+     */
+    async logout() {
+        return await this.request({
+            endpoint: '/auth/logout',
+            method: 'GET',
+        });
+    }
+
+    /**
      * Send a password reset email to a user.
      * @param {string} email The email to send a reset to.
      */
-    async resetPassword(email: string) {
+    async sendPasswordReset(email: string) {
         return await this.request({
             endpoint: '/auth/password_resets/send',
             method: 'POST',

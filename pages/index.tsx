@@ -7,6 +7,7 @@ import { CheckOutlined, DownOutlined, LockOutlined, MailOutlined, UserOutlined }
 import { SiDiscord } from 'react-icons/si';
 import { useRouter } from 'next/router';
 import { APIError } from '../api';
+import { useUser } from '../components/user';
 
 const { useForm } = Form;
 const { TabPane } = Tabs;
@@ -32,6 +33,7 @@ export default function Index({ data, code }) {
     const router = useRouter();
     const [form] = useForm();
     const [passwordResetForm] = useForm();
+    const { dispatch } = useUser();
 
     useEffect(() => {
         if (code) {
@@ -94,7 +96,16 @@ export default function Index({ data, code }) {
             );
             const data = await API.login(username, password);
 
-            if (data.success) router.push('/dashboard');
+            if (data.success) {
+                delete data.success;
+
+                dispatch({
+                    type: 'SET',
+                    payload: data.user,
+                });
+
+                router.push('/dashboard');
+            }
         } catch (err) {
             if (err instanceof APIError) return notification.error({
                 message: 'Something went wrong',
@@ -133,7 +144,7 @@ export default function Index({ data, code }) {
     const resetPassword = async () => {
         try {
             await passwordResetForm.validateFields();
-            const data = await API.resetPassword(email);
+            const data = await API.sendPasswordReset(email);
 
             if (data.success) notification.success({
                 message: 'Success',
