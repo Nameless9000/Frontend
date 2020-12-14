@@ -33,10 +33,12 @@ export default function Index({ data, code }) {
     const router = useRouter();
     const [form] = useForm();
     const [passwordResetForm] = useForm();
-    const { setUser } = useUser();
+    const { user, setUser } = useUser();
 
     useEffect(() => {
-        if (code) {
+        if (user) {
+            router.push('/dashboard');
+        } else if (code) {
             setState((state) => ({ ...state, invite: code, showModal: true }));
         }
     }, []);
@@ -159,6 +161,8 @@ export default function Index({ data, code }) {
             });
         }
     };
+
+    if (user) return null;
 
     return (
         <div className={styles.container}>

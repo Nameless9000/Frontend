@@ -6,6 +6,7 @@
 		opacity: 1;
 	}
 }
+
 .container {
 	animation: fadeInAnimation ease .32s;
 	animation-iteration-count: 1;
@@ -19,17 +20,21 @@
 	justify-content: center;
 	align-items: center;
 }
+
 .caption {
 	font-size: 20px;
 	margin-top: -5px;
 }
+
 .buttons {
 	margin-top: -2px;
 }
+
 .discordIcon {
 	margin-right: 8px;
 	margin-bottom: -2.5px;
 }
+
 .logoutButton {
 	margin-right: 5px;
 }

@@ -1,14 +1,12 @@
 import { User } from '../typings';
 import { useEffect, useState } from 'react';
 import { UserProvider } from '../components/user';
-import { useRouter } from 'next/router';
 import API from '../api';
+import Loading from '../components/loading';
 import '../styles/antd.less';
 import '../styles/globals.less';
-import Loading from '../components/loading';
 
 export default function MyApp({ Component, pageProps }) {
-    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User>(null);
 
@@ -24,8 +22,6 @@ export default function MyApp({ Component, pageProps }) {
                 setTimeout(() => {
                     setLoading(false);
                 }, 500);
-
-                router.push('/dashboard');
             } catch (err) {
                 setTimeout(() => {
                     setLoading(false);
