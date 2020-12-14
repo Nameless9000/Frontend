@@ -5,9 +5,9 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import API from '../api';
 import styles from '../styles/Navbar.module.css';
-import { DesktopOutlined, HomeOutlined, LogoutOutlined, SettingOutlined, ToolOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, ToolOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
 
-export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'upload' | 'account' }) {
+export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'upload' | 'shorten' | 'account' }) {
     const { user, setUser } = useUser();
     const router = useRouter();
     const [visible, setVisible] = useState(false);
@@ -49,6 +49,32 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
         </Menu>
     );
 
+    const tools = (
+        <Menu>
+            <Menu.Item>
+                <Link href="/upload">
+                    <Button
+                        icon={<UploadOutlined style={{ fontSize: '14px' }} />}
+                        style={{ border: 'none' }}
+                    >
+                        Upload
+                    </Button>
+                </Link>
+            </Menu.Item>
+
+            <Menu.Item>
+                <Link href="/shorten">
+                    <Button
+                        icon={<LinkOutlined style={{ fontSize: '14px' }} />}
+                        style={{ border: 'none' }}
+                    >
+                        Shorten
+                    </Button>
+                </Link>
+            </Menu.Item>
+        </Menu>
+    );
+
     return (
         <div className={styles.navbar}>
             <div className={styles.logo}>
@@ -67,6 +93,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                             Home
                         </Button>
                     </Link>
+
                     <Link href="/settings">
                         <Button
                             className={`${styles.navButton} ${
@@ -77,16 +104,18 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                             Settings
                         </Button>
                     </Link>
-                    <Link href="/upload">
+
+                    <Dropdown overlay={tools} placement="bottomCenter">
                         <Button
                             className={`${styles.navButton} ${
-                                enabled === 'upload' && styles.navButtonActive
+                                enabled === 'upload' || enabled === 'shorten' && styles.navButtonActive
                             }`}
-                            icon={<UploadOutlined style={{ fontSize: '14px' }} />}
+                            icon={<ToolOutlined style={{ fontSize: '14px' }} />}
                         >
-                            Upload
+                            Tools <DownOutlined />
                         </Button>
-                    </Link>
+                    </Dropdown>
+
                     {user.roles.includes('admin') && <Button
                         className={styles.navButton}
                         icon={<DesktopOutlined style={{ fontSize: '14px' }} />}
