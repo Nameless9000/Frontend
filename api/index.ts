@@ -124,4 +124,14 @@ export default new class API {
             },
         });
     }
+
+    /**
+     * Get all of the user's images, plus storage used.
+     */
+    async getImages() {
+        return await this.request({
+            endpoint: '/users/@me/images',
+            method: 'GET',
+        });
+    }
 };

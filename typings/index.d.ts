@@ -5,6 +5,20 @@ interface User {
     accessToken: string;
 
     /**
+     * All of the images the user has uploaded.
+     */
+    images: Array<{
+        link: string;
+        dateUploaded: string;
+        filename: string;
+    }>;
+
+    /**
+     * The amount of storage the user has used.
+     */
+    storageUsed: string;
+
+    /**
      * The user's uuid.
      */
     _id: string;

@@ -96,10 +96,15 @@ export default function Index({ data, code }) {
                     'password',
                 ]
             );
+
             const data = await API.login(username, password);
+            const { images, storageUsed } = await API.getImages();
 
             if (data.success) {
                 delete data.success;
+
+                data.user['images'] = images;
+                data.user['storageUsed'] = storageUsed;
 
                 setUser(data.user);
 

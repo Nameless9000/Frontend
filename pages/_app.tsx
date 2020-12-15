@@ -14,7 +14,10 @@ export default function MyApp({ Component, pageProps }) {
         const refreshToken = async () => {
             try {
                 const data = await API.refreshToken();
+                const { images, storageUsed } = await API.getImages();
 
+                data.user['images'] = images;
+                data.user['storageUsed'] = storageUsed;
                 data.user['accessToken'] = data.accessToken;
 
                 setUser(data.user);
@@ -29,7 +32,7 @@ export default function MyApp({ Component, pageProps }) {
             }
         };
 
-        refreshToken();
+        if (!user) refreshToken();
     }, []);
 
     return loading ? <Loading /> : (
