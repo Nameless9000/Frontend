@@ -31,6 +31,7 @@ export default function Dashboard() {
                             <div className="ant-statistic-title"><MailOutlined /> Invites</div>
                             <Button
                                 shape="round"
+                                disabled={user.invites <= 0}
                                 style={{
                                     marginTop: '3px',
                                 }}
