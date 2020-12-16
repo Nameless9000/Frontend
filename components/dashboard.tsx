@@ -2,13 +2,37 @@ import React from 'react';
 import Navbar from './navbar';
 import styles from '../styles/Dashboard.module.css';
 import Head from 'next/head';
+import Spoiler from './spoiler';
 import { useUser } from './user';
-import { Button, Card, List } from 'antd';
-import { CameraOutlined, DatabaseOutlined, DeleteOutlined, LinkOutlined, MailOutlined } from '@ant-design/icons';
+import { Button, Card, List, notification, Popconfirm } from 'antd';
+import { CameraOutlined, DatabaseOutlined, DeleteOutlined, KeyOutlined, MailOutlined, RedoOutlined } from '@ant-design/icons';
+import API, { APIError } from '../api';
 
 export default function Dashboard() {
-    const { user } = useUser();
+    let { user, setUser } = useUser();
     const { images } = user;
+
+    const regenKey = async () => {
+        try {
+            const data = await API.regenKey();
+
+            if (data.success) {
+                user = Object.assign({}, user);
+                user.key = data.key;
+                setUser(user);
+
+                notification.success({
+                    message: 'Success',
+                    description: 'Regenerated key successfully.',
+                });
+            }
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -20,12 +44,19 @@ export default function Dashboard() {
 
             <div className={styles.dashboard}>
                 <div className={styles.section}>
-                    <h1 className={styles.title}>Welcome, {user.username}.</h1>
+                    <h1 className={styles.title} style={{
+                        marginLeft: '8px',
+                    }}>Welcome, {user.username}.</h1>
 
                     <div className={styles.statsCon}>
                         <Card className={styles.statsBox}>
                             <div className="ant-statistic-title"><CameraOutlined /> Images</div>
                             <div className={styles.statContent}>You have uploaded <strong>{user.uploads}</strong> images.</div>
+                        </Card>
+
+                        <Card className={styles.statsBox}>
+                            <div className="ant-statistic-title"><DatabaseOutlined /> Storage Used</div>
+                            <div className={styles.statContent}>{user.storageUsed}</div>
                         </Card>
 
                         <Card className={styles.statsBox}>
@@ -37,13 +68,40 @@ export default function Dashboard() {
                                     marginTop: '3px',
                                 }}
                             >
-                              Manage Invites (<strong>{user.invites}</strong>)
+                                Manage Invites (<strong>{user.invites}</strong>)
                             </Button>
                         </Card>
 
                         <Card className={styles.statsBox}>
-                            <div className="ant-statistic-title"><DatabaseOutlined /> Storage Used</div>
-                            <div className={styles.statContent}>{user.storageUsed}</div>
+                            <div className="ant-statistic-title"><KeyOutlined /> Upload Key</div>
+                            <div className={styles.keyCon}>
+                                <Spoiler />
+
+                                <Popconfirm
+                                    onConfirm={regenKey}
+                                    title="Are you sure?"
+                                    okText="Yes"
+                                    okButtonProps={{
+                                        style: {
+                                            backgroundColor: 'rgb(37, 37, 37)',
+                                            borderColor: '#444444',
+                                        },
+                                    }}
+                                >
+                                    <Button
+                                        type="primary"
+                                        style={{
+                                            backgroundColor: '#444444',
+                                            border: 'none',
+                                            marginLeft: '11px',
+                                            marginTop: '-2px',
+                                        }}
+                                        shape="circle"
+                                        icon={<RedoOutlined />}
+                                        size="small"
+                                    />
+                                </Popconfirm>
+                            </div>
                         </Card>
                     </div>
                 </div>

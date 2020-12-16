@@ -1,35 +1,37 @@
 import React, { useState } from 'react';
-import { message, Tooltip } from 'antd';
+import { notification } from 'antd';
+import { useUser } from './user';
 
-export default function Spoiler({ text }) {
+export default function Spoiler() {
+    const { user } = useUser();
     const [hovering, setHovering] = useState(false);
 
     return (
-        <div
+        <span
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
             onClick={() => {
-                message.success('Copied key to clipboard.');
-                navigator.clipboard.writeText(text);
+                notification.success({
+                    message: 'Success',
+                    description: 'Copied key to clipboard.',
+                });
+
+                navigator.clipboard.writeText(user.key);
             }}
             style={
                 hovering ? {
+                    wordBreak: 'break-all',
                     transitionDuration: '0.2s',
                     cursor: 'pointer',
                 } : {
+                    wordBreak: 'break-all',
                     transitionDuration: '0.2s',
                     cursor: 'pointer',
                     filter: 'blur(4px)',
                 }
             }
         >
-            <Tooltip
-                placement="bottom"
-                color="#2b2b2b"
-                title="Click to copy your key"
-            >
-                {text}
-            </Tooltip>
-        </div>
+            {user.key}
+        </span>
     );
 }

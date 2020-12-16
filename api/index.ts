@@ -134,4 +134,11 @@ export default new class API {
             method: 'GET',
         });
     }
+
+    async regenKey() {
+        return await this.request({
+            endpoint: '/users/@me/regen_key',
+            method: 'POST',
+        });
+    }
 };
