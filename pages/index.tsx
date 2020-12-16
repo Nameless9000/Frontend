@@ -179,13 +179,13 @@ export default function Index({ data, code }) {
             </Head>
 
             <main className={styles.main}>
-                <h1 style={{ color: 'white' }}>astral.cool</h1>
+                <img src="/logo.png" height="80px" />
 
-                <p style={{ fontSize: '20px', marginTop: '-18px' }}>
+                <p style={{ fontSize: '20px', marginTop: '-4px' }}>
                     &quot;{data.testimonial}&quot; <strong style={{ fontWeight: 500 }}>- {data.user}</strong>
                 </p>
 
-                <div style={{ marginTop: '-10px' }}>
+                <div style={{ marginTop: '-12px' }}>
                     <Button
                         style={{ marginRight: '5px' }}
                         onClick={() => setState((state) => ({ ...state, showModal: true }))}

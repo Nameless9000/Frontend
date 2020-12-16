@@ -78,7 +78,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
     return (
         <div className={styles.navbar}>
             <div className={styles.logo}>
-                <img src="/logo.png" height="50px" className={styles.logoImage} />
+                <img src="/logo.png" height="50px" />
             </div>
 
             <div className={styles.navbarCon}>

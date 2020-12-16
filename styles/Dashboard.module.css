@@ -38,20 +38,20 @@
   padding-right: 40px;
   padding-left: 40px;
   margin-top: 5px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   background: rgb(19, 19, 19);
 }
 
 .title {
   font-size: 26px;
   margin-top: 14px;
-  margin-left: 10px;
+  margin-left: 12px;
 }
 
 .statsCon {
   color: #f5f5f5;
   margin-left: -30px;
-  margin-top: 1px;
+  margin-top: -1px;
   display: flex;
   padding-bottom: 13px;
   padding-left: 19px;
@@ -61,7 +61,6 @@
 .statsBox {
   text-align: center;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 40%;
@@ -76,6 +75,19 @@
   font-size: 15px;
 }
 
+.galleryCaption {
+  margin-left: 12px;
+  font-size: 14px;
+  margin-top: -15px;
+}
+
+.galleryContainer {
+  margin-top: 5px;
+  padding-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 1024px) {
   .dashboard .section {
     width: 93%;
@@ -83,6 +95,10 @@
 }
 
 @media only screen and (max-width: 771px) {
+  .title {
+    margin-left: 20px;
+  }
+
   .statsCon {
     margin-left: -17px;
   }
@@ -103,8 +119,21 @@
   }
 }
 
-@media only screen and (max-width: 390px) {
+@media only screen and (max-width: 395px) {
+  .title {
+    margin-left: -10px;
+  }
+
+  .galleryCaption {
+    margin-left: 0px;
+  }
+
+  .galleryContainer {
+    margin-left: -7px;
+  }
+
   .dashboard .section {
+    text-align: center;
     width: 85%;
   }
 

@@ -11,6 +11,7 @@ interface User {
         link: string;
         dateUploaded: string;
         filename: string;
+        size: string;
     }>;
 
     /**
