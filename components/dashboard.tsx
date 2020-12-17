@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './navbar';
 import styles from '../styles/Dashboard.module.css';
 import Head from 'next/head';
 import Spoiler from './spoiler';
 import { useUser } from './user';
-import { Button, Card, List, notification, Popconfirm } from 'antd';
+import { Button, Card, List, Modal, notification, Popconfirm, Table } from 'antd';
 import { CameraOutlined, DatabaseOutlined, DeleteOutlined, KeyOutlined, MailOutlined, RedoOutlined } from '@ant-design/icons';
 import API, { APIError } from '../api';
 
 export default function Dashboard() {
+    const [inviteManager, setInvManager] = useState(false);
     let { user, setUser } = useUser();
     const { images } = user;
 
@@ -33,6 +34,19 @@ export default function Dashboard() {
             });
         }
     };
+
+    const columns = [
+        {
+            title: 'Code',
+            dataIndex: '_id',
+            key: 'code',
+        },
+        {
+            title: 'Date Created',
+            dataIndex: 'dateCreated',
+            key: 'dateCreated',
+        },
+    ];
 
     return (
         <div className={styles.container}>
@@ -67,6 +81,7 @@ export default function Dashboard() {
                                 style={{
                                     marginTop: '3px',
                                 }}
+                                onClick={() => setInvManager(true)}
                             >
                                 Manage Invites (<strong>{user.invites}</strong>)
                             </Button>
@@ -152,7 +167,7 @@ export default function Dashboard() {
                                             <span>
                                                 <div className="ant-statistic-title" style={{
                                                     marginBottom: '0px',
-                                                    marginTop: '-11px',
+                                                    marginTop: '-12px',
                                                 }}>{m.filename}</div>
                                                 <span style={{
                                                     fontSize: '13.6px',
@@ -162,8 +177,10 @@ export default function Dashboard() {
                                             <div style={{
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                marginTop: '-15px',
-                                                marginLeft: '20px',
+                                                alignItems: 'center',
+                                                marginTop: '-14px',
+                                                marginLeft: '15px',
+                                                justifyContent: 'center',
                                             }}>
 
                                                 <Button
@@ -171,7 +188,6 @@ export default function Dashboard() {
                                                     style={{
                                                         backgroundColor: '#e03024',
                                                         border: 'none',
-                                                        marginTop: '4px',
                                                     }}
                                                     shape="circle"
                                                     icon={<DeleteOutlined />}
@@ -185,6 +201,21 @@ export default function Dashboard() {
                         />
                     </div>
                 </div>
+
+                <Modal
+                    title="Invite Manager"
+                    visible={inviteManager}
+                    onCancel={() => setInvManager(false)}
+                    footer={null}
+                >
+                    <Table
+                        rowKey="code"
+                        pagination={false}
+                        locale={{ emptyText: 'You haven\'t made any invites.' }}
+                        dataSource={user.createdInvites}
+                        columns={columns}
+                    />
+                </Modal>
             </div>
         </div>
     );

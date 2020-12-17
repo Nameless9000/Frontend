@@ -135,10 +135,20 @@ export default new class API {
         });
     }
 
+    /**
+     * Regen a user's key.
+     */
     async regenKey() {
         return await this.request({
             endpoint: '/users/@me/regen_key',
             method: 'POST',
+        });
+    }
+
+    async getInvites() {
+        return await this.request({
+            endpoint: '/users/@me/created_invites',
+            method: 'GET',
         });
     }
 };

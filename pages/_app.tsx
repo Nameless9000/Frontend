@@ -15,9 +15,11 @@ export default function MyApp({ Component, pageProps }) {
             try {
                 const data = await API.refreshToken();
                 const { images, storageUsed } = await API.getImages();
+                const { invites } = await API.getInvites();
 
                 data.user['images'] = images;
                 data.user['storageUsed'] = storageUsed;
+                data.user['createdInvites'] = invites;
                 data.user['accessToken'] = data.accessToken;
 
                 setUser(data.user);

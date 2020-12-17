@@ -14,6 +14,11 @@ interface User {
         size: string;
     }>;
 
+    createdInvites: Array<{
+        _id: string;
+        dateCreated: Date;
+    }>;
+
     /**
      * The amount of storage the user has used.
      */
