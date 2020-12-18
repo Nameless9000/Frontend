@@ -179,22 +179,22 @@ export default function Index({ data, code }) {
             </Head>
 
             <main className={styles.main}>
-                <img src="/logo.png" height="80px" />
+                <img src="/logo.png" height="95px" />
 
-                <p style={{ fontSize: '20px', marginTop: '-4px' }}>
-                    &quot;{data.testimonial}&quot; <strong style={{ fontWeight: 500 }}>- {data.user}</strong>
-                </p>
-
-                <div style={{ marginTop: '-12px' }}>
+                <div style={{ marginTop: '8px' }}>
                     <Button
-                        style={{ marginRight: '5px' }}
+                        shape="round"
+                        style={{ marginRight: '5px', borderRadius: '13px' }}
                         onClick={() => setState((state) => ({ ...state, showModal: true }))}
                     >
                         Login/Register
                     </Button>
 
                     <Dropdown overlay={menu}>
-                        <Button style={{ marginRight: '5px' }}>
+                        <Button
+                            style={{ marginRight: '5px', borderRadius: '13px' }}
+                            shape="round"
+                        >
                             More Stuff <DownOutlined />
                         </Button>
                     </Dropdown>

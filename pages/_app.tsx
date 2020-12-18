@@ -6,7 +6,7 @@ import Loading from '../components/loading';
 import '../styles/antd.less';
 import '../styles/globals.less';
 
-export default function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User>(null);
 

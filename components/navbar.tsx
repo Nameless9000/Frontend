@@ -78,7 +78,10 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
     return (
         <div className={styles.navbar}>
             <div className={styles.logo}>
-                <img src="/logo.png" height="50px" />
+                <img
+                    src="/alogowhite.png"
+                    onClick={() => router.push('/dashboard')}
+                />
             </div>
 
             <div className={styles.navbarCon}>
