@@ -35,6 +35,42 @@ export default function Dashboard() {
         }
     };
 
+    const createInvite = async () => {
+        const invites = user.invites;
+
+        if (invites <= 0) return notification.error({
+            message: 'Something went wrong',
+            description: 'You do not have any invites.',
+        });
+
+        try {
+            const data = await API.createInvite();
+
+            if (data.success) {
+                user = Object.assign({}, user);
+                user.createdInvites = user.createdInvites.concat([{
+                    _id: data.code,
+                    dateCreated: data.dateCreated,
+                }]);
+                user.invites = user.invites - 1;
+
+                setUser(user);
+
+                navigator.clipboard.writeText(data.link);
+
+                notification.success({
+                    message: 'Success',
+                    description: 'Copied invite link to clipboard.',
+                });
+            }
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
+
     const columns = [
         {
             title: 'Code',
@@ -42,9 +78,29 @@ export default function Dashboard() {
             key: 'code',
         },
         {
-            title: 'Date Created',
+            title: 'Created On',
             dataIndex: 'dateCreated',
             key: 'dateCreated',
+            render: (record: any) => new Date(record).toLocaleDateString(),
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (record: any) => (
+                <span
+                    className={`ant-btn-link ${styles.actionBtn}`}
+                    onClick={() => {
+                        navigator.clipboard.writeText(`https://astral.gifts/${record._id}`);
+
+                        notification.success({
+                            message: 'Success',
+                            description: 'Copied invite link to clipboard.',
+                        });
+                    }}
+                >
+                    Copy Link
+                </span>
+            ),
         },
     ];
 
@@ -77,7 +133,7 @@ export default function Dashboard() {
                             <div className="ant-statistic-title"><MailOutlined /> Invites</div>
                             <Button
                                 shape="round"
-                                disabled={user.invites <= 0}
+                                disabled={user.invites <= 0 && user.createdInvites.length <= 0}
                                 style={{
                                     marginTop: '3px',
                                 }}
@@ -215,6 +271,19 @@ export default function Dashboard() {
                         dataSource={user.createdInvites}
                         columns={columns}
                     />
+
+                    <Button
+                        shape="round"
+                        disabled={user.invites <= 0}
+                        style={{
+                            marginTop: '20px',
+                            height: '35px',
+                            width: '150px',
+                        }}
+                        onClick={createInvite}
+                    >
+                        Create Invite <strong> ({user.invites})</strong>
+                    </Button>
                 </Modal>
             </div>
         </div>

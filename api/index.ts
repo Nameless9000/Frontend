@@ -145,10 +145,23 @@ export default new class API {
         });
     }
 
+    /**
+     * Get all of the user's created invites.
+     */
     async getInvites() {
         return await this.request({
             endpoint: '/users/@me/created_invites',
             method: 'GET',
+        });
+    }
+
+    /**
+     * Create a invite.
+     */
+    async createInvite() {
+        return await this.request({
+            endpoint: '/invites',
+            method: 'POST',
         });
     }
 };

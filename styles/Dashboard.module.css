@@ -92,6 +92,16 @@
   justify-content: center;
 }
 
+.actionBtn {
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.actionBtn:hover, .actionBtn:focus {
+  color: #bebebe;
+}
+
 @media only screen and (max-width: 1049px) {
   .statsCon {
     flex-direction: column;

@@ -14,6 +14,9 @@ interface User {
         size: string;
     }>;
 
+    /**
+     * All of the user's created invites.
+     */
     createdInvites: Array<{
         _id: string;
         dateCreated: Date;
