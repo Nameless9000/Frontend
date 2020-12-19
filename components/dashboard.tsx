@@ -35,6 +35,38 @@ export default function Dashboard() {
         }
     };
 
+    const deleteImage = async (x: any) => {
+        if (!x) throw new Error('provide a image');
+
+        const image = user.images.find((i) => i.filename === x.filename);
+
+        if (!image) return notification.error({
+            message: 'Something went wrong',
+            description: 'Invalid file.',
+        });
+
+        try {
+            const data = await API.deleteImage(image.filename);
+
+            if (data.success) {
+                user = Object.assign({}, user);
+                user.images = user.images.filter((x: any) => x.filename !== image.filename),
+                user.uploads = user.uploads > 0 ? user.uploads - 1 : user.uploads;
+                setUser(user);
+
+                notification.success({
+                    message: 'Success',
+                    description: 'Deleted image successfully.',
+                });
+            }
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
+
     const createInvite = async () => {
         const invites = user.invites;
 
@@ -241,6 +273,9 @@ export default function Dashboard() {
 
                                                 <Button
                                                     type="primary"
+                                                    onClick={() => {
+                                                        deleteImage(m);
+                                                    }}
                                                     style={{
                                                         backgroundColor: '#e03024',
                                                         border: 'none',

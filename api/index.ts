@@ -164,4 +164,15 @@ export default new class API {
             method: 'POST',
         });
     }
+
+    /**
+     * Delete a file.
+     * @param {string} id The filename.
+     */
+    async deleteImage(id: string) {
+        return await this.request({
+            endpoint: `/files/${id}`,
+            method: 'DELETE',
+        });
+    }
 };
