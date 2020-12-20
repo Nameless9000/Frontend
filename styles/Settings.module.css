@@ -1,0 +1,67 @@
+@keyframes fadeInAnimation {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.container {
+	min-height: 100vh;
+	display: flex;
+	color: rgb(214, 214, 214);
+	flex-direction: column;
+}
+
+.sidebar {
+  width: 300px;
+  height: 93.4vh;
+  background-color: #111111;
+}
+
+.settings {
+  animation: fadeInAnimation ease .32s;
+	animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.sections {
+  background-color: rgb(24, 24, 24);
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  padding: 10px;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin-right: 40px;
+  margin-left: 40px;
+  margin-bottom: 20px;
+  background: rgb(19, 19, 19);
+}
+
+.title {
+  font-size: 26px;
+  margin-top: 14px;
+}
+
+.caption {
+  font-size: 14px;
+  margin-top: -15px;
+}
+
+.btn {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: -3px;
+  margin-bottom: 20px;
+}

@@ -99,11 +99,13 @@ export default function Index({ data, code }) {
 
             const data = await API.login(username, password);
             const { images, storageUsed } = await API.getImages();
+            const { invites } = await API.getInvites();
 
             if (data.success) {
                 delete data.success;
 
                 data.user['images'] = images;
+                data.user['createdInvites'] = invites;
                 data.user['storageUsed'] = storageUsed;
 
                 setUser(data.user);
@@ -184,7 +186,7 @@ export default function Index({ data, code }) {
                 <div style={{ marginTop: '8px' }}>
                     <Button
                         shape="round"
-                        style={{ marginRight: '5px', borderRadius: '13px' }}
+                        style={{ marginRight: '5px', borderRadius: '13px', height: '35px' }}
                         onClick={() => setState((state) => ({ ...state, showModal: true }))}
                     >
                         Login/Register
@@ -192,7 +194,7 @@ export default function Index({ data, code }) {
 
                     <Dropdown overlay={menu}>
                         <Button
-                            style={{ marginRight: '5px', borderRadius: '13px' }}
+                            style={{ marginRight: '5px', borderRadius: '13px', height: '35px' }}
                             shape="round"
                         >
                             More Stuff <DownOutlined />

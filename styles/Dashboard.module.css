@@ -8,20 +8,16 @@
 }
 
 .container {
-	animation: fadeInAnimation ease .32s;
-	animation-iteration-count: 1;
-  animation-fill-mode: forwards;
 	min-height: 100vh;
 	display: flex;
 	color: rgb(214, 214, 214);
 	flex-direction: column;
 }
 
-.footer p {
-  font-size: 12px;
-}
-
 .dashboard {
+  animation: fadeInAnimation ease .32s;
+	animation-iteration-count: 1;
+  animation-fill-mode: forwards;
   margin-top: 30px;
   width: 100%;
   display: flex;
@@ -131,6 +127,10 @@
 }
 
 @media only screen and (max-width: 395px) {
+  .dashboard {
+    margin-top: 15px;
+  }
+
   .statsCon {
     width: 120%;
     margin-left: -32px;
