@@ -75,6 +75,25 @@
   width: 200px;
 }
 
+.switchCon {
+  margin-top: -5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.switch {
+  display: flex;
+}
+
+.switchChild {
+  margin-left: 10px;
+  width: 55px;
+}
+
+.switchCap {
+  margin-bottom: 6px;
+}
+
 @media only screen and (max-width: 1639px) {
   .domainInput {
     width: 40%;

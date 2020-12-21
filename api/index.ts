@@ -200,4 +200,30 @@ export default new class API {
             },
         });
     }
+
+    /**
+     * Update a user's upload preferences.
+     * @param {any} data The request body.
+     */
+    async updateSettings(data: any) {
+        return await this.request({
+            endpoint: '/users/@me/settings/preferences',
+            method: 'PUT',
+            body: data,
+        });
+    }
+
+    /**
+     * Update a user's auto-wipe interval.
+     * @param {number} value The new interval.
+     */
+    async setWipeInterval(value: number) {
+        return await this.request({
+            endpoint: '/users/@me/settings/wipe_interval',
+            method: 'PUT',
+            body: {
+                value,
+            },
+        });
+    }
 };
