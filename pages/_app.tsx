@@ -16,7 +16,9 @@ export default function App({ Component, pageProps }) {
                 const data = await API.refreshToken();
                 const { images, storageUsed } = await API.getImages();
                 const { invites } = await API.getInvites();
+                const { domains } = await API.getDomains();
 
+                data.user['domains'] = domains;
                 data.user['images'] = images;
                 data.user['storageUsed'] = storageUsed;
                 data.user['createdInvites'] = invites;

@@ -5,6 +5,18 @@ interface User {
     accessToken: string;
 
     /**
+     * All of the domains.
+     */
+    domains: Array<{
+        name: string;
+        wildcard: boolean;
+        donated: boolean;
+        donatedBy: string;
+        userOnly: boolean;
+        dateAdded: Date;
+    }>;
+
+    /**
      * All of the images the user has uploaded.
      */
     images: Array<{

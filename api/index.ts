@@ -175,4 +175,29 @@ export default new class API {
             method: 'DELETE',
         });
     }
+
+    /**
+     * Get all of the domains.
+     */
+    async getDomains() {
+        return await this.request({
+            endpoint: '/domains',
+            method: 'GET',
+        });
+    }
+
+    /**
+     * Update a user's domain settings.
+     * @param {{ domain: string, subdomain: string }} param0 The domain.
+     */
+    async saveDomain({ domain, subdomain }: { domain: string; subdomain: string | null; }) {
+        return await this.request({
+            endpoint: '/users/@me/settings/domain',
+            method: 'PUT',
+            body: {
+                domain,
+                subdomain,
+            },
+        });
+    }
 };
