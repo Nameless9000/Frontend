@@ -226,4 +226,23 @@ export default new class API {
             },
         });
     }
+
+    /**
+     * Update a user's embed settings.
+     * @param {object} param0 The user's embed settings.
+     */
+    async updateEmbed({ color, title, description, author, randomColor }:
+      { color: string; title: string; description: string; author: string; randomColor: boolean; }) {
+        return await this.request({
+            endpoint: '/users/@me/settings/embed',
+            method: 'PUT',
+            body: {
+                color,
+                title,
+                description,
+                author,
+                randomColor,
+            },
+        });
+    }
 };

@@ -1,6 +1,6 @@
 import { DownloadOutlined, PictureOutlined, SaveOutlined, SettingOutlined, ToolOutlined } from '@ant-design/icons';
 import { FaSitemap } from 'react-icons/fa';
-import { Button, Input, Layout, Menu, notification, Select, Switch, Tooltip } from 'antd';
+import { AutoComplete, Button, Input, Layout, Menu, notification, Select, Switch, Tooltip } from 'antd';
 import { useUser } from './user';
 import Head from 'next/head';
 import React, { useState } from 'react';
@@ -9,7 +9,9 @@ import Navbar from './navbar';
 import API, { APIError } from '../api';
 import Modal from 'antd/lib/modal/Modal';
 import ms from 'ms';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
 
+const { TextArea } = Input;
 const { Option } = Select;
 const { Content, Sider } = Layout;
 
@@ -174,7 +176,77 @@ export default function Settings() {
         }
     };
 
+    const formatEmbedField = (fmt: string) => {
+        const date = new Date();
+        fmt = fmt
+            .replace('{size}', '10.03 MB')
+            .replace('{username}', user.username)
+            .replace('{filename}', 'ccb834e0.png')
+            .replace('{uploads}', user.uploads.toString())
+            .replace('{date}', date.toLocaleDateString())
+            .replace('{time}', date.toLocaleTimeString())
+            .replace('{timestamp}', date.toLocaleString())
+            .replace('{domain}', selectedDomain.subdomain !== '' && selectedDomain.wildcard ? `${selectedDomain.subdomain}.${selectedDomain.name}` : selectedDomain.name);
+
+        const TIMEZONE_REGEX = /{(time|timestamp):([^}]+)}/i;
+        let match = fmt.match(TIMEZONE_REGEX);
+
+        while (match) {
+            try {
+                const formatted = match[1] === 'time' ? date.toLocaleTimeString('en-US', {
+                    timeZone: match[2],
+                }) : date.toLocaleString('en-US', {
+                    timeZone: match[2],
+                });
+
+                fmt = fmt.replace(match[0], formatted);
+                match = fmt.match(TIMEZONE_REGEX);
+            } catch (err) {
+                break;
+            }
+        }
+
+        return fmt;
+    };
+
+    const saveEmbed = async () => {
+        const { embed } = user.settings;
+
+        try {
+            const data = await API.updateEmbed({
+                color: embed.color,
+                title: embed.title,
+                description: embed.description,
+                author: embed.author,
+                randomColor: embed.randomColor,
+            });
+
+            if (data.success) notification.success({
+                message: 'Success',
+                description: 'Updated embed settings.',
+            });
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
+
     const renderTab = () => {
+        const { embed } = user.settings;
+
+        const AutoCompleteOptions = [
+            { value: '{size}' },
+            { value: '{username}' },
+            { value: '{filename}' },
+            { value: '{uploads}' },
+            { value: '{date}' },
+            { value: '{time}' },
+            { value: '{timestamp}' },
+            { value: '{domain}' },
+        ];
+
         switch (tab) {
             case 1:
                 return <div>
@@ -346,7 +418,223 @@ export default function Settings() {
                     </div>
                 </div>;
             case 2:
-                return <h1>embed settings</h1>;
+                return <div>
+                    <div className={styles.section}>
+                        <h1 className={styles.title}>Embed Settings</h1>
+
+                        <div className={styles.embedCheckboxCon}>
+                            <Checkbox
+                                defaultChecked={embed.randomColor}
+                                onChange={(val) => {
+                                    user = Object.assign({}, user);
+                                    user.settings.embed.randomColor = val.target.checked;
+
+                                    setUser(user);
+                                }}
+                            >
+                                Random Embed Color
+                            </Checkbox>
+                        </div>
+
+                        <div>
+                            <p className={`ant-statistic-title ${styles.embedCap}`}>Embed Color</p>
+                            <input
+                                onChange={(val) => {
+                                    user = Object.assign({}, user);
+                                    user.settings.embed.color = val.target.value;
+
+                                    setUser(user);
+                                }}
+                                value={embed.color}
+                                type="color"
+                                className={styles.embedColorInput}
+                                disabled={embed.randomColor}
+                            />
+                        </div>
+
+                        <div className={styles.embedInputCon}>
+                            <div>
+                                <p className={`ant-statistic-title ${styles.embedCap}`}>Embed Title</p>
+
+                                <AutoComplete
+                                    placeholder="Title"
+                                    options={AutoCompleteOptions}
+                                    className={styles.embedInput}
+                                    onChange={(val) => {
+                                        if ((val.length + embed.title.length) > 200) return;
+
+                                        user = Object.assign({}, user);
+                                        user.settings.embed.title = val;
+
+                                        setUser(user);
+                                    }}
+                                    value={
+                                        embed.title && embed.title !== '' && embed.title !== 'default' ? embed.title : ''
+                                    }
+                                    filterOption={(input, option) => {
+                                        return (
+                                            input.split(' ').splice(-1)[0].startsWith('{') &&
+                                            option.value.startsWith(input.split(' ').splice(-1)) &&
+                                            !input.endsWith('}')
+                                        );
+                                    }}
+                                    onSelect={(_input, option) => {
+                                        if (embed.title.length > 200) return;
+
+                                        user = Object.assign({}, user);
+                                        user.settings.embed.title = `${embed.title === 'default' ? '' : embed.title}${embed.title.length > 0 && embed.title !== 'default' ?
+                                            option.value.split(embed.title.split(' ').splice(-1))[1] :
+                                            option.value}`;
+
+                                        setUser(user);
+                                    }}
+                                >
+                                    <TextArea
+                                        allowClear
+                                    />
+                                </AutoComplete>
+                            </div>
+
+                            <div>
+                                <p className={`ant-statistic-title ${styles.embedCap}`}>Embed Description</p>
+
+                                <AutoComplete
+                                    placeholder="Description"
+                                    options={AutoCompleteOptions}
+                                    className={styles.embedInput}
+                                    onChange={(val) => {
+                                        if ((val.length + embed.description.length) > 2000) return;
+
+                                        user = Object.assign({}, user);
+                                        user.settings.embed.description = val;
+
+                                        setUser(user);
+                                    }}
+                                    value={
+                                        embed.description && embed.description !== '' && embed.description !== 'default' ? embed.description : ''
+                                    }
+                                    filterOption={(input, option) => {
+                                        return (
+                                            input.split(' ').splice(-1)[0].startsWith('{') &&
+                                            option.value.startsWith(input.split(' ').splice(-1)) &&
+                                            !input.endsWith('}')
+                                        );
+                                    }}
+                                    onSelect={(_input, option) => {
+                                        if (embed.description.length > 2000) return;
+
+                                        user = Object.assign({}, user);
+                                        user.settings.embed.description = `${embed.description === 'default' ? '' : embed.description}${embed.description.length > 0 && embed.description !== 'default' ?
+                                            option.value.split(embed.description.split(' ').splice(-1))[1] :
+                                            option.value}`;
+
+                                        setUser(user);
+                                    }}
+                                >
+                                    <TextArea
+                                        allowClear
+                                    />
+                                </AutoComplete>
+                            </div>
+
+                            <div>
+                                <p className={`ant-statistic-title ${styles.embedCap}`}>Embed Author</p>
+
+                                <AutoComplete
+                                    placeholder="Author"
+                                    options={AutoCompleteOptions}
+                                    className={styles.embedInput}
+                                    onChange={(val) => {
+                                        if ((val.length + embed.title.length) > 200) return;
+
+                                        user = Object.assign({}, user);
+                                        user.settings.embed.author = val;
+
+                                        setUser(user);
+                                    }}
+                                    value={
+                                        embed.author && embed.author !== '' && embed.author !== 'default' ? embed.author : ''
+                                    }
+                                    filterOption={(input, option) => {
+                                        return (
+                                            input.split(' ').splice(-1)[0].startsWith('{') &&
+                                            option.value.startsWith(input.split(' ').splice(-1)) &&
+                                            !input.endsWith('}')
+                                        );
+                                    }}
+                                    onSelect={(_input, option) => {
+                                        if (embed.author.length > 200) return;
+
+                                        user = Object.assign({}, user);
+                                        user.settings.embed.author = `${embed.author === 'default' ? '' : embed.author}${embed.author.length > 0 && embed.author !== 'default' ?
+                                            option.value.split(embed.author.split(' ').splice(-1))[1] :
+                                            option.value}`;
+
+                                        setUser(user);
+                                    }}
+                                >
+                                    <TextArea
+                                        allowClear
+                                    />
+                                </AutoComplete>
+                            </div>
+                        </div>
+
+                        <Button
+                            style={{
+                                marginTop: 10,
+                            }}
+                            className={styles.btn}
+                            icon={<SaveOutlined />}
+                            onClick={saveEmbed}
+                        >
+                            Save Embed
+                        </Button>
+                    </div>
+
+                    <div className={styles.section} style={{
+                        marginBottom: '30px',
+                        paddingBottom: '13px',
+                    }}>
+                        <h1 className={styles.title}>Embed Preview</h1>
+
+                        <div
+                            className={styles.embedPreview}
+                            style={{ borderLeft: `5px solid ${embed.randomColor ? `#${((1 << 24) * Math.random() | 0).toString(16)}` : embed.color}` }}
+                        >
+                            {embed.author !== '' && <span className={styles.embedAuthor}>
+                                {embed.author === 'default' ? user.username : formatEmbedField(embed.author)}
+                            </span>}
+
+                            {embed.title !== '' && <span
+                                className={styles.embedTitle}
+                                style={!embed.author ? {
+                                    marginTop: '20px',
+                                } : null}
+                            >
+                                {embed.title === 'default' ? 'ccb834e0.png' : formatEmbedField(embed.title)}
+                            </span>}
+
+                            {embed.description !== '' && <span
+                                className={styles.embedDescription}
+                                style={!embed.author && !embed.title ? {
+                                    marginTop: '20px',
+                                } : null}
+                            >
+                                {embed.description === 'default'? `Uploaded at ${new Date().toLocaleString()} by ${user.username}.` : formatEmbedField(embed.description)}
+                            </span>}
+
+                            <img
+                                style={embed.title === '' && embed.description === '' && embed.author === '' ? {
+                                    width: '250px',
+                                    marginTop: '25px',
+                                } : null}
+                                src="https://imgur.com/yLIXHjk.png"
+                                className={styles.embedImage}
+                            />
+                        </div>
+                    </div>
+                </div>;
             case 3:
                 return <h1>domain settings</h1>;
         }
@@ -404,7 +692,7 @@ export default function Settings() {
                     defaultValue={user.settings.autoWipe.interval}
                     style={{ width: '100%', textAlign: 'center' }}
                 >
-                    <Option value={ms('1m')}>1 Hour</Option>
+                    <Option value={ms('1h')}>1 Hour</Option>
                     <Option value={ms('2h')}>2 Hours</Option>
                     <Option value={ms('12h')}>12 Hours</Option>
                     <Option value={ms('24h')}>24 Hours</Option>
