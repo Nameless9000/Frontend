@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import API from '../api';
 import styles from '../styles/Navbar.module.css';
-import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, ToolOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
 
 export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'upload' | 'shorten' | 'account' }) {
     const { user, setUser } = useUser();
@@ -29,7 +29,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
             <Menu.Item>
                 <Link href="/account">
                     <Button
-                        icon={<ToolOutlined style={{ fontSize: '14px' }} />}
+                        icon={<SettingOutlined style={{ fontSize: '14px' }} />}
                         style={{ border: 'none' }}
                     >
                         Account
@@ -113,7 +113,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                             className={`${styles.navButton} ${
                                 enabled === 'upload' || enabled === 'shorten' && styles.navButtonActive
                             }`}
-                            icon={<ToolOutlined style={{ fontSize: '14px' }} />}
+                            icon={<SettingOutlined style={{ fontSize: '14px' }} />}
                         >
                             Tools <DownOutlined />
                         </Button>

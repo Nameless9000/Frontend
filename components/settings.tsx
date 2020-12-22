@@ -218,7 +218,7 @@ export default function Settings() {
                     </div>
 
                     <div className={styles.section}>
-                        <h1 className={styles.title}>Upload Preferences</h1>
+                        <h1 className={styles.title}>General Settings</h1>
 
                         <div className={styles.switchCon}>
                             <div style={{ marginRight: 20 }}>
@@ -226,7 +226,7 @@ export default function Settings() {
 
                                 <div className={styles.switch}>
                                     <Tooltip placement="topRight" title="Long URL will make your filename 17 characters instead of 7.">
-                                        <p style={{ cursor: 'pointer' }}>Long URL</p>
+                                        <p style={{ cursor: 'pointer', marginRight: 16 }}>Long URL</p>
                                     </Tooltip>
 
                                     <Switch
@@ -238,7 +238,7 @@ export default function Settings() {
 
                                 <div className={styles.switch}>
                                     <Tooltip placement="topRight" title="Show link will make your URL show up in discord.">
-                                        <p style={{ cursor: 'pointer' }}>Show Link</p>
+                                        <p style={{ cursor: 'pointer', marginRight: 14 }}>Show Link</p>
                                     </Tooltip>
 
                                     <Switch
@@ -280,7 +280,7 @@ export default function Settings() {
                                     />}
 
                                     <Tooltip placement="topRight" title="Embeds will allow you to have a custom title, description, and color on your images.">
-                                        <p style={{ cursor: 'pointer' }}>Discord Embeds</p>
+                                        <p style={{ cursor: 'pointer', marginRight: 3 }}>Discord Embeds</p>
                                     </Tooltip>
 
                                     <Switch
@@ -306,7 +306,7 @@ export default function Settings() {
                                     />}
 
                                     <Tooltip placement="topRight" title="Auto-file wiping will automatically wipe your files based on a interval you provide.">
-                                        <p style={{ cursor: 'pointer' }}>Auto File Wiping</p>
+                                        <p style={{ cursor: 'pointer', marginRight: 1 }}>Auto File Wiping</p>
                                     </Tooltip>
 
                                     <Switch
@@ -317,6 +317,20 @@ export default function Settings() {
                                 </div>
 
                                 <div className={styles.switch} style={{ marginBottom: 5 }}>
+                                    {user.settings.randomDomain.enabled && <Button
+                                        type="primary"
+                                        onClick={() => setState((state) => ({ ...state, tab: 3 }))}
+                                        style={{
+                                            backgroundColor: '#444444',
+                                            border: 'none',
+                                            marginRight: '10px',
+                                            marginTop: '-1px',
+                                        }}
+                                        shape="circle"
+                                        icon={<ToolOutlined />}
+                                        size="small"
+                                    />}
+
                                     <Tooltip placement="topRight" title="Random domain will choose a random domain from a list you provide.">
                                         <p style={{ cursor: 'pointer' }}>Random Domain</p>
                                     </Tooltip>
@@ -390,7 +404,7 @@ export default function Settings() {
                     defaultValue={user.settings.autoWipe.interval}
                     style={{ width: '100%', textAlign: 'center' }}
                 >
-                    <Option value={ms('1h')}>1 Hour</Option>
+                    <Option value={ms('1m')}>1 Hour</Option>
                     <Option value={ms('2h')}>2 Hours</Option>
                     <Option value={ms('12h')}>12 Hours</Option>
                     <Option value={ms('24h')}>24 Hours</Option>
