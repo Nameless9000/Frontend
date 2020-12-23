@@ -13,7 +13,7 @@ export default function Settings() {
             </Head>
 
             <Navbar enabled="settings" />
-            <Sidebar selectedTab="general" render={<General />} />
+            <Sidebar selectedTab="domains" render={<General />} />
         </div>
     );
 }

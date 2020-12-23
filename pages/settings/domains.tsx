@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useUser } from '../components/user';
+import { useUser } from '../../components/user';
 import { useRouter } from 'next/router';
-import Verify from '../components/verify';
-import SettingsC from '../components/settings';
+import Verify from '../../components/verify';
+import DomainsC from '../../components/domains';
 
-export default function Settings() {
+export default function Domains() {
     const router = useRouter();
     const { user } = useUser();
 
@@ -16,5 +16,5 @@ export default function Settings() {
 
     if (!user) return null;
 
-    return user.discord.id ? <SettingsC /> : <Verify />;
+    return user.discord.id ? <DomainsC /> : <Verify />;
 }

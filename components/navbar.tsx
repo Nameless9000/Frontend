@@ -7,6 +7,8 @@ import API from '../api';
 import styles from '../styles/Navbar.module.css';
 import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
 
+const { SubMenu } = Menu;
+
 export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'upload' | 'shorten' | 'account' }) {
     const { user, setUser } = useUser();
     const router = useRouter();
@@ -147,7 +149,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                 </Button>
 
                 <Drawer
-                    title={`Welcome ${user.username}.`}
+                    title={`Welcome, ${user.username}.`}
                     placement="right"
                     closable={false}
                     onClose={() => setVisible(false)}
@@ -169,20 +171,30 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                             </span>
                         </Menu.Item>
 
-                        <Menu.Item
-                            onClick={() => router.push('/settings')}
+                        <SubMenu
                             style={
-                                enabled === 'settings' && {
+                                enabled === 'settings' ? {
                                     backgroundColor: '#444444',
                                     borderRadius: '10px',
-                                }
+                                } : null
                             }
+                            key="sub1"
+                            icon={<SettingOutlined />}
+                            title="Settings"
                         >
-                            <span>
-                                <SettingOutlined style={{ fontSize: '14px' }} />
-                                Settings
-                            </span>
-                        </Menu.Item>
+                            <Menu.Item
+                                key="1"
+                                onClick={() => router.push('/settings')}
+                            >
+                              General
+                            </Menu.Item>
+                            <Menu.Item
+                                key="2"
+                                onClick={() => router.push('/settings/domains')}
+                            >
+                              Domains
+                            </Menu.Item>
+                        </SubMenu>
 
                         <Menu.Item
                             onClick={() => router.push('/upload')}
