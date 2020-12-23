@@ -15,15 +15,15 @@
 }
 
 .settings {
-  animation: fadeInAnimation ease .32s;
-	animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-
-.sections {
   background-color: rgb(24, 24, 24);
   display: flex;
   flex-direction: column;
+}
+
+.fade {
+  animation: fadeInAnimation ease .32s;
+	animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .section {

@@ -1,0 +1,33 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  padding: 10px;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin-right: 40px;
+  margin-left: 40px;
+  margin-bottom: 20px;
+  background: rgb(19, 19, 19);
+}
+
+.title {
+  font-size: 26px;
+  margin-top: 14px;
+}
+
+.caption {
+  font-size: 14px;
+  margin-top: -15px;
+}
+
+.btn {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: -3px;
+  margin-bottom: 20px;
+}

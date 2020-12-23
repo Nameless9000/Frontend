@@ -640,7 +640,7 @@ export default function General() {
                     <Option value={ms('24h')}>24 Hours</Option>
                     <Option value={ms('1w')}>1 Week</Option>
                     <Option value={ms('2w')}>2 Weeks</Option>
-                    <Option value={ms('4w')}>1 Month</Option>
+                    <Option value={2147483647}>1 Month</Option>
                 </Select>
             </Modal>
         </div>

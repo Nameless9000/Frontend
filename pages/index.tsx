@@ -100,10 +100,12 @@ export default function Index({ data, code }) {
             const data = await API.login(username, password);
             const { images, storageUsed } = await API.getImages();
             const { invites } = await API.getInvites();
+            const { domains } = await API.getDomains();
 
             if (data.success) {
                 delete data.success;
 
+                data.user['domains'] = domains;
                 data.user['images'] = images;
                 data.user['createdInvites'] = invites;
                 data.user['storageUsed'] = storageUsed;

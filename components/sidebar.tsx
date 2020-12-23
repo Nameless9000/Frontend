@@ -12,7 +12,7 @@ export default function Sidebar({ selectedTab, render }: { selectedTab: 'general
     const router = useRouter();
 
     return (
-        <Layout className={styles.settings}>
+        <Layout>
             <Sider collapsed={true} className={styles.sidebar}>
                 <Menu
                     theme="dark"
@@ -38,8 +38,8 @@ export default function Sidebar({ selectedTab, render }: { selectedTab: 'general
                 </Menu>
             </Sider>
 
-            <Layout className={styles.sections}>
-                <Content style={{ marginTop: '30px' }}>
+            <Layout className={styles.settings}>
+                <Content style={{ marginTop: '30px' }} className={styles.fade}>
                     {render}
                 </Content>
             </Layout>
