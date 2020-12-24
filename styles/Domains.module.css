@@ -38,6 +38,22 @@
   margin-bottom: 18px;
 }
 
+.domainDropdown {
+  width: 200px;
+}
+
+.randomDomainContainer {
+  display: flex;
+  margin-top: 4px;
+}
+
+.trashBtn {
+  margin-top: 3px;
+  margin-left: 4px;
+  line-height: 1;
+  height: 20px !important;
+}
+
 @media only screen and (max-width: 1639px) {
   .domainInput {
     width: 40%;
@@ -62,11 +78,21 @@
   }
 }
 
+@media only screen and (max-width: 553px) {
+  .domainDropdown {
+    width: 100px;
+  }
+}
+
 @media only screen and (max-width: 456px) {
   .section {
     align-items: center;
     text-align: center;
     margin-left: 30px;
     margin-right: 30px;
+  }
+
+  .randomDomainContainer {
+    justify-content: center;
   }
 }

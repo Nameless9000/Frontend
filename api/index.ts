@@ -245,4 +245,50 @@ export default new class API {
             },
         });
     }
+
+    /**
+     * Add a custom domain to astral.
+     * @param {string} name The domain name.
+     * @param {boolean} wildcard Whether or not the domain should be wildcarded.
+     * @param {boolean} userOnly Whether or not the domain should only be useable by the donator.
+     */
+    async addDomain(name: string, wildcard: boolean, userOnly: boolean) {
+        return await this.request({
+            endpoint: '/domains/custom',
+            method: 'POST',
+            body: {
+                name,
+                wildcard,
+                userOnly,
+            },
+        });
+    }
+
+    /**
+     * Add a random domain to the array.
+     * @param {string} domain The domain to add.
+     */
+    async addRandomDomain(domain: string) {
+        return await this.request({
+            endpoint: '/users/@me/settings/random_domain',
+            method: 'POST',
+            body: {
+                domain,
+            },
+        });
+    }
+
+    /**
+     * Delete a random domain from the array.
+     * @param {string} domain The domain to delete.
+     */
+    async deleteRandomDomain(domain: string) {
+        return await this.request({
+            endpoint: '/users/@me/settings/random_domain',
+            method: 'DELETE',
+            body: {
+                domain,
+            },
+        });
+    }
 };

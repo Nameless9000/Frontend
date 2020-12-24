@@ -1,8 +1,9 @@
 import { DownloadOutlined, SaveOutlined, ToolOutlined } from '@ant-design/icons';
 import { AutoComplete, Button, Input, Modal, notification, Select, Switch, Tooltip } from 'antd';
+import { useUser } from '../user';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styles from '../../styles/Settings.module.css';
-import { useUser } from '../user';
 import API, { APIError } from '../../api';
 import ms from 'ms';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
@@ -11,6 +12,7 @@ import TextArea from 'antd/lib/input/TextArea';
 const { Option } = Select;
 
 export default function General() {
+    const router = useRouter();
     let { user, setUser } = useUser();
     const { domains } = user;
     const { domain, embed } = user.settings;
@@ -74,7 +76,7 @@ export default function General() {
 
             if (!domain) return notification.error({
                 message: 'Something went wrong',
-                description: 'Invalid domain selection',
+                description: 'Invalid domain selection.',
             });
 
             const data = await API.saveDomain({
@@ -277,7 +279,7 @@ export default function General() {
                     icon={<SaveOutlined />}
                     onClick={saveDomain}
                 >
-                            Save Domain
+                    Save Domain
                 </Button>
             </div>
 
@@ -383,7 +385,7 @@ export default function General() {
                         <div className={styles.switch} style={{ marginBottom: 5 }}>
                             {user.settings.randomDomain.enabled && <Button
                                 type="primary"
-                                onClick={() => setState((state) => ({ ...state, tab: 3 }))}
+                                onClick={() => router.push('/settings/domains')}
                                 style={{
                                     backgroundColor: '#444444',
                                     border: 'none',

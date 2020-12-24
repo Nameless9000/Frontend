@@ -66,6 +66,11 @@ interface User {
     key: string;
 
     /**
+     * Whether or not the user has a premium subcription.
+     */
+    premium: boolean;
+
+    /**
      * The user's email.
      */
     email: string;
