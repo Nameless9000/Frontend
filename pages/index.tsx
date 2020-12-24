@@ -12,7 +12,7 @@ import { useUser } from '../components/user';
 const { useForm } = Form;
 const { TabPane } = Tabs;
 
-export default function Index({ data, code }) {
+export default function Index({ code }) {
     const initialState = {
         showModal: false,
         resetPasswordModal: false,
@@ -440,14 +440,9 @@ export default function Index({ data, code }) {
 
 export async function getServerSideProps({ query }) {
     const { code } = query;
-    const data = await API.getTestimonial();
 
     return {
         props: {
-            data: {
-                user: data.user,
-                testimonial: data.testimonial,
-            },
             code: code ? code : null,
         },
     };

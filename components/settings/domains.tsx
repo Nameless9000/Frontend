@@ -1,4 +1,6 @@
-import { Table, Tag } from 'antd';
+import { PlusOutlined, WarningOutlined } from '@ant-design/icons';
+import { Button, Input, Table, Tag } from 'antd';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
 import React from 'react';
 import styles from '../../styles/Domains.module.css';
 import { useUser } from '../user';
@@ -7,7 +9,7 @@ export default function Domains() {
     const { user } = useUser();
     const { domains } = user;
 
-    const columns = [
+    const columns: any = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -28,13 +30,22 @@ export default function Domains() {
             render: (date: Date) => (
                 <span>{new Date(date).toLocaleString()}</span>
             ),
+            sorter: (a: any, b: any) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime(),
+            responsive: ['sm'],
+        },
+        {
+            title: 'Users',
+            dataIndex: 'users',
+            key: 'users',
+            sorter: (a: { users: number; }, b: { users: number; }) => a.users - b.users,
+            responsive: ['sm'],
         },
         {
             title: 'Tags',
             key: 'tags',
             render: (domain: { wildcard: boolean; donated: boolean; userOnly: boolean; }) => (
                 <div>
-                    {domain.wildcard && <Tag color="blue">
+                    {domain.wildcard && <Tag color="gold">
                         WILDCARD
                     </Tag>}
 
@@ -47,6 +58,7 @@ export default function Domains() {
                     </Tag>
                 </div>
             ),
+            responsive: ['md'],
         },
     ];
 
@@ -55,6 +67,24 @@ export default function Domains() {
             <div className={styles.section}>
                 <h1 className={styles.title}>Add a Domain</h1>
                 <p className={styles.caption}>You can add domains for your use only, or allow others to use them.</p>
+
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span className="ant-statistic-title" style={{ marginTop: -7 }}><WarningOutlined /> These settings are not changeable later.</span>
+                    <Checkbox>Allow Subdomain</Checkbox>
+                    <Checkbox style={{ marginTop: 3, marginLeft: 0 }}>Private Domain</Checkbox>
+                </div>
+
+                <Input
+                    className={styles.domainInput}
+                    placeholder="Domain Name"
+                />
+
+                <Button
+                    className={styles.btn}
+                    icon={<PlusOutlined />}
+                >
+                    Add Domain
+                </Button>
             </div>
 
             <div className={styles.section}>

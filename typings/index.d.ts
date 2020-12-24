@@ -14,6 +14,7 @@ interface User {
         donatedBy: string;
         userOnly: boolean;
         dateAdded: Date;
+        users: number;
     }>;
 
     /**
