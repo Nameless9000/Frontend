@@ -4,7 +4,7 @@ import { Button, Drawer, Dropdown, Menu } from 'antd';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from '../styles/Navbar.module.css';
-import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, ToolOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
@@ -53,7 +53,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
     const tools = (
         <Menu>
             <Menu.Item>
-                <Link href="/upload">
+                <Link href="/tools/upload">
                     <Button
                         icon={<UploadOutlined style={{ fontSize: '14px' }} />}
                         style={{ border: 'none' }}
@@ -64,7 +64,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
             </Menu.Item>
 
             <Menu.Item>
-                <Link href="/shorten">
+                <Link href="/tools/shorten">
                     <Button
                         icon={<LinkOutlined style={{ fontSize: '14px' }} />}
                         style={{ border: 'none' }}
@@ -112,9 +112,9 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                     <Dropdown overlay={tools} placement="bottomCenter">
                         <Button
                             className={`${styles.navButton} ${
-                                enabled === 'upload' || enabled === 'shorten' && styles.navButtonActive
+                                (enabled === 'upload' || enabled === 'shorten') && styles.navButtonActive
                             }`}
-                            icon={<SettingOutlined style={{ fontSize: '14px' }} />}
+                            icon={<ToolOutlined style={{ fontSize: '14px' }} />}
                         >
                             Tools <DownOutlined />
                         </Button>
@@ -195,20 +195,30 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                             </Menu.Item>
                         </SubMenu>
 
-                        <Menu.Item
-                            onClick={() => router.push('/upload')}
+                        <SubMenu
                             style={
-                                enabled === 'upload' && {
+                                enabled === 'upload' || enabled === 'shorten' ? {
                                     backgroundColor: '#444444',
                                     borderRadius: '10px',
-                                }
+                                } : null
                             }
+                            key="sub2"
+                            icon={<ToolOutlined />}
+                            title="Tools"
                         >
-                            <span>
-                                <UploadOutlined style={{ fontSize: '14px' }} />
-                                Upload
-                            </span>
-                        </Menu.Item>
+                            <Menu.Item
+                                key="1"
+                                onClick={() => router.push('/tools/upload')}
+                            >
+                              Upload
+                            </Menu.Item>
+                            <Menu.Item
+                                key="2"
+                                onClick={() => router.push('/tools/shorten')}
+                            >
+                                Shorten
+                            </Menu.Item>
+                        </SubMenu>
 
                         {user.admin && <Menu.Item onClick={() => window.location.href = 'https://panel.astral.cool'}>
                             <span>
