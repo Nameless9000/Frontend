@@ -6,7 +6,7 @@ import Spoiler from './spoiler';
 import { useUser } from './user';
 import { Button, Card, List, Modal, notification, Popconfirm, Table } from 'antd';
 import { CameraOutlined, DatabaseOutlined, DeleteOutlined, KeyOutlined, MailOutlined, RedoOutlined } from '@ant-design/icons';
-import API, { APIError } from '../api';
+import { APIError } from '../api';
 
 export default function Dashboard() {
     const [inviteManager, setInvManager] = useState(false);
@@ -15,7 +15,7 @@ export default function Dashboard() {
 
     const regenKey = async () => {
         try {
-            const data = await API.regenKey();
+            const data = await user.api.regenKey();
 
             if (data.success) {
                 user = Object.assign({}, user);
@@ -46,7 +46,7 @@ export default function Dashboard() {
         });
 
         try {
-            const data = await API.deleteImage(image.filename);
+            const data = await user.api.deleteImage(image.filename);
 
             if (data.success) {
                 user = Object.assign({}, user);
@@ -76,7 +76,7 @@ export default function Dashboard() {
         });
 
         try {
-            const data = await API.createInvite();
+            const data = await user.api.createInvite();
 
             if (data.success) {
                 user = Object.assign({}, user);

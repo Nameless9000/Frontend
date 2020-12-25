@@ -130,7 +130,7 @@
 }
 
 .embedPreview {
-  width: 100%;
+  width: 50%;
   background-color: #2f3136;
   border-radius: 7px;
   border-top-right-radius: 5px;
@@ -172,6 +172,7 @@
   margin-left: 10px;
   margin-top: 13px;
   width: 227.3px;
+  padding-bottom: 10px;
 }
 
 @media only screen and (max-width: 1639px) {

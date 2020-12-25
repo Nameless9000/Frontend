@@ -13,16 +13,18 @@ export default function App({ Component, pageProps }) {
     useEffect(() => {
         const refreshToken = async () => {
             try {
-                const data = await API.refreshToken();
-                const { images, storageUsed } = await API.getImages();
-                const { invites } = await API.getInvites();
-                const { domains } = await API.getDomains();
+                const api = new API();
+                const data = await api.refreshToken();
+                const { images, storageUsed } = await api.getImages();
+                const { invites } = await api.getInvites();
+                const { domains } = await api.getDomains();
 
                 data.user['domains'] = domains;
                 data.user['images'] = images;
                 data.user['storageUsed'] = storageUsed;
                 data.user['createdInvites'] = invites;
                 data.user['accessToken'] = data.accessToken;
+                data.user['api'] = api;
 
                 setUser(data.user);
 

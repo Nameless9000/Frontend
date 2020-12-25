@@ -3,7 +3,6 @@ import { useUser } from './user';
 import { Button, Drawer, Dropdown, Menu } from 'antd';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import API from '../api';
 import styles from '../styles/Navbar.module.css';
 import { DesktopOutlined, DownOutlined, HomeOutlined, LinkOutlined, LogoutOutlined, SettingOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
 
@@ -16,7 +15,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
 
     const logout = async () => {
         try {
-            await API.logout();
+            await user.api.logout();
 
             setUser(null);
 
@@ -121,7 +120,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                         </Button>
                     </Dropdown>
 
-                    {user.roles.includes('admin') && <Button
+                    {user.admin && <Button
                         className={styles.navButton}
                         icon={<DesktopOutlined style={{ fontSize: '14px' }} />}
                     >
@@ -211,7 +210,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
                             </span>
                         </Menu.Item>
 
-                        {user.roles.includes('admin') && <Menu.Item onClick={() => window.location.href = 'https://panel.astral.cool'}>
+                        {user.admin && <Menu.Item onClick={() => window.location.href = 'https://panel.astral.cool'}>
                             <span>
                                 <DesktopOutlined style={{ fontSize: '14px' }} />
                                 Admin Panel

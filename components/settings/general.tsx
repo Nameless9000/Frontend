@@ -4,7 +4,7 @@ import { useUser } from '../user';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styles from '../../styles/Settings.module.css';
-import API, { APIError } from '../../api';
+import { APIError } from '../../api';
 import ms from 'ms';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
@@ -79,7 +79,7 @@ export default function General() {
                 description: 'Invalid domain selection.',
             });
 
-            const data = await API.saveDomain({
+            const data = await user.api.saveDomain({
                 domain: domain.name,
                 subdomain: selectedDomain.subdomain,
             });
@@ -116,7 +116,7 @@ export default function General() {
                 if (prop === property) data[property] = value;
             }
 
-            data = await API.updateSettings(data);
+            data = await user.api.updateSettings(data);
 
             if (data.success) {
                 user = Object.assign({}, user);
@@ -153,7 +153,7 @@ export default function General() {
 
     const setWipeInterval = async (val: number) => {
         try {
-            const data = await API.setWipeInterval(val);
+            const data = await user.api.setWipeInterval(val);
 
             if (data.success) {
                 user = Object.assign({}, user);
@@ -222,7 +222,7 @@ export default function General() {
         const { embed } = user.settings;
 
         try {
-            const data = await API.updateEmbed({
+            const data = await user.api.updateEmbed({
                 color: embed.color,
                 title: embed.title,
                 description: embed.description,

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import Head from 'next/head';
-import API from '../api';
+import API, { sendPasswordReset, APIError, register as registerUser } from '../api';
 import { Button, Dropdown, Menu, Modal, Tabs, Form, Input, notification } from 'antd';
 import { CheckOutlined, DownOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { SiDiscord } from 'react-icons/si';
 import { useRouter } from 'next/router';
-import { APIError } from '../api';
 import { useUser } from '../components/user';
 
 const { useForm } = Form;
@@ -97,10 +96,11 @@ export default function Index({ code }) {
                 ]
             );
 
-            const data = await API.login(username, password);
-            const { images, storageUsed } = await API.getImages();
-            const { invites } = await API.getInvites();
-            const { domains } = await API.getDomains();
+            const api = new API();
+            const data = await api.login(username, password);
+            const { images, storageUsed } = await api.getImages();
+            const { invites } = await api.getInvites();
+            const { domains } = await api.getDomains();
 
             if (data.success) {
                 delete data.success;
@@ -109,6 +109,7 @@ export default function Index({ code }) {
                 data.user['images'] = images;
                 data.user['createdInvites'] = invites;
                 data.user['storageUsed'] = storageUsed;
+                data.user['api'] = api;
 
                 setUser(data.user);
 
@@ -130,7 +131,7 @@ export default function Index({ code }) {
     const register = async () => {
         try {
             await form.validateFields();
-            const data = await API.register(username, password, email, invite);
+            const data = await registerUser(username, password, email, invite);
 
             if (data.success) notification.success({
                 message: 'Success',
@@ -152,7 +153,7 @@ export default function Index({ code }) {
     const resetPassword = async () => {
         try {
             await passwordResetForm.validateFields();
-            const data = await API.sendPasswordReset(email);
+            const data = await sendPasswordReset(email);
 
             if (data.success) notification.success({
                 message: 'Success',

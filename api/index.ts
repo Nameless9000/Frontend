@@ -1,6 +1,56 @@
 import Axios, { Method } from 'axios';
 
 /**
+ * Send a register request.
+ * @param {string} username The user's username
+ * @param {string} password The user's password.
+ * @param {string} email The email to register with.
+ * @param {string} invite The invite to register with.
+ */
+async function register(username: string, password: string, email: string, invite: string) {
+    try {
+        const { data } = await Axios.post(`${process.env.BACKEND_URL}/auth/register`, {
+            username,
+            password,
+            email,
+            invite,
+        }, {
+            withCredentials: true,
+        });
+
+        return data;
+    } catch (err) {
+        err = err.response.data.error;
+
+        throw new APIError(
+            `${err.charAt(0).toUpperCase() + err.slice(1)}.`
+        );
+    }
+}
+
+/**
+ * Send a password reset email to a user.
+ * @param {string} email The email to send a reset to.
+ */
+async function sendPasswordReset(email: string) {
+    try {
+        const { data } = await Axios.post(`${process.env.BACKEND_URL}/auth/password_resets/send`, {
+            email,
+        }, {
+            withCredentials: true,
+        });
+
+        return data;
+    } catch (err) {
+        err = err.response.data.error;
+
+        throw new APIError(
+            `${err.charAt(0).toUpperCase() + err.slice(1)}.`
+        );
+    }
+}
+
+/**
  * The class for api errors.
  */
 export class APIError extends Error {
@@ -13,7 +63,16 @@ export class APIError extends Error {
 /**
  * The api class.
  */
-export default new class API {
+export default class API {
+    /**
+     * The user's access token.
+     */
+    accessToken: string;
+
+    constructor() {
+        this.accessToken;
+    }
+
     /**
      * Send a request to the api.
      * @param {object} param0 The request data.
@@ -31,7 +90,10 @@ export default new class API {
                 url: `${baseUrl}${endpoint}`,
                 method,
                 data: body ? body: null,
-                headers: headers ? headers : null,
+                headers: {
+                    ...headers,
+                    'x-access-token': `Bearer ${this.accessToken}`,
+                },
                 withCredentials: true,
             });
 
@@ -49,20 +111,14 @@ export default new class API {
      * Get a user's refresh token.
      */
     async refreshToken() {
-        return await this.request({
+        const data = await this.request({
             endpoint: '/auth/token',
             method: 'POST',
         });
-    }
 
-    /**
-     * Get a testimonial from a user.
-     */
-    async getTestimonial() {
-        return await this.request({
-            endpoint: '/users/testimonial',
-            method: 'GET',
-        });
+        this.accessToken = data.accessToken;
+
+        return data;
     }
 
     /**
@@ -71,7 +127,7 @@ export default new class API {
      * @param {string} password The user's password.
      */
     async login(username: string, password: string) {
-        return await this.request({
+        const data = await this.request({
             endpoint: '/auth/login',
             method: 'POST',
             body: {
@@ -79,26 +135,10 @@ export default new class API {
                 password,
             },
         });
-    }
 
-    /**
-     * Send a register request.
-     * @param {string} username The user's username
-     * @param {string} password The user's password.
-     * @param {string} email The email to register with.
-     * @param {string} invite The invite to register with.
-     */
-    async register(username: string, password: string, email: string, invite: string) {
-        return await this.request({
-            endpoint: '/auth/register',
-            method: 'POST',
-            body: {
-                username,
-                password,
-                email,
-                invite,
-            },
-        });
+        this.accessToken = data.accessToken;
+
+        return data;
     }
 
     /**
@@ -108,20 +148,6 @@ export default new class API {
         return await this.request({
             endpoint: '/auth/logout',
             method: 'GET',
-        });
-    }
-
-    /**
-     * Send a password reset email to a user.
-     * @param {string} email The email to send a reset to.
-     */
-    async sendPasswordReset(email: string) {
-        return await this.request({
-            endpoint: '/auth/password_resets/send',
-            method: 'POST',
-            body: {
-                email,
-            },
         });
     }
 
@@ -291,4 +317,9 @@ export default new class API {
             },
         });
     }
+};
+
+export {
+    register,
+    sendPasswordReset
 };

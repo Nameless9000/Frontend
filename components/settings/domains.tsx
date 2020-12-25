@@ -4,7 +4,6 @@ import { APIError } from '../../api';
 import { useUser } from '../user';
 import React, { useState } from 'react';
 import styles from '../../styles/Domains.module.css';
-import API from '../../api';
 
 const { Option } = Select;
 
@@ -32,7 +31,7 @@ export default function Domains() {
         });
 
         try {
-            const data = await API.addDomain(domain, wildcard, userOnly);
+            const data = await user.api.addDomain(domain, wildcard, userOnly);
 
             if (data.success) {
                 data.domain.users = 0;
@@ -93,7 +92,7 @@ export default function Domains() {
 
             domain = selectedDomain.wildcard && selectedDomain.subdomain !== '' ? `${selectedDomain.subdomain}.${selectedDomain.name}` : selectedDomain.name;
 
-            const data = await API.addRandomDomain(domain);
+            const data = await user.api.addRandomDomain(domain);
 
             if (data.success) {
                 user = Object.assign({}, user);
@@ -123,7 +122,7 @@ export default function Domains() {
                 description: 'Invalid domain.',
             });
 
-            const data = await API.deleteRandomDomain(domain);
+            const data = await user.api.deleteRandomDomain(domain);
 
             if (data.success) {
                 user = Object.assign({}, user);

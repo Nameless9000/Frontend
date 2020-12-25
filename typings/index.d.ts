@@ -1,8 +1,15 @@
+import API from '../api';
+
 interface User {
     /**
      * The user's access token.
      */
     accessToken: string;
+
+    /**
+     * The api.
+     */
+    api: API;
 
     /**
      * All of the domains.
@@ -142,9 +149,9 @@ interface User {
     testimonial: string;
 
     /**
-     * The user's roles.
+     * Whether or not the user is an admin.
      */
-    roles: string[];
+    admin: boolean;
 
     /**
      * The user's settings, their preferences, their domain, etc.

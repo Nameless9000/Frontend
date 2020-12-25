@@ -4,16 +4,15 @@ import { useRouter } from 'next/router';
 import { useUser } from './user';
 import { Button } from 'antd';
 import React from 'react';
-import API from '../api';
 import styles from '../styles/Verify.module.css';
 
 export default function Verify() {
-    const { setUser } = useUser();
+    const { setUser, user } = useUser();
     const router = useRouter();
 
     const logout = async () => {
         try {
-            await API.logout();
+            await user.api.logout();
 
             setUser(null);
 
