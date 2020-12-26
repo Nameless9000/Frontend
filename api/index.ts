@@ -51,6 +51,30 @@ async function sendPasswordReset(email: string) {
 }
 
 /**
+ * Reset a user's password.
+ * @param {string} key The password reset key.
+ * @param {string} password The password.
+ * @param {string} confirmPassword The password confirmation.
+ */
+async function resetPassword(key: string, password: string, confirmPassword: string) {
+    try {
+        const { data } = await Axios.post(`${process.env.BACKEND_URL}/auth/password_resets/reset`, {
+            key,
+            password,
+            confirmPassword,
+        });
+
+        return data;
+    } catch (err) {
+        err = err.response.data.error;
+
+        throw new APIError(
+            `${err.charAt(0).toUpperCase() + err.slice(1)}.`
+        );
+    }
+}
+
+/**
  * The class for api errors.
  */
 export class APIError extends Error {
@@ -358,9 +382,62 @@ export default class API {
             method: 'GET',
         });
     }
+
+    /**
+     * Wipe the user's files.
+     */
+    async wipeFiles() {
+        return await this.request({
+            endpoint: '/files/wipe',
+            method: 'POST',
+        });
+    }
+
+    /**
+     * Disable a user's account.
+     */
+    async disableAccount() {
+        return await this.request({
+            endpoint: '/users/@me/disable',
+            method: 'POST',
+        });
+    }
+
+    /**
+     * Change a user's username.
+     * @param {string} username The new username.
+     * @param {string} password The current password.
+     */
+    async changeUsername(username: string, password: string) {
+        return await this.request({
+            endpoint: '/users/@me/change_username',
+            method: 'PUT',
+            body: {
+                username,
+                password,
+            },
+        });
+    }
+
+    /**
+     * Change a user's password.
+     * @param {string} newPassword The user's new password.
+     * @param {string} password The user's current password.
+     */
+    async changePassword(newPassword: string, password: string) {
+        return await this.request({
+            endpoint: '/users/@me/change_password',
+            method: 'PUT',
+            body: {
+                newPassword,
+                password,
+            },
+        });
+    }
 };
 
 export {
     register,
-    sendPasswordReset
+    sendPasswordReset,
+    resetPassword
 };

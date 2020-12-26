@@ -87,6 +87,32 @@ export default function Index({ code }) {
         return value.filter((v: any, i: any) => value.indexOf(v) === i);
     };
 
+    const refreshToken = async () => {
+        try {
+            const api = new API();
+            const data = await api.refreshToken();
+            const { images, storageUsed } = await api.getImages();
+            const { invites } = await api.getInvites();
+            const { domains } = await api.getDomains();
+            const { urls } = await api.getShortenedUrls();
+
+            data.user['domains'] = domains;
+            data.user['images'] = images;
+            data.user['storageUsed'] = storageUsed;
+            data.user['createdInvites'] = invites;
+            data.user['shortenedUrls'] = urls;
+            data.user['accessToken'] = data.accessToken;
+            data.user['api'] = api;
+
+            setUser(data.user);
+
+            setTimeout(() => {
+                refreshToken();
+            }, 780000);
+        } catch (err) {
+        }
+    };
+
     const login = async () => {
         try {
             await form.validateFields(
@@ -114,6 +140,10 @@ export default function Index({ code }) {
                 data.user['api'] = api;
 
                 setUser(data.user);
+
+                setTimeout(() => {
+                    refreshToken();
+                }, 780000);
 
                 router.push('/dashboard');
             }

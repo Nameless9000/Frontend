@@ -33,6 +33,10 @@ export default function App({ Component, pageProps }) {
                 setTimeout(() => {
                     setLoading(false);
                 }, 500);
+
+                setTimeout(() => {
+                    refreshToken();
+                }, 780000);
             } catch (err) {
                 setTimeout(() => {
                     setLoading(false);

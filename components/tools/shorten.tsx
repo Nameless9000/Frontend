@@ -143,9 +143,10 @@ export default function ShortenC() {
             key: 'destination',
             render: (url: string) => (
                 <a
-                    href={url}
+                    href={url.startsWith('http') ? url : `https://${url}`}
+                    target="_blank"
+                    rel="noreferrer"
                     className={`ant-btn-link ${styles.actionBtn}`}
-                    target="blank"
                 >
                   Click Here
                 </a>
