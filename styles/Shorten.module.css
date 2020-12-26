@@ -43,7 +43,7 @@
   margin-top: 14px;
 }
 
-.domainInput {
+.input {
   margin-top: -5px;
   width: 30%;
 }
@@ -60,29 +60,52 @@
 }
 
 .switchInput {
+  margin-top: 15px;
   display: flex;
 }
 
+.btn {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.caption {
+  font-size: 14px;
+  margin-top: -15px;
+}
+
+.actionBtn {
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
 @media only screen and (max-width: 1639px) {
-  .domainInput {
+  .input {
     width: 40%;
   }
 }
 
 @media only screen and (max-width: 1267px) {
-  .domainInput {
+  .input {
     width: 50%;
   }
 }
 
 @media only screen and (max-width: 1065px) {
-  .domainInput {
+  .input {
     width: 80%;
   }
 }
 
 @media only screen and (max-width: 735px) {
-  .domainInput {
+  .input {
     width: 100%;
   }
 }

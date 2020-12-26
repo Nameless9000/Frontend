@@ -18,11 +18,13 @@ export default function App({ Component, pageProps }) {
                 const { images, storageUsed } = await api.getImages();
                 const { invites } = await api.getInvites();
                 const { domains } = await api.getDomains();
+                const { urls } = await api.getShortenedUrls();
 
                 data.user['domains'] = domains;
                 data.user['images'] = images;
                 data.user['storageUsed'] = storageUsed;
                 data.user['createdInvites'] = invites;
+                data.user['shortenedUrls'] = urls;
                 data.user['accessToken'] = data.accessToken;
                 data.user['api'] = api;
 

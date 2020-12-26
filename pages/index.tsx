@@ -101,6 +101,7 @@ export default function Index({ code }) {
             const { images, storageUsed } = await api.getImages();
             const { invites } = await api.getInvites();
             const { domains } = await api.getDomains();
+            const { urls } = await api.getShortenedUrls();
 
             if (data.success) {
                 delete data.success;
@@ -109,6 +110,7 @@ export default function Index({ code }) {
                 data.user['images'] = images;
                 data.user['createdInvites'] = invites;
                 data.user['storageUsed'] = storageUsed;
+                data.user['shortenedUrls'] = urls;
                 data.user['api'] = api;
 
                 setUser(data.user);

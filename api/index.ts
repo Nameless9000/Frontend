@@ -317,6 +317,47 @@ export default class API {
             },
         });
     }
+
+    /**
+     * Get all of the user's shortened urls.
+     */
+    async getShortenedUrls() {
+        return await this.request({
+            endpoint: '/shortener/urls',
+            method: 'GET',
+        });
+    }
+
+    /**
+     * Shorten a url.
+     * @param {string} url The url to shorten.
+     * @param {boolean} longUrl Whether or not the url should be long.
+     * @param {string} key The user's key.
+     */
+    async shortenUrl(url: string, longUrl: boolean, key: string) {
+        return await this.request({
+            endpoint: '/shortener',
+            method: 'POST',
+            body: {
+                url,
+            },
+            headers: {
+                key,
+                longUrl,
+            },
+        });
+    }
+
+    /**
+     * Delete a short url.
+     * @param {string} deletionKey The deletion key.
+     */
+    async deleteShortUrl(deletionKey: string) {
+        return await this.request({
+            endpoint: `/shortener/delete?key=${deletionKey}`,
+            method: 'GET',
+        });
+    }
 };
 
 export {

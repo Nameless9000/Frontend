@@ -30,7 +30,7 @@ export default function Navbar({ enabled }: { enabled: 'home' | 'settings' | 'up
             <Menu.Item>
                 <Link href="/account">
                     <Button
-                        icon={<SettingOutlined style={{ fontSize: '14px' }} />}
+                        icon={<UserOutlined style={{ fontSize: '14px' }} />}
                         style={{ border: 'none' }}
                     >
                         Account

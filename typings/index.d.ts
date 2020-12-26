@@ -25,6 +25,17 @@ interface User {
     }>;
 
     /**
+     * An array of the user's shortened urls.
+     */
+    shortenedUrls: Array<{
+        shortId: string;
+        destination: string;
+        deletionKey: string;
+        timestamp: Date;
+        user: string;
+    }>
+
+    /**
      * All of the images the user has uploaded.
      */
     images: Array<{
