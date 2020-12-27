@@ -4,75 +4,35 @@ html {
   --antd-wave-shadow-color: none;
 }
 
-.ant-pagination-prev:focus .ant-pagination-item-link, .ant-pagination-next:focus .ant-pagination-item-link, .ant-pagination-prev:hover .ant-pagination-item-link, .ant-pagination-next:hover .ant-pagination-item-link {
-  color: #fff;
-  background-color:#444444;
-  border-color: #444444;
-}
-
-.ant-switch-checked {
-  background-color: #444444;
+.authModal {
+  .ant-modal-body {
+    display: none;
+  }
 }
 
 .ant-upload.ant-upload-drag:not(.ant-upload-disabled):hover {
   border-color: rgb(165, 165, 165);
 }
 
-.ant-pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: -10px;
-  margin-bottom: 5px;
+.embedEditor {
+  width: 900px !important;
 }
 
-.ant-pagination-item-container {
-  display: none;
+.ant-switch-checked:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1); 
 }
 
-.ant-pagination-jump-prev, .ant-pagination-jump-next {
-  display: none;
-}
-
-.ant-list-items {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.ant-pagination-item-active a {
-  color: #fff;
-}
-
-.ant-pagination-item-active {
-  background-color:#444444;
-  border-color:#444444;;
-}
-
-.ant-pagination-item-active:focus, .ant-pagination-item-active:hover {
-  border: none;
-  color: #fff;
-  background-color: #3a3a3a;
-}
-
-.ant-pagination-item:focus a, .ant-pagination-item:hover a {
-  border: none;
-  color: #fff;
-  background-color: #3a3a3a;
-}
-
-.ant-pagination-item:focus, .ant-pagination-item:hover {
-  background-color: #3a3a3a;
-  border: none;
-}
-
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+.ant-switch-checked {
   background-color: #444444;
-  border-radius: 10px;
-  color: white;
 }
 
-.ant-menu-item:hover {
-  color: #a1a1a1;
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: rgb(58, 58, 58);
+}
+
+.ant-btn:hover, .ant-btn:focus {
+  color: #bebebe;
+  border-color: #bebebe;
 }
 
 .ant-btn-primary:hover, .ant-btn-primary:focus {
@@ -100,12 +60,60 @@ html {
   border-color: #bebebe;
 }
 
-.loginModal {
-  .ant-modal-body {
-    display: none;
-  }
+.ant-spin-text {
+  margin-top: 10px;
+  color: rgb(216, 216, 216);
 }
 
-.ant-alert-message {
-  font-weight: normal;
+.ant-list-items {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.ant-pagination-prev:focus .ant-pagination-item-link, .ant-pagination-next:focus .ant-pagination-item-link, .ant-pagination-prev:hover .ant-pagination-item-link, .ant-pagination-next:hover .ant-pagination-item-link {
+  color: #fff;
+  background-color:#444444;
+  border-color: #444444;
+}
+
+.ant-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+
+.ant-pagination-item-container {
+  display: none;
+}
+
+.ant-pagination-jump-prev, .ant-pagination-jump-next {
+  display: none;
+}
+
+.ant-pagination-item-active a {
+  color: #fff;
+}
+
+.ant-pagination-item-active {
+  background-color:#444444;
+  border-color:#444444;;
+}
+
+.ant-pagination-item-active:focus, .ant-pagination-item-active:hover {
+  border: none;
+  color: #fff;
+  background-color: #3a3a3a;
+}
+
+.ant-pagination-item:focus a, .ant-pagination-item:hover a {
+  border: none;
+  color: #fff;
+  background-color: #3a3a3a;
+}
+
+.ant-pagination-item:focus, .ant-pagination-item:hover {
+  background-color: #3a3a3a;
+  border: none;
 }

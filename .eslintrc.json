@@ -1,7 +1,8 @@
 {
   "env":{
      "browser":true,
-     "es2020":true
+     "es2020":true,
+     "node":true
   },
   "extends":[
      "plugin:react/recommended",
@@ -42,7 +43,7 @@
      "linebreak-style":"off",
      "indent":[
         "error",
-        2,
+        4,
         {
            "SwitchCase":1
         }
@@ -69,7 +70,7 @@
      "camelcase":[
         "error"
      ],
-     "react/prop-types": "off",
-     "react/display-name": "off"
+     "react/prop-types":"off",
+     "react/display-name":"off"
   }
 }

@@ -1,8 +1,8 @@
-.menuBar {
-  align-items: center;
-  padding: 0 0px;
-  background-color: rgb(20, 20, 20);
+.navbar {
   overflow: auto;
+  padding: 0 0px;
+  align-items: center;
+  background-color: rgb(20, 20, 20);
 }
 
 .logo {
@@ -10,10 +10,26 @@
   margin-bottom: 10px;
 }
 
-.logoImage {
-  padding-left: 10px;
+.logo img {
+  cursor: pointer;
   height: 38px;
-  margin-top: 12px;
+  margin-top: 13px;
+  padding-left: 12px;
+  padding-right: 5px;
+}
+
+.navbarCon {
+  float: left;
+  margin-top: 10px;
+  width: calc(100% - 150px);
+}
+
+.navbarCon .left {
+  float: left;
+}
+
+.navbarCon .right {
+  float: right;
 }
 
 .navButton {
@@ -32,47 +48,29 @@
 }
 
 .logoutButton {
+  margin-right: -33px;
   background-color: rgb(39, 39, 39);
   border: none;
   font-size: 15px;
-  margin-right: 10px;
   height: 40px;
   margin-top: 1px;
   border-radius: 5px;
 }
 
-.menuCon {
-  margin-top: 10px;
-  width: calc(100% - 150px);
-  float: left;
+.avatarImg {
+  margin-right: 10px;
+  border-radius: 5px;
+  margin-bottom: 2px;
 }
 
-.menuCon .ant-menu-item {
-  padding: 0px 5px;
+.avatarUsername { 
+  font-size: 16px;
+  margin-right: 3px;
+  margin-top: 1.5px;
 }
 
-.menuCon .ant-menu-submenu-title {
-  padding: 10px 20px;
-}
-
-.menuCon .ant-menu-item a,
-.menuCon .ant-menu-submenu-title a {
-  padding: 10px 15px;
-}
-
-.menuCon .ant-menu-horizontal {
-  border-bottom: none;
-}
-
-.menuCon .leftMenu {
-  float: left;
-}
-
-.menuCon .rightMenu {
-  float: right;
-}
-
-.barsMenu {
+.barsCon {
+  margin-right: -32px;
   border: none;
   float: right;
   height: 32px;
@@ -81,6 +79,10 @@
   display: none;
   background: none;
   border-color: rgb(221, 221, 221);
+}
+
+.barsCon>span {
+  display: block;
 }
 
 .barsBtn {
@@ -107,12 +109,30 @@
   bottom: -6px;
 }
 
-.ant-drawer-body {
-  padding: 0;
+@media (max-width: 767px) {
+  .barsCon {
+    display: inline-block;
+  }
+
+  .left,
+  .right {
+    display: none;
+  }
+
+  .navbarCon {
+    margin-top: 7px;
+  }
+
+  .navbarCon .ant-menu-item,
+  .navbarCon .ant-menu-submenu-title {
+    padding: 1px 20px;
+  }
 }
 
-.barsMenu>span {
-  display: block;
+@media only screen and (max-width: 375px) {
+  .logo img {
+    margin-bottom: 2px;
+  }
 }
 
 .ant-drawer-body .ant-menu-horizontal>.ant-menu-item,
@@ -129,37 +149,6 @@
   border-bottom-color: transparent;
 }
 
-@media (max-width: 767px) {
-  .barsMenu {
-    display: inline-block;
-  }
-
-  .leftMenu,
-  .rightMenu {
-    display: none;
-  }
-
-  .logo a {
-    margin-left: -20px;
-  }
-
-  .menuCon {
-    margin-top: 7px;
-  }
-
-  .menuCon .ant-menu-item,
-  .menuCon .ant-menu-submenu-title {
-    padding: 1px 20px;
-  }
-
-  .logo a {
-    padding: 10px 20px;
-  }
-}
-
-@media only screen and (max-width: 375px) {
-  .logoImage {
-    margin-left: -10px;
-    margin-bottom: 2px;
-  }
+.ant-drawer-body {
+  padding: 0;
 }

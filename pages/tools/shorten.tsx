@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useUser } from '../components/user';
+import { useUser } from '../../components/user';
 import { useRouter } from 'next/router';
-import Verify from '../components/verify';
-import AccountC from '../components/account';
+import Verify from '../../components/verify';
+import ShortenC from '../../components/tools/shorten';
 
-export default function Upload() {
+export default function Shorten() {
     const router = useRouter();
     const { user } = useUser();
 
@@ -16,5 +16,5 @@ export default function Upload() {
 
     if (!user) return null;
 
-    return user.discord.id ? <AccountC /> : <Verify />;
+    return user.discord.id ? <ShortenC /> : <Verify />;
 }

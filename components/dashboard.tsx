@@ -1,291 +1,328 @@
-import { CameraOutlined, DeleteOutlined, KeyOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Card, List, message, Modal, Popconfirm, Table } from 'antd';
-import Axios from 'axios';
-import Head from 'next/head';
 import React, { useState } from 'react';
-import styles from '../styles/dashboard.module.css';
 import Navbar from './navbar';
+import styles from '../styles/Dashboard.module.css';
+import Head from 'next/head';
 import Spoiler from './spoiler';
+import { useUser } from './user';
+import { Button, Card, List, Modal, notification, Popconfirm, Table } from 'antd';
+import { CameraOutlined, DatabaseOutlined, DeleteOutlined, KeyOutlined, MailOutlined, RedoOutlined } from '@ant-design/icons';
+import { APIError } from '../api';
 
-export default function Dashboard({ userProp, imagesProp, router }) {
-  const initialState = {
-    showInviteManager: false,
-    user: userProp,
-    visiblePopConfirm: '',
-    images: imagesProp,
-    loading: true,
-  };
+export default function Dashboard() {
+    const [inviteManager, setInvManager] = useState(false);
+    let { user, setUser } = useUser();
+    const { images } = user;
 
-  const [{ showInviteManager, user, visiblePopConfirm, images }, setState] = useState(initialState);
+    const regenKey = async () => {
+        try {
+            const data = await user.api.regenKey();
 
-  const manageInvites = () => {
-    if (
-      user.invites <= 0 &&
-      user.createdInvites.filter((x: { useable: boolean }) => x.useable !== false)
-        .length <= 0
-    )
-      return message.error('You do not have any invites.');
+            if (data.success) {
+                user = Object.assign({}, user);
+                user.key = data.key;
+                setUser(user);
 
-    setState((state) => ({ ...state, showInviteManager: true }));
-  };
-
-  const hideInviteManager = () => {
-    setState((state) => ({ ...state, showInviteManager: false }));
-  };
-
-
-  const createInvite = async () => {
-    const invites = user.invites;
-
-    if (invites <= 0) return message.error('You do not have any invites.');
-
-    try {
-      const { data } = await Axios.post(
-        `${process.env.BACKEND_URL}/invites`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      const newInvites = [];
-
-      for (const invite of data.invites) {
-        newInvites.push({
-          code: invite.code,
-          dateCreated: new Date().toLocaleDateString(),
-        });
-      }
-
-      setState((state) => ({
-        ...state,
-        user: {
-          ...user,
-          createdInvites: user.createdInvites.concat(newInvites),
-          invites: user.invites - 1,
-        },
-      }));
-      message.success('Created invite successfully');
-    } catch (err) {
-      message.error(err.response.data.error);
-    }
-  };
-
-
-  const handleDelete = async (record: any) => {
-    try {
-      if (!user.createdInvites) return;
-
-      await Axios.delete(`${process.env.BACKEND_URL}/invites/${record.code}`);
-
-      setState((state) => ({
-        ...state,
-        user: {
-          ...user,
-          createdInvites: user.createdInvites.filter(
-            (x: any) => x.code !== record.code
-          ),
-        },
-      }));
-
-      message.success('Deleted invite successfully');
-    } catch (err) {
-      message.error(err.response.data.error);
-    }
-  };
-
-
-  const columns = [
-    {
-      title: 'Code',
-      dataIndex: 'code',
-      key: 'code',
-    },
-    {
-      title: 'Created on',
-      dataIndex: 'dateCreated',
-      key: 'dateCreated',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (record: any) => {
-        return (
-          <Popconfirm
-            visible={record.code === visiblePopConfirm}
-            title="Are you sure you want to delete this invite?"
-            okText="Yes"
-            onCancel={() =>
-              setState((state) => ({ ...state, visiblePopConfirm: '' }))
+                notification.success({
+                    message: 'Success',
+                    description: 'Regenerated key successfully.',
+                });
             }
-            okButtonProps={{
-              style: { backgroundColor: '#444444', border: 'none' },
-            }}
-            onConfirm={async () => await handleDelete(record)}
-          >
-            <Button
-              onClick={() =>
-                setState((state) => ({
-                  ...state,
-                  visiblePopConfirm: record.code,
-                }))
-              }
-            >
-              Delete
-            </Button>
-          </Popconfirm>
-        );
-      },
-    },
-  ];
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
 
+    const deleteImage = async (x: any) => {
+        if (!x) throw new Error('provide a image');
 
-  const deleteImage = async (image: any) => {
-    if (!image) return message.error('Provide a link');
+        const image = user.images.find((i) => i.filename === x.filename);
 
-    const findImage = images.find((i: any) => i.link === image.link);
+        if (!image) return notification.error({
+            message: 'Something went wrong',
+            description: 'Invalid file.',
+        });
 
-    if (!findImage) return message.error('Invalid image');
+        try {
+            const data = await user.api.deleteImage(image.filename);
 
-    try {
-      await Axios.delete(`${process.env.BACKEND_URL}/files/${findImage.filename}`, {
-        withCredentials: true,
-      });
+            if (data.success) {
+                user = Object.assign({}, user);
+                user.images = user.images.filter((x: any) => x.filename !== image.filename),
+                user.uploads = user.uploads > 0 ? user.uploads - 1 : user.uploads;
+                setUser(user);
 
-      setState((state) => ({
-        ...state,
-        images: images.filter((x: any) => x.filename !== findImage.filename),
-        user: {
-          ...user,
-          uploads: user.uploads -1,
+                notification.success({
+                    message: 'Success',
+                    description: 'Deleted image successfully.',
+                });
+            }
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
+
+    const createInvite = async () => {
+        const invites = user.invites;
+
+        if (invites <= 0) return notification.error({
+            message: 'Something went wrong',
+            description: 'You do not have any invites.',
+        });
+
+        try {
+            const data = await user.api.createInvite();
+
+            if (data.success) {
+                user = Object.assign({}, user);
+                user.createdInvites = user.createdInvites.concat([{
+                    _id: data.code,
+                    dateCreated: data.dateCreated,
+                }]);
+                user.invites = user.invites - 1;
+
+                setUser(user);
+
+                navigator.clipboard.writeText(data.link);
+
+                notification.success({
+                    message: 'Success',
+                    description: 'Copied invite link to clipboard.',
+                });
+            }
+        } catch (err) {
+            if (err instanceof APIError) return notification.error({
+                message: 'Something went wrong',
+                description: err.message,
+            });
+        }
+    };
+
+    const columns = [
+        {
+            title: 'Code',
+            dataIndex: '_id',
+            key: 'code',
         },
-      }));
+        {
+            title: 'Created On',
+            dataIndex: 'dateCreated',
+            key: 'dateCreated',
+            render: (record: any) => new Date(record).toLocaleDateString(),
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (record: any) => (
+                <span
+                    className={`ant-btn-link ${styles.actionBtn}`}
+                    onClick={() => {
+                        navigator.clipboard.writeText(`https://astral.gifts/${record._id}`);
 
-      message.success('Deleted file successfully');
-    } catch (err) {
-      message.error(err.response.data.error);
-    }
-  };
-
-
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Astral Dashboard</title>
-      </Head>
-
-      <Navbar user={user} enabled="home" />
-
-      <div className={styles.dashboard}>
-        <div className={styles.section}>
-          <h1 className={styles.title}>Welcome, {user.username}.</h1>
-          <div className={styles.statsContainer} style={{
-            marginTop: '-5px',
-          }}>
-            <div className={styles.statsBox}>
-              <h1 className={styles.statsTitle}>
-                <CameraOutlined className={styles.statsIcon} /> Images
-              </h1>
-              <span>
-                You have uploaded <strong>{user.uploads}</strong> images.
-              </span>
-            </div>
-            <div className={styles.statsBox}>
-              <h1 className={styles.statsTitle}>
-                <MailOutlined className={styles.statsIcon} /> Invites
-              </h1>
-              <span>
-                <Button onClick={manageInvites}>
-                  Manage Invites <strong> ({user.invites})</strong>
-                </Button>
-              </span>
-            </div>
-            <div className={styles.statsBox}>
-              <h1 className={styles.statsTitle}>
-                <KeyOutlined className={styles.statsIcon} /> Key
-              </h1>
-              <span style={{ marginTop: '-8px' }}>
-                Your upload key is <Spoiler text={user.key} />
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className={styles.section} style={{ marginTop: '20px', marginBottom: '20px', paddingBottom: '20px' }}>
-          <h1 className={styles.title}>Gallery</h1>
-          <p className={styles.galleryCaption}>Here you can view all of your images.</p>
-          <div className={styles.galleryContainer} style={images.length <= 0 ? { marginTop: '-10px', marginLeft: '0' } : null}>
-            <List
-              locale={{ emptyText: 'You haven\'t uploaded any images.' }}
-              dataSource={images.filter((i) => i.filename.split('.')[1] !== 'mp4')}
-              pagination={images.length <= 14 ? false : {
-                pageSize: 14,
-                showSizeChanger: false,
-                responsive: true,
-                style: {
-                  marginLeft: '-20px',
-                },
-              }}
-              renderItem={(m: any) => {
-                return (
-                  <Card
-                    key={m.link}
-                    style={{
-                      width: '239px',
-                      height: '170px',
-                      marginBottom: '10px',
-                      marginLeft: '10px',
+                        notification.success({
+                            message: 'Success',
+                            description: 'Copied invite link to clipboard.',
+                        });
                     }}
-                    cover={
-                      <a href={m.link} target="blank">
-                        <img
-                          style={{
-                            height: '100px',
-                            width: '239px',
-                            objectFit: 'cover',
-                          }}
-                          src={m.link}
-                        />
-                      </a>
-                    }
-                  >
-                    <div style={{
-                      flexDirection: 'row',
-                      display: 'flex',
-                    }}>
-                      <p style={{
-                        fontSize: '13.6px',
-                      }}>Uploaded on {m.dateUploaded}</p>
-                      <Button type="primary" onClick={() => deleteImage(m)} style={{
-                        backgroundColor: '#e03024',
-                        border: 'none',
-                        marginLeft: '13px',
-                        marginTop: '-1.5px',
-                      }} shape="circle" icon={<DeleteOutlined />} size="small" />
-                    </div>
-                  </Card>
-                );
-              }}
-            />
-          </div>
-        </div>
-      </div>
+                >
+                    Copy Link
+                </span>
+            ),
+        },
+    ];
 
-      <Modal
-        title="Invite Manager"
-        visible={showInviteManager}
-        onCancel={hideInviteManager}
-        footer={null}
-      >
-        <Table
-          rowKey="code"
-          pagination={false}
-          locale={{ emptyText: 'You haven\'t made any invites.' }}
-          dataSource={user.createdInvites.filter((i: any) => i.useable !== false)}
-          columns={columns}
-        />
-        <Button style={{ marginTop: '23px' }} onClick={createInvite}>
-          Create invite <strong> ({user.invites})</strong>
-        </Button>
-      </Modal>
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            <Head>
+                <title>Astral Dashboard</title>
+            </Head>
+
+            <Navbar enabled="home" />
+
+            <div className={styles.dashboard}>
+                <div className={styles.section}>
+                    <h1 className={styles.title} style={{
+                        marginLeft: '8px',
+                    }}>Welcome, {user.username}.</h1>
+
+                    <div className={styles.statsCon}>
+                        <Card className={styles.statsBox}>
+                            <div className="ant-statistic-title"><CameraOutlined /> Images</div>
+                            <div className={styles.statContent}>You have uploaded <strong>{user.uploads}</strong> images.</div>
+                        </Card>
+
+                        <Card className={styles.statsBox}>
+                            <div className="ant-statistic-title"><DatabaseOutlined /> Storage Used</div>
+                            <div className={styles.statContent}>{user.storageUsed}</div>
+                        </Card>
+
+                        <Card className={styles.statsBox}>
+                            <div className="ant-statistic-title"><MailOutlined /> Invites</div>
+                            <Button
+                                shape="round"
+                                disabled={user.invites <= 0 && user.createdInvites.length <= 0}
+                                style={{
+                                    marginTop: '3px',
+                                }}
+                                onClick={() => setInvManager(true)}
+                            >
+                                Manage Invites (<strong>{user.invites}</strong>)
+                            </Button>
+                        </Card>
+
+                        <Card className={styles.statsBox}>
+                            <div className="ant-statistic-title"><KeyOutlined /> Upload Key</div>
+                            <div className={styles.keyCon}>
+                                <Spoiler />
+
+                                <Popconfirm
+                                    onConfirm={regenKey}
+                                    title="Are you sure?"
+                                    okText="Yes"
+                                    okButtonProps={{
+                                        style: {
+                                            backgroundColor: 'rgb(37, 37, 37)',
+                                            borderColor: '#444444',
+                                        },
+                                    }}
+                                >
+                                    <Button
+                                        type="primary"
+                                        style={{
+                                            backgroundColor: '#444444',
+                                            border: 'none',
+                                            marginLeft: '11px',
+                                            marginTop: '-2px',
+                                        }}
+                                        shape="circle"
+                                        icon={<RedoOutlined />}
+                                        size="small"
+                                    />
+                                </Popconfirm>
+                            </div>
+                        </Card>
+                    </div>
+                </div>
+
+                <div className={styles.section}>
+                    <h1 className={styles.title}>Gallery</h1>
+                    <p className={styles.galleryCaption}>Here you can view all of your images.</p>
+
+                    <div className={styles.galleryContainer}>
+                        <List
+                            locale={{ emptyText: 'You haven\'t uploaded any images.' }}
+                            dataSource={images.filter((i) => i.filename.split('.')[1] !== 'mp4')}
+                            pagination={images.length <= 14 ? false : {
+                                pageSize: 14,
+                                showSizeChanger: false,
+                                responsive: true,
+                                style: {
+                                    marginLeft: '4px',
+                                },
+                            }}
+                            renderItem={(m) => {
+                                return (
+                                    <Card
+                                        key={m.link}
+                                        style={{
+                                            width: '241.1px',
+                                            height: '170px',
+                                            marginBottom: '10px',
+                                            marginLeft: '10px',
+                                        }}
+                                        cover={
+                                            <a href={m.link} target="blank">
+                                                <img
+                                                    style={{
+                                                        height: '100px',
+                                                        width: '239px',
+                                                        objectFit: 'cover',
+                                                    }}
+                                                    src={m.link}
+                                                />
+                                            </a>
+                                        }
+                                    >
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                        }}>
+                                            <span>
+                                                <div className="ant-statistic-title" style={{
+                                                    marginBottom: '0px',
+                                                    marginTop: '-12px',
+                                                }}>{m.filename}</div>
+                                                <span style={{
+                                                    fontSize: '13.6px',
+                                                }}>Uploaded at {new Date(m.dateUploaded).toLocaleDateString()}</span>
+                                            </span>
+
+                                            <div style={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                marginTop: '-14px',
+                                                marginLeft: '15px',
+                                                justifyContent: 'center',
+                                            }}>
+
+                                                <Button
+                                                    type="primary"
+                                                    onClick={() => {
+                                                        deleteImage(m);
+                                                    }}
+                                                    style={{
+                                                        backgroundColor: '#e03024',
+                                                        border: 'none',
+                                                    }}
+                                                    shape="circle"
+                                                    icon={<DeleteOutlined />}
+                                                    size="small"
+                                                />
+                                            </div>
+                                        </div>
+                                    </Card>
+                                );
+                            }}
+                        />
+                    </div>
+                </div>
+
+                <Modal
+                    title="Invite Manager"
+                    visible={inviteManager}
+                    onCancel={() => setInvManager(false)}
+                    footer={null}
+                >
+                    <Table
+                        rowKey="code"
+                        pagination={false}
+                        locale={{ emptyText: 'You haven\'t made any invites.' }}
+                        dataSource={user.createdInvites}
+                        columns={columns}
+                    />
+
+                    <Button
+                        shape="round"
+                        disabled={user.invites <= 0}
+                        style={{
+                            marginTop: '20px',
+                            height: '35px',
+                            width: '150px',
+                        }}
+                        onClick={createInvite}
+                    >
+                        Create Invite <strong> ({user.invites})</strong>
+                    </Button>
+                </Modal>
+            </div>
+        </div>
+    );
 }
+
+

@@ -2,18 +2,18 @@ import Head from 'next/head';
 import React from 'react';
 import styles from '../styles/Settings.module.css';
 import Navbar from './navbar';
-import General from './settings/general';
+import DomainsC from './settings/domains';
 import Sidebar from './sidebar';
 
-export default function Settings() {
+export default function Domains() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Astral Settings</title>
+                <title>Domain Manager</title>
             </Head>
 
             <Navbar enabled="settings" />
-            <Sidebar selectedTab="general" render={<General />} />
+            <Sidebar selectedTab="domains" render={<DomainsC />} />
         </div>
     );
 }
