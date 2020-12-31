@@ -70,7 +70,7 @@ export default function Dashboard() {
     const createInvite = async () => {
         const invites = user.invites;
 
-        if (invites <= 0) return notification.error({
+        if (invites <= 0 && !user.admin) return notification.error({
             message: 'Something went wrong',
             description: 'You do not have any invites.',
         });
@@ -84,7 +84,7 @@ export default function Dashboard() {
                     _id: data.code,
                     dateCreated: data.dateCreated,
                 }]);
-                user.invites = user.invites - 1;
+                if (!user.admin) user.invites = user.invites - 1;
 
                 setUser(user);
 
@@ -171,7 +171,7 @@ export default function Dashboard() {
                                 }}
                                 onClick={() => setInvManager(true)}
                             >
-                                Manage Invites (<strong>{user.invites}</strong>)
+                                Manage Invites (<strong>{user.admin ? '∞' : user.invites}</strong>)
                             </Button>
                         </Card>
 
@@ -309,7 +309,7 @@ export default function Dashboard() {
 
                     <Button
                         shape="round"
-                        disabled={user.invites <= 0}
+                        disabled={user.admin ? false : user.invites <= 0}
                         style={{
                             marginTop: '20px',
                             height: '35px',
@@ -317,7 +317,7 @@ export default function Dashboard() {
                         }}
                         onClick={createInvite}
                     >
-                        Create Invite <strong> ({user.invites})</strong>
+                        Create Invite <strong> ({user.admin ? '∞' : user.invites})</strong>
                     </Button>
                 </Modal>
             </div>
