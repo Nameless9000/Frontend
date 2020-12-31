@@ -434,6 +434,17 @@ export default class API {
             },
         });
     }
+
+    /**
+     * Get a user's profile via their uid.
+     * @param {string} uid The user's uid.
+     */
+    async getUserProfile(uid: string) {
+        return await this.request({
+            endpoint: `/users/profile/${uid}`,
+            method: 'GET',
+        });
+    }
 };
 
 export {

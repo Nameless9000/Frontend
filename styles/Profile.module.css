@@ -28,6 +28,7 @@
 .page .section {
   width: 96%;
   display: flex;
+  align-items: center;
   flex-direction: column;
   border-radius: 6px;
   padding: 10px;
@@ -38,51 +39,55 @@
   background: rgb(19, 19, 19);
 }
 
+.avatarSection {
+  align-items: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
   font-size: 26px;
-  margin-top: 14px;
 }
 
-.accountInput {
-  margin-bottom: 14px;
+.blacklistedTitle {
+  text-decoration: rgb(255, 0, 0) solid line-through;
+  color: rgb(104, 104, 104);
 }
 
-.changeBtn {
+.statistic {
+  margin-top: -14px;
+}
+
+.statCon {
+  margin-top: 13px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.statChild {
+  width: 565px;
+  margin-bottom: 15px;
+  margin-right: 10px;
+}
+
+.btn {
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 200px;
-  height: 40px;
-  border-radius: 5px;
-  margin-top: 15px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  width: 150px;
+  height: 35px;
 }
 
-.btnContainer {
-  display: flex;
-  margin-top: 8px;
-  padding-bottom: 20px;
-  justify-content: center;
-}
-
-.btnContainer .btn {
-  margin-left: 5px;
-  margin-right: 5px;
-  width: 100%;
-  border-radius: 5px;
-}
-
-.changeCon {
-  margin-top: -3px;
-  margin-bottom: 10px;
-}
-
-@media only screen and (max-width: 1600px) {
-  .btnContainer {
-    flex-direction: column;
-  }
-
-  .btnContainer .btn {
-    margin-bottom: 10px;
+@media only screen and (max-width: 576px) {
+  .statChild {
+    margin-right: 0px;
+    width: 300px;
   }
 }
 
@@ -93,11 +98,7 @@
     width: 85%;
   }
 
-  .accountInput {
-    width: 250px;
-  }
-
-  .btnContainer .btn {
-    width: 250px;
+  .statChild {
+    width: 200px;
   }
 }
